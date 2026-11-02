@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3a0e1e;
+  --color-primary-container: #542333;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #cc899b;
+  --color-primary-fixed: #ffd9e1;
+  --color-primary-fixed-dim: #fcb2c6;
+  --color-on-primary-fixed: #370b1b;
+  --color-on-primary-fixed-variant: #6b3646;
+
+  --color-secondary: #865040;
+  --color-secondary-container: #ffb9a4;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #7a4737;
+  --color-secondary-fixed: #ffdbd1;
+  --color-secondary-fixed-dim: #fcb6a2;
+  --color-on-secondary-fixed: #351005;
+  --color-on-secondary-fixed-variant: #6a3a2b;
+
+  --color-tertiary: #271c0b;
+  --color-tertiary-container: #3e311e;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #ac9880;
+  --color-tertiary-fixed: #f6dfc4;
+  --color-tertiary-fixed-dim: #d9c3a9;
+  --color-on-tertiary-fixed: #251a09;
+  --color-on-tertiary-fixed-variant: #534430;
+
+  --color-surface: #fff7f9;
+  --color-surface-bright: #fff7f9;
+  --color-surface-dim: #e7d5e0;
+  --color-surface-variant: #f0dde9;
+  --color-surface-tint: #874d5e;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #ffeff8;
+  --color-surface-container: #fce9f4;
+  --color-surface-container-high: #f6e3ef;
+  --color-surface-container-highest: #f0dde9;
+
+  --color-background: #fff7f9;
+  --color-on-background: #231820;
+  --color-on-surface: #231820;
+  --color-on-surface-variant: #514346;
+  --color-inverse-surface: #382d36;
+  --color-inverse-on-surface: #ffebf7;
+  --color-inverse-primary: #fcb2c6;
+
+  --color-outline: #837376;
+  --color-outline-variant: #d5c2c5;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  --font-headline-lg: "Playfair Display", serif;
+  --font-headline-md: "Playfair Display", serif;
+  --font-headline-sm: "Playfair Display", serif;
+  --font-display-xl: "Playfair Display", serif;
+  --font-title-lg: "Playfair Display", serif;
+  --font-body-lg: "Plus Jakarta Sans", sans-serif;
+  --font-body-md: "Plus Jakarta Sans", sans-serif;
+  --font-body-sm: "Plus Jakarta Sans", sans-serif;
+  --font-label-lg: "Plus Jakarta Sans", sans-serif;
+  --font-label-md: "Plus Jakarta Sans", sans-serif;
+  --font-label-sm: "Plus Jakarta Sans", sans-serif;
+
+  --spacing-margin: 4rem;
+  --spacing-space-2xl: 6rem;
+  --spacing-space-xl: 3.5rem;
+  --spacing-space-lg: 2rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-xs: 0.25rem;
+  --spacing-gutter: 2rem;
+}
+
+@layer base {
+  :root {
+    /* Header Offset for ScrollFrameBackground */
+    --header-offset: 80px;
+
+    /* Haute Curated Sanctuary Base & Surfaces */
+    --bg-surface: #FFF7F9;
+    --bg-warm-ivory: #FBF7F1;
+    --surface-white: #FFFFFF;
+    --surface-dim: #E7D5E0;
+    --surface-container-lowest: #FFFFFF;
+    --surface-container-low: #FFEFF8;
+    --surface-container: #FCE9F4;
+    --surface-container-high: #F6E3EF;
+    --surface-container-highest: #F0DDE9;
+    
+    /* Typography & Neutral Plum Tones */
+    --text-plum: #21171F;
+    --on-surface: #231820;
+    --on-surface-variant: #514346;
+    --text-taupe: #837376;
+    --inverse-surface: #382D36;
+    --inverse-on-surface: #FFEBF7;
+
+    /* Primary Atelier Cherry */
+    --accent-cherry: #542333;
+    --accent-cherry-deep: #3A0E1E;
+    --primary-container: #542333;
+    --on-primary: #FFFFFF;
+    --on-primary-container: #CC899B;
+
+    /* Secondary Rose Gold */
+    --accent-rosegold: #B77A68;
+    --accent-rosegold-dark: #865040;
+    --secondary-container: #FFB9A4;
+    --on-secondary-container: #7A4737;
+
+    /* Golden & Champagne Luxury Accents */
+    --gold-primary: #D4AF37;
+    --gold-antique: #C5A059;
+    --gold-warm: #B89748;
+    --gold-champagne: #E8D2B7;
+    --gold-fixed: #F6DFC4;
+    --gold-fixed-dim: #D9C3A9;
+    --tertiary: #271C0B;
+    --tertiary-container: #3E311E;
+    
+    /* Dividers & Borders */
+    --border-champagne: #E8D2B7;
+    --border-gold-subtle: rgba(212, 175, 55, 0.35);
+    --border-subtle: #D5C2C5;
+    --outline: #837376;
+    --outline-variant: #D5C2C5;
+    --danger-cherry: #BA1A1A;
+  }
+
+  body {
+    background-color: #FAF7F2;
+    background-image: url('/images/atelier-gold-bg.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--on-surface);
+    font-family: var(--font-inter), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+}
+
+/* Luxury Editorial Typography utilities */
+.font-editorial {
+  font-family: var(--font-cormorant), "Playfair Display", "Didot", "Bodoni MT", Georgia, serif;
+  letter-spacing: -0.015em;
+}
+
+.font-sans-clean {
+  font-family: var(--font-inter), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Subtle luxury card styling with tactile Champagne & Rose Gold hairlines */
+.luxury-card {
+  background-color: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(232, 210, 183, 0.55);
+  box-shadow: 0 4px 20px -2px rgba(84, 35, 51, 0.03), 0 0 1px rgba(183, 122, 104, 0.25);
+  border-radius: 8px;
+}
+
+.luxury-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card-hover:hover {
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 12px 32px -4px rgba(84, 35, 51, 0.07), 0 0 0 1px rgba(212, 175, 55, 0.3);
+}
+
+/* Rich Gold Accents */
+.gold-shimmer-border {
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, rgba(246, 223, 196, 0.45) 0%, rgba(232, 210, 183, 0.25) 100%);
+}
+
+.gold-badge {
+  background: linear-gradient(135deg, rgba(246, 223, 196, 0.5) 0%, rgba(232, 210, 183, 0.25) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #3A0E1E;
+}
+
+.gold-accent-text {
+  color: #B89748;
+}
+
+/* Translucent Hero & Content surfaces for ScrollFrameBackground */
+.hero-glass-cherry {
+  background: rgba(58, 16, 32, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+.surface-glass-ivory {
+  background: rgba(255, 250, 248, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(232, 210, 183, 0.65);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF7F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #E8D2B7;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A059;
+}
