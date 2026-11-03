@@ -169,14 +169,15 @@ export const ListedProductsView: React.FC = () => {
         </div>
       </section>
 
-      {/* Section 2: Architectural Subcategory Navigation Tabs (Exact from zip) */}
+      {/* Section 2: Architectural Subcategory Navigation Tabs & Standout CTA */}
       <section className="w-full">
-        <div className="bg-white/90 backdrop-blur-md p-1.5 rounded-2xl border border-[#E8D2B7]/60 shadow-xs flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Navigation Tabs Pill Container */}
+          <div className="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl border border-[#E8D2B7]/70 shadow-xs flex flex-wrap items-center gap-1.5">
             {/* Tab 1: Listed Products (Active) */}
             <button 
               onClick={() => setActiveStudioTab("listed")}
-              className="px-5 py-2.5 bg-[#3A0E1E] text-white rounded-xl text-xs uppercase tracking-wider font-semibold shadow-xs flex items-center gap-2 border border-[#D4AF37]/40"
+              className="px-5 py-2.5 bg-[#3A0E1E] text-white rounded-xl text-xs uppercase tracking-wider font-semibold shadow-xs flex items-center gap-2 border border-[#D4AF37]/40 cursor-pointer"
             >
               <span>Listed Products</span>
               <span className="bg-[#542333] text-[#F6DFC4] text-[11px] font-bold px-2 py-0.5 rounded-full">
@@ -187,7 +188,7 @@ export const ListedProductsView: React.FC = () => {
             {/* Tab 2: Sold Products */}
             <button 
               onClick={() => setActiveStudioTab("sold")}
-              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2"
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Sold Products</span>
               <span className="text-[#837376] text-[11px] px-1.5 py-0.5">18</span>
@@ -196,7 +197,7 @@ export const ListedProductsView: React.FC = () => {
             {/* Tab 3: Drafts */}
             <button 
               onClick={() => setActiveStudioTab("drafts")}
-              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2"
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Drafts</span>
               <span className="text-[#837376] text-[11px] px-1.5 py-0.5">({drafts.length})</span>
@@ -205,7 +206,7 @@ export const ListedProductsView: React.FC = () => {
             {/* Tab 4: Boosted for Promotion */}
             <button 
               onClick={() => setActiveStudioTab("boosted")}
-              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2"
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
             >
               <Flame className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>Boosted for Promotion</span>
@@ -215,15 +216,17 @@ export const ListedProductsView: React.FC = () => {
             </button>
           </div>
 
-          {/* Tab 5: List New Product CTA */}
+          {/* Standalone Distinct "List New Product" CTA Button: Bigger, Separated, Standout with Deep Cabernet & Gold Shadow */}
           <button
             onClick={startNewListing}
-            className="px-6 py-2.5 bg-[#3A0E1E] hover:bg-[#271C0B] text-white rounded-xl text-xs uppercase tracking-wider font-semibold transition-all shadow-xs flex items-center gap-2 border border-[#D4AF37]/50"
+            className="group px-7 py-3 sm:px-8 sm:py-3.5 bg-[#3A0E1E] hover:bg-[#250813] text-white rounded-2xl text-xs sm:text-[13px] uppercase tracking-widest font-bold transition-all duration-300 shadow-lg shadow-[#3A0E1E]/30 hover:shadow-2xl hover:shadow-[#3A0E1E]/50 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 border border-[#D4AF37]/70 ring-2 ring-[#D4AF37]/25 cursor-pointer self-start sm:self-auto"
           >
-            <span className="w-4 h-4 rounded-full bg-[#FFB9A4] text-[#3A0E1E] flex items-center justify-center font-bold text-xs leading-none">
+            <span className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-tr from-[#FFB9A4] to-[#F6DFC4] text-[#3A0E1E] flex items-center justify-center font-black text-sm sm:text-base leading-none shadow-xs group-hover:scale-110 group-hover:rotate-90 transition-all duration-300">
               +
             </span>
-            <span className="text-[#F6DFC4]">List New Product</span>
+            <span className="text-[#F6DFC4] font-semibold tracking-widest text-xs sm:text-[13px]">
+              List New Product
+            </span>
           </button>
         </div>
       </section>

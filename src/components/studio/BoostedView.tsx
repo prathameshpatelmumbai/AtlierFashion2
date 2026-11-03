@@ -58,61 +58,67 @@ export const BoostedView: React.FC = () => {
     <div className="flex flex-col w-full space-y-8 animate-fadeIn">
       
       {/* SECONDARY ATELIER SUB-NAVIGATION BAR */}
-      <div className="w-full bg-[#ffeff8]/80 backdrop-blur-md px-4 sm:px-8 py-0 rounded-2xl border border-[#d5c2c5]/40 shadow-xs">
-        <div className="w-full max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-y-2">
-          <nav className="flex items-stretch overflow-x-auto gap-6 sm:gap-8">
-            <button
-              onClick={() => {
-                startNewListing();
-                setActiveStudioTab("list-new");
-              }}
-              className="group inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-wider text-[#837376] hover:text-[#3a0e1e] transition-colors whitespace-nowrap"
-            >
-              <Plus className="w-4 h-4 text-[#865040]" />
-              <span>List New Product</span>
-            </button>
-
-            <button
+      <section className="w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Navigation Tabs Pill Container */}
+          <div className="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl border border-[#E8D2B7]/70 shadow-xs flex flex-wrap items-center gap-1.5">
+            {/* Tab 1: Listed Products */}
+            <button 
               onClick={() => setActiveStudioTab("listed")}
-              className="group inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-wider text-[#837376] hover:text-[#3a0e1e] transition-colors whitespace-nowrap"
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Listed Products</span>
-              <span className="px-2 py-0.5 rounded-full bg-[#f6e3ef] text-[#837376] text-[11px] font-semibold">24</span>
+              <span className="text-[#837376] text-[11px] px-1.5 py-0.5">{listedProducts.length}</span>
             </button>
 
-            <button
+            {/* Tab 2: Sold Products */}
+            <button 
               onClick={() => setActiveStudioTab("sold")}
-              className="group inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-wider text-[#837376] hover:text-[#3a0e1e] transition-colors whitespace-nowrap"
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Sold Products</span>
-              <span className="px-2 py-0.5 rounded-full bg-[#f6e3ef] text-[#837376] text-[11px] font-semibold">18</span>
+              <span className="text-[#837376] text-[11px] px-1.5 py-0.5">18</span>
             </button>
 
-            <button
+            {/* Tab 3: Drafts */}
+            <button 
               onClick={() => setActiveStudioTab("drafts")}
-              className="group inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-wider text-[#837376] hover:text-[#3a0e1e] transition-colors whitespace-nowrap"
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Drafts</span>
-              <span className="px-2 py-0.5 rounded-full bg-[#f6e3ef] text-[#837376] text-[11px] font-semibold">{drafts.length}</span>
+              <span className="text-[#837376] text-[11px] px-1.5 py-0.5">({drafts.length})</span>
             </button>
 
-            {/* ACTIVE TAB: BOOSTED FOR PROMOTION (4) */}
-            <div className="relative inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-wider text-[#3a0e1e] whitespace-nowrap">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#865040]"></span>
+            {/* Tab 4: Boosted for Promotion (Active) */}
+            <button 
+              onClick={() => setActiveStudioTab("boosted")}
+              className="px-5 py-2.5 bg-[#3A0E1E] text-white rounded-xl text-xs uppercase tracking-wider font-semibold shadow-xs flex items-center gap-2 border border-[#D4AF37]/40 cursor-pointer"
+            >
+              <Flame className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>Boosted for Promotion</span>
-              <span className="px-2.5 py-0.5 rounded-full bg-[#542333] text-white text-[11px] font-semibold">
+              <span className="bg-[#542333] text-[#F6DFC4] text-[11px] font-bold px-2 py-0.5 rounded-full">
                 {boostCampaigns.length}
               </span>
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#3a0e1e]"></div>
-            </div>
-          </nav>
-
-          <div className="hidden xl:flex items-center gap-2 text-[#837376] text-xs uppercase tracking-wider py-4 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-            <span>Algorithmic Spotlights Active</span>
+            </button>
           </div>
+
+          {/* Standalone Distinct "List New Product" CTA Button */}
+          <button
+            onClick={() => {
+              startNewListing();
+              setActiveStudioTab("list-new");
+            }}
+            className="group px-7 py-3 sm:px-8 sm:py-3.5 bg-[#3A0E1E] hover:bg-[#250813] text-white rounded-2xl text-xs sm:text-[13px] uppercase tracking-widest font-bold transition-all duration-300 shadow-lg shadow-[#3A0E1E]/30 hover:shadow-2xl hover:shadow-[#3A0E1E]/50 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 border border-[#D4AF37]/70 ring-2 ring-[#D4AF37]/25 cursor-pointer self-start sm:self-auto"
+          >
+            <span className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-tr from-[#FFB9A4] to-[#F6DFC4] text-[#3A0E1E] flex items-center justify-center font-black text-sm sm:text-base leading-none shadow-xs group-hover:scale-110 group-hover:rotate-90 transition-all duration-300">
+              +
+            </span>
+            <span className="text-[#F6DFC4] font-semibold tracking-widest text-xs sm:text-[13px]">
+              List New Product
+            </span>
+          </button>
         </div>
-      </div>
+      </section>
 
       {/* EDITORIAL HEADER BLOCK */}
       <div className="w-full pt-4 pb-2">
