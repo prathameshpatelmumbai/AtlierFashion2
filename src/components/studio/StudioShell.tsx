@@ -21,6 +21,9 @@ import { ProfileView } from "@/components/profile/ProfileView";
 // Customer Components
 import { CustomerHeader } from "@/components/customer/CustomerHeader";
 import { CustomerDiscover } from "@/components/customer/CustomerDiscover";
+import { CustomerCatalog } from "@/components/customer/CustomerCatalog";
+import { CustomerUvibe } from "@/components/customer/CustomerUvibe";
+import { CustomerCartDrawer } from "@/components/customer/CustomerCartDrawer";
 import { CustomerProductDetail } from "@/components/customer/CustomerProductDetail";
 import { CustomerBuyNowModal } from "@/components/customer/CustomerBuyNowModal";
 import { CustomerCustomRequestModal } from "@/components/customer/CustomerCustomRequestModal";
@@ -120,6 +123,20 @@ export function StudioShell() {
             onOpenCustomRequest={handleOpenCustomRequest}
           />
         );
+      case "catalog":
+        return (
+          <CustomerCatalog
+            onOpenBuyNow={handleOpenBuyNow}
+            onOpenCustomRequest={handleOpenCustomRequest}
+          />
+        );
+      case "uvibe":
+        return (
+          <CustomerUvibe
+            onOpenBuyNow={handleOpenBuyNow}
+            onOpenCustomRequest={handleOpenCustomRequest}
+          />
+        );
       case "designers":
         return (
           <CustomerDesigners
@@ -157,7 +174,13 @@ export function StudioShell() {
       )}
 
       {/* Main Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+      <main className={`flex-1 w-full mx-auto transition-all ${
+        portalMode === "customer" && customerSection === "discover" && selectedProductId === null
+          ? "w-full p-0 m-0 max-w-none"
+          : portalMode === "customer" && (customerSection === "catalog" || customerSection === "uvibe" || selectedProductId !== null)
+            ? "max-w-[1520px] px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+            : "max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10"
+      }`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={
@@ -208,6 +231,9 @@ export function StudioShell() {
 
           {/* Customer Notifications Drawer / Modal */}
           <CustomerNotificationsModal />
+
+          {/* Atelier Private Bag Cart Drawer */}
+          <CustomerCartDrawer />
         </>
       )}
 
@@ -229,23 +255,25 @@ export function StudioShell() {
       {/* RAG-Powered AI Chatbot (Available for both Customer & Designer portals) */}
       <AiChatbot />
 
-      {/* ALTIER Maison Privée Curated Footer */}
-      <footer className="w-full bg-[#3a0e1e] border-t border-[#d5c2c5]/20 py-8 text-white/90 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <AltierLogo height={32} variant="horizontal" theme="dark" />
-            <span className="hidden sm:inline text-white/20">•</span>
-            <span className="text-xs text-white/60 tracking-wider">
-              {portalMode === "designer"
-                ? "Haute Couture Designer Collective & Atelier"
-                : "Curated Haute Couture & Bespoke Commissioning Boutique"}
-            </span>
+      {/* ALTIER Maison Privée Curated Footer (Hidden on customer discover where dedicated gold foil footer renders) */}
+      {!(portalMode === "customer" && customerSection === "discover" && selectedProductId === null) && (
+        <footer className="w-full bg-[#3a0e1e] border-t border-[#d5c2c5]/20 py-8 text-white/90 mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+              <AltierLogo height={32} variant="horizontal" theme="dark" />
+              <span className="hidden sm:inline text-white/20">•</span>
+              <span className="text-xs text-white/60 tracking-wider">
+                {portalMode === "designer"
+                  ? "Haute Couture Designer Collective & Atelier"
+                  : "Curated Haute Couture & Bespoke Commissioning Boutique"}
+              </span>
+            </div>
+            <div className="text-[11px] tracking-widest uppercase text-white/50">
+              © 2025 ALTIER MAISON PRIVÉE. ALL RIGHTS RESERVED.
+            </div>
           </div>
-          <div className="text-[11px] tracking-widest uppercase text-white/50">
-            © 2025 ALTIER MAISON PRIVÉE. ALL RIGHTS RESERVED.
-          </div>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 }

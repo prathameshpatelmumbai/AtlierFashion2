@@ -19,6 +19,7 @@ export interface ListedProduct {
   subcategory: string;
   tags: string[];
   price: number;
+  originalPrice?: number;
   currency: string;
   availableStock: number;
   initialStock: number;

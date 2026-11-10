@@ -44,13 +44,31 @@ interface StudioContextType {
   activeStudioTab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted";
   setActiveStudioTab: (tab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted") => void;
 
-  // Customer Navigation: Discover | Designers | Orders | Custom Orders
-  customerSection: "discover" | "designers" | "orders" | "custom-orders" | "profile";
-  setCustomerSection: (sec: "discover" | "designers" | "orders" | "custom-orders" | "profile") => void;
+  // Customer Navigation: Discover | Catalog | Uvibe | Designers | Orders | Custom Orders
+  customerSection: "discover" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile";
+  setCustomerSection: (sec: "discover" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile") => void;
+  activeGender: "men" | "women" | "kids";
+  setActiveGender: (gender: "men" | "women" | "kids") => void;
+  activeCategoryFilter: string | null;
+  setActiveCategoryFilter: (cat: string | null) => void;
+  catalogLayout: "grid" | "dense";
+  setCatalogLayout: (layout: "grid" | "dense") => void;
   selectedProductId: string | null;
   setSelectedProductId: (id: string | null) => void;
   selectedDesignerId: string | null;
   setSelectedDesignerId: (id: string | null) => void;
+
+  // Cart Management
+  cartItems: Array<{ id: string; title: string; price: number; image: string; size: string; color: string; quantity: number }>;
+  cartCount: number;
+  cartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
+  addToCart: (item: { id: string; title: string; price: number; image: string; size?: string; color?: string; quantity?: number }) => void;
+  removeFromCart: (id: string) => void;
+
+  // Uvibe AI Engine State
+  uvibePrompt: string;
+  setUvibePrompt: (p: string) => void;
 
   // Product Catalogue (Shared)
   listedProducts: ListedProduct[];
@@ -170,14 +188,16 @@ interface StudioContextType {
 const StudioContext = createContext<StudioContextType | undefined>(undefined);
 
 export function StudioProvider({ children }: { children: React.ReactNode }) {
-  // Top Level Mode: "designer" (default) vs "customer"
-  const [portalMode, setPortalModeState] = useState<"designer" | "customer">("designer");
+  // Top Level Mode: "customer" (default) vs "designer"
+  const [portalMode, setPortalModeState] = useState<"designer" | "customer">("customer");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("atelier_portal_mode") as "designer" | "customer" | null;
       if (saved && (saved === "designer" || saved === "customer")) {
         setPortalModeState(saved);
+      } else {
+        setPortalModeState("customer");
       }
     }
   }, []);
@@ -194,11 +214,76 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   const [activeStudioTab, setActiveStudioTab] = useState<"overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted">("listed");
 
   // Customer Navigation State
-  const [customerSection, setCustomerSection] = useState<"discover" | "designers" | "orders" | "custom-orders" | "profile">("discover");
+  const [customerSection, setCustomerSection] = useState<"discover" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile">("discover");
+  const [activeGender, setActiveGender] = useState<"men" | "women" | "kids">("men");
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null);
+  const [catalogLayout, setCatalogLayout] = useState<"grid" | "dense">("grid");
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedDesignerId, setSelectedDesignerId] = useState<string | null>(null);
   const [customerSearchQuery, setCustomerSearchQuery] = useState("");
   const [customerNotificationsOpen, setCustomerNotificationsOpen] = useState(false);
+
+  // Cart State (Initialized with 3 items matching badges across reference screenshots)
+  const [cartItems, setCartItems] = useState<Array<{ id: string; title: string; price: number; image: string; size: string; color: string; quantity: number }>>([
+    {
+      id: "cart-1",
+      title: "Double-Breasted Cashmere Peacoat",
+      price: 62000,
+      image: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000&auto=format&fit=crop",
+      size: "48 EU",
+      color: "Midnight Charcoal",
+      quantity: 1
+    },
+    {
+      id: "cart-2",
+      title: "The Organza Saree Reimagined",
+      price: 48000,
+      image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop",
+      size: "Free Size",
+      color: "Mulberry Gold",
+      quantity: 1
+    },
+    {
+      id: "cart-3",
+      title: "Gilded Velvet Gala Column Gown",
+      price: 68000,
+      image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=1000&auto=format&fit=crop",
+      size: "S (IT 40)",
+      color: "Deep Burgundy",
+      quantity: 1
+    }
+  ]);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const addToCart = (item: { id: string; title: string; price: number; image: string; size?: string; color?: string; quantity?: number }) => {
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
+      if (existing) {
+        return prev.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity || 1) } : i));
+      }
+      return [
+        ...prev,
+        {
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+          size: item.size || "Standard",
+          color: item.color || "Atelier Classic",
+          quantity: item.quantity || 1
+        }
+      ];
+    });
+    showToast(`Added "${item.title}" to your Atelier Private Bag`);
+  };
+
+  const removeFromCart = (id: string) => {
+    setCartItems((prev) => prev.filter((i) => i.id !== id));
+    showToast("Item removed from your bag");
+  };
+
+  // Uvibe Prompt State
+  const [uvibePrompt, setUvibePrompt] = useState("An elegant burgundy velvet gown with gold embroidery");
 
   // Core Data
   const [listedProducts, setListedProducts] = useState<ListedProduct[]>(INITIAL_LISTED_PRODUCTS);
@@ -1150,10 +1235,24 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
         setActiveStudioTab,
         customerSection,
         setCustomerSection,
+        activeGender,
+        setActiveGender,
+        activeCategoryFilter,
+        setActiveCategoryFilter,
+        catalogLayout,
+        setCatalogLayout,
         selectedProductId,
         setSelectedProductId,
         selectedDesignerId,
         setSelectedDesignerId,
+        cartItems,
+        cartCount: cartItems.reduce((acc, curr) => acc + curr.quantity, 0),
+        cartOpen,
+        setCartOpen,
+        addToCart,
+        removeFromCart,
+        uvibePrompt,
+        setUvibePrompt,
         customerSearchQuery,
         setCustomerSearchQuery,
         customerNotificationsOpen,
