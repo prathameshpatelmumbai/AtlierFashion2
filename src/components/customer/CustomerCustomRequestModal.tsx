@@ -178,7 +178,7 @@ export const CustomerCustomRequestModal: React.FC<CustomerCustomRequestModalProp
               {isAlteration && product && (
                 <div className="p-4 bg-white rounded-2xl border border-[#E8D2B7] flex items-center gap-4">
                   <img
-                    src={product.images[0]}
+                    src={product.images?.[0] || "/images/mockup/arrival_1.jpg"}
                     alt=""
                     className="w-16 h-20 rounded-xl object-cover shrink-0"
                   />
