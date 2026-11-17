@@ -11,11 +11,12 @@ import {
   Save, 
   Sparkles,
   Phone,
-  Mail
+  Mail,
+  LogOut
 } from "lucide-react";
 
 export const CustomerProfile: React.FC = () => {
-  const { customerProfile, updateCustomerProfile, showToast } = useStudio();
+  const { customerProfile, updateCustomerProfile, showToast, logoutCustomer } = useStudio();
 
   const [name, setName] = useState(customerProfile.customerName);
   const [email, setEmail] = useState(customerProfile.email);
@@ -60,19 +61,19 @@ export const CustomerProfile: React.FC = () => {
         <div className="text-center sm:text-left space-y-1 flex-1">
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[#C5A059]">
             <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span>Atelier Private Client • VIP Patron</span>
+            <span>Atelier Private Client • VIP Customer</span>
           </div>
           <h1 className="font-serif text-3xl text-[#231820] font-light">
             {name}
           </h1>
           <p className="text-xs text-[#8F8178]">
-            Member of Atelier Private Couture Circle • Priority Fitting Escrow Access
+            Member of Atelier Private Couture Circle • Priority Fitting Atlier Access
           </p>
         </div>
 
         <div className="text-right">
           <span className="px-3 py-1 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-emerald-950 text-emerald-200 border border-emerald-500/20">
-            Escrow Verified
+            Atlier Verified
           </span>
         </div>
       </div>
@@ -221,12 +222,21 @@ export const CustomerProfile: React.FC = () => {
           </div>
         </div>
 
-        {/* Save Button */}
-        <div className="flex justify-end">
+        {/* Action Controls: Sign Out & Save */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+          <button
+            type="button"
+            onClick={logoutCustomer}
+            className="w-full sm:w-auto px-6 py-3 rounded-full border border-rose-800/40 hover:border-rose-600 bg-rose-950/20 hover:bg-rose-950/40 text-rose-300 text-xs font-semibold tracking-wider uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+          >
+            <LogOut className="w-4 h-4 text-rose-400" />
+            <span>Sign Out of Salon</span>
+          </button>
+
           <button
             type="submit"
             disabled={isSaving}
-            className="px-8 py-3.5 rounded-full bg-[#3A0E1E] hover:bg-[#542333] text-white text-xs font-semibold tracking-wider uppercase transition-all shadow-md flex items-center gap-2 border border-[#D4AF37]/40"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#3A0E1E] hover:bg-[#542333] text-white text-xs font-semibold tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 border border-[#D4AF37]/40 cursor-pointer"
           >
             <Save className="w-4 h-4 text-[#D4AF37]" />
             <span>{isSaving ? "Saving Updates..." : "Save Profile Details"}</span>

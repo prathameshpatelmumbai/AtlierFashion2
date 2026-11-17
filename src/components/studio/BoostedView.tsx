@@ -139,7 +139,7 @@ export const BoostedView: React.FC = () => {
                 Manage paid placement spotlights across curated marketplace showcases. Track campaign run dates, payment settlements, and measured visibility performance.
               </p>
               <p className="text-[11px] text-[#837376]/80 italic mt-0.5">
-                Note: Paid promotion elevates algorithmic placement and catalogue spotlighting; views, ranking, and sales volume are organic patron responses and are not guaranteed.
+                Note: Paid promotion elevates algorithmic placement and catalogue spotlighting; views, ranking, and sales volume are organic customer responses and are not guaranteed.
               </p>
             </div>
 
@@ -286,7 +286,7 @@ export const BoostedView: React.FC = () => {
                 <p className="text-[11px] text-[#837376] italic mt-0.5">
                   {camp.status === "SCHEDULED"
                     ? "Marketplace performance metrics will begin tracking once the promotion goes live on scheduled launch date."
-                    : "Marketplace performance metrics reflect recorded patron interactions; sales conversion depends on individual client engagement."}
+                    : "Marketplace performance metrics reflect recorded customer interactions; sales conversion depends on individual client engagement."}
                 </p>
               </div>
 
@@ -306,7 +306,7 @@ export const BoostedView: React.FC = () => {
                     </span>
                   </div>
                   <div className="bg-[#ffeff8] px-3.5 py-1.5 rounded border border-[#d5c2c5]/30 min-w-[85px]">
-                    <span className="block text-[10px] uppercase tracking-wider text-[#837376] font-semibold">Patron Saves</span>
+                    <span className="block text-[10px] uppercase tracking-wider text-[#837376] font-semibold">Customer Saves</span>
                     <span className="font-semibold text-[#3a0e1e] text-sm">
                       {camp.saves > 0 ? camp.saves.toLocaleString("en-IN") : "142"}
                     </span>
@@ -445,7 +445,7 @@ export const BoostedView: React.FC = () => {
                         <span className="font-editorial font-bold text-[#3a0e1e]">Curator's Showcase</span>
                         <span className="font-bold text-[#3a0e1e]">₹7,500</span>
                       </div>
-                      <p className="text-xs text-[#837376] mt-1">7 Days runway hero spotlight with patron newsletter.</p>
+                      <p className="text-xs text-[#837376] mt-1">7 Days runway hero spotlight with customer newsletter.</p>
                     </button>
 
                     <button

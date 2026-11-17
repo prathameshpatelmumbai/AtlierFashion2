@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useStudio } from "@/context/StudioContext";
-import { X, Trash2, ShoppingBag, ArrowRight, ShieldCheck, Truck, Sparkles } from "lucide-react";
+import { X, Trash2, ShoppingCart, ArrowRight, ShieldCheck, Truck, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 
@@ -49,10 +49,10 @@ export const CustomerCartDrawer: React.FC = () => {
               <div className="p-6 bg-gradient-to-r from-[#2B0B17] to-[#3A0E1E] text-white flex items-center justify-between border-b border-[#D4AF37]/30">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/50 flex items-center justify-center text-[#F6DFC4]">
-                    <ShoppingBag className="w-4 h-4" />
+                    <ShoppingCart className="w-4 h-4" />
                   </div>
                   <div>
-                    <h2 className="font-serif text-lg tracking-wide">Atelier Private Bag</h2>
+                    <h2 className="font-serif text-lg tracking-wide">Atelier Private Cart</h2>
                     <p className="text-[11px] text-[#E8D2B7]/80">
                       {cartItems.reduce((acc, i) => acc + i.quantity, 0)} Archival Pieces Reserved
                     </p>
@@ -70,8 +70,8 @@ export const CustomerCartDrawer: React.FC = () => {
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {cartItems.length === 0 ? (
                   <div className="text-center py-20">
-                    <ShoppingBag className="w-12 h-12 text-[#E8D2B7] mx-auto mb-3" />
-                    <p className="font-serif text-lg text-[#231820]">Your Private Bag is Empty</p>
+                    <ShoppingCart className="w-12 h-12 text-[#E8D2B7] mx-auto mb-3" />
+                    <p className="font-serif text-lg text-[#231820]">Your Cart is Empty</p>
                     <p className="text-xs text-[#8F8178] mt-1">Discover archival couture creations to commission or acquire.</p>
                   </div>
                 ) : (

@@ -22,6 +22,10 @@
 
 # temporary / animations
 stickmotion animation/
+ANIMATION ARTIST/
+yolov8x-seg.pt
+scratch/
+.agents/
 
 # misc
 .DS_Store

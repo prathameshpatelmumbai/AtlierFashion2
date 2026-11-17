@@ -31,9 +31,13 @@ import { CustomerCustomOrders } from "@/components/customer/CustomerCustomOrders
 import { CustomerOrders } from "@/components/customer/CustomerOrders";
 import { CustomerDesigners } from "@/components/customer/CustomerDesigners";
 import { CustomerProfile } from "@/components/customer/CustomerProfile";
+import { CustomerLogin } from "@/components/customer/CustomerLogin";
 import { AltierLogo } from "@/components/common/AltierLogo";
 import { CustomerNotificationsModal } from "@/components/customer/CustomerNotificationsModal";
 import { AiChatbot } from "@/components/chat/AiChatbot";
+import { CookieConsentBanner } from "@/components/security/CookieConsentBanner";
+import { VaultPasskeyModal } from "@/components/security/VaultPasskeyModal";
+import { SecurityFirewallBadge } from "@/components/security/SecurityFirewallBadge";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
@@ -41,6 +45,12 @@ import { CheckCircle2 } from "lucide-react";
 export function StudioShell() {
   const { 
     portalMode,
+    setPortalMode,
+    isCustomerAuthenticated,
+    isVaultModalOpen,
+    setIsVaultModalOpen,
+    isCookieModalOpen,
+    setIsCookieModalOpen,
     activeSection, 
     activeStudioTab, 
     customerSection,
@@ -164,6 +174,47 @@ export function StudioShell() {
     }
   };
 
+  // Customer Login Gate: If in Customer Mode and NOT authenticated, show luxurious Customer Login
+  if (portalMode === "customer" && !isCustomerAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#240912]">
+        <CustomerLogin />
+
+        {/* Global Security Suite (Active on Login Gate) */}
+        <CookieConsentBanner
+          forceOpen={isCookieModalOpen}
+          onClose={() => setIsCookieModalOpen(false)}
+        />
+        <VaultPasskeyModal
+          isOpen={isVaultModalOpen}
+          onClose={() => setIsVaultModalOpen(false)}
+          onSuccess={() => {
+            setIsVaultModalOpen(false);
+            setPortalMode("designer");
+          }}
+        />
+        <SecurityFirewallBadge
+          onOpenCookieSettings={() => setIsCookieModalOpen(true)}
+        />
+
+        {/* Toast Container */}
+        <AnimatePresence>
+          {toastMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-[#1A050E] border border-[#C59347]/60 text-[#FAF4ED] shadow-[0_0_20px_rgba(197,147,71,0.3)] flex items-center gap-2.5 text-xs font-medium"
+            >
+              <CheckCircle2 className="w-4 h-4 text-[#C59347]" />
+              <span>{toastMessage}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-[#231820]">
       {/* Dynamic Header according to Portal Mode */}
@@ -254,6 +305,23 @@ export function StudioShell() {
 
       {/* RAG-Powered AI Chatbot (Available for both Customer & Designer portals) */}
       <AiChatbot />
+
+      {/* Global Security Suite (Active across all views) */}
+      <CookieConsentBanner
+        forceOpen={isCookieModalOpen}
+        onClose={() => setIsCookieModalOpen(false)}
+      />
+      <VaultPasskeyModal
+        isOpen={isVaultModalOpen}
+        onClose={() => setIsVaultModalOpen(false)}
+        onSuccess={() => {
+          setIsVaultModalOpen(false);
+          setPortalMode("designer");
+        }}
+      />
+      <SecurityFirewallBadge
+        onOpenCookieSettings={() => setIsCookieModalOpen(true)}
+      />
 
       {/* ALTIER Maison Privée Curated Footer (Hidden on customer discover where dedicated gold foil footer renders) */}
       {!(portalMode === "customer" && customerSection === "discover" && selectedProductId === null) && (

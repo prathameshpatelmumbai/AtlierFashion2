@@ -130,7 +130,7 @@ export const SalesInsightsView: React.FC = () => {
           </div>
           <div className="mt-1 flex items-center text-[11px] font-medium text-emerald-800">
             <span>↑ 14.3%</span>
-            <span className="text-[#837376] ml-1.5 font-normal">patron curiosity</span>
+            <span className="text-[#837376] ml-1.5 font-normal">customer curiosity</span>
           </div>
         </div>
       </div>

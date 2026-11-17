@@ -38,15 +38,28 @@ interface StudioContextType {
   portalMode: "designer" | "customer";
   setPortalMode: (mode: "designer" | "customer") => void;
 
+  // Vault & Security Gate
+  isVaultModalOpen: boolean;
+  setIsVaultModalOpen: (open: boolean) => void;
+  isCookieModalOpen: boolean;
+  setIsCookieModalOpen: (open: boolean) => void;
+  requestStudioAccess: () => void;
+  lockStudioVault: () => void;
+
+  // Customer Authentication (Starts website with luxurious login gate)
+  isCustomerAuthenticated: boolean;
+  loginCustomer: (data?: { email?: string; name?: string; tier?: string }) => void;
+  logoutCustomer: () => void;
+
   // Designer Navigation
   activeSection: "studio" | "custom-orders" | "orders-logistics" | "sales-insights" | "profile";
   setActiveSection: (sec: "studio" | "custom-orders" | "orders-logistics" | "sales-insights" | "profile") => void;
   activeStudioTab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted";
   setActiveStudioTab: (tab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted") => void;
 
-  // Customer Navigation: Discover | Catalog | Uvibe | Designers | Orders | Custom Orders
-  customerSection: "discover" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile";
-  setCustomerSection: (sec: "discover" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile") => void;
+  // Customer Navigation: Discover | Top Deals | Catalog | Uvibe | Designers | Orders | Custom Orders
+  customerSection: "discover" | "top-deals" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile";
+  setCustomerSection: (sec: "discover" | "top-deals" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile") => void;
   activeGender: "men" | "women" | "kids";
   setActiveGender: (gender: "men" | "women" | "kids") => void;
   activeCategoryFilter: string | null;
@@ -209,12 +222,36 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Vault & Security Modals State
+  const [isVaultModalOpen, setIsVaultModalOpen] = useState(false);
+  const [isCookieModalOpen, setIsCookieModalOpen] = useState(false);
+
+  const requestStudioAccess = () => {
+    if (typeof window !== "undefined") {
+      const token = sessionStorage.getItem("atelier_vault_auth_token");
+      if (token) {
+        setPortalMode("designer");
+        return;
+      }
+    }
+    setIsVaultModalOpen(true);
+  };
+
+  const lockStudioVault = () => {
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("atelier_vault_auth_token");
+      sessionStorage.removeItem("atelier_vault_timestamp");
+    }
+    setPortalMode("customer");
+    showToast("🔒 Couturier Studio Vault Locked. Returned to Customer Salon.");
+  };
+
   // Designer Navigation State
   const [activeSection, setActiveSection] = useState<"studio" | "custom-orders" | "orders-logistics" | "sales-insights" | "profile">("studio");
   const [activeStudioTab, setActiveStudioTab] = useState<"overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted">("listed");
 
   // Customer Navigation State
-  const [customerSection, setCustomerSection] = useState<"discover" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile">("discover");
+  const [customerSection, setCustomerSection] = useState<"discover" | "top-deals" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile">("discover");
   const [activeGender, setActiveGender] = useState<"men" | "women" | "kids">("men");
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null);
   const [catalogLayout, setCatalogLayout] = useState<"grid" | "dense">("grid");
@@ -222,6 +259,60 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   const [selectedDesignerId, setSelectedDesignerId] = useState<string | null>(null);
   const [customerSearchQuery, setCustomerSearchQuery] = useState("");
   const [customerNotificationsOpen, setCustomerNotificationsOpen] = useState(false);
+
+  // Customer Authentication State (Gate to start the website with luxurious login)
+  const [isCustomerAuthenticated, setIsCustomerAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedAuth = localStorage.getItem("atelier_customer_auth");
+      if (savedAuth === "true") {
+        setIsCustomerAuthenticated(true);
+        const savedEmail = localStorage.getItem("atelier_customer_email");
+        const savedName = localStorage.getItem("atelier_customer_name");
+        if (savedEmail || savedName) {
+          setCustomerProfile((prev) => ({
+            ...prev,
+            customerName: savedName || prev.customerName,
+            email: savedEmail || prev.email
+          }));
+        }
+      }
+    }
+  }, []);
+
+  const loginCustomer = (data?: { email?: string; name?: string; tier?: string }) => {
+    const finalEmail = data?.email || "mariana.voss@maisonprivee.com";
+    const finalName = data?.name || "Mariana Voss";
+
+    setIsCustomerAuthenticated(true);
+    setCustomerProfile((prev) => ({
+      ...prev,
+      customerName: finalName,
+      email: finalEmail
+    }));
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("atelier_customer_auth", "true");
+      localStorage.setItem("atelier_customer_email", finalEmail);
+      localStorage.setItem("atelier_customer_name", finalName);
+      if (data?.tier) localStorage.setItem("atelier_customer_tier", data.tier);
+    }
+
+    setCustomerSection("discover");
+    showToast(`✨ Welcome to Maison Privée, ${finalName} • Salon Access Granted`);
+  };
+
+  const logoutCustomer = () => {
+    setIsCustomerAuthenticated(false);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("atelier_customer_auth");
+      localStorage.removeItem("atelier_customer_email");
+      localStorage.removeItem("atelier_customer_name");
+      localStorage.removeItem("atelier_customer_tier");
+    }
+    showToast("You have safely departed Atelier Maison Privée Salon.");
+  };
 
   // Cart State (Initialized with 3 items matching badges across reference screenshots)
   const [cartItems, setCartItems] = useState<Array<{ id: string; title: string; price: number; image: string; size: string; color: string; quantity: number }>>([
@@ -800,7 +891,7 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
     const notif: NotificationItem = {
       id: `notif-${Date.now()}`,
       category: "Quotation response",
-      title: "Quotation Accepted by Patron",
+      title: "Quotation Accepted by Customer",
       shortDescription: `Customer accepted quote for order #${orderId}. Awaiting advance payment to begin.`,
       timestamp: "Just now",
       read: false,
@@ -1229,6 +1320,15 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
       value={{
         portalMode,
         setPortalMode,
+        isVaultModalOpen,
+        setIsVaultModalOpen,
+        isCookieModalOpen,
+        setIsCookieModalOpen,
+        requestStudioAccess,
+        lockStudioVault,
+        isCustomerAuthenticated,
+        loginCustomer,
+        logoutCustomer,
         activeSection,
         setActiveSection,
         activeStudioTab,

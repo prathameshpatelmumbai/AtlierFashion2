@@ -217,7 +217,7 @@ export const CustomerProductDetail: React.FC<CustomerProductDetailProps> = ({
                 ))}
               </div>
               <span className="font-semibold text-[#231820]">4.91</span>
-              <span>(42 Verified Salon Patrons)</span>
+              <span>(42 Verified Salon Customers)</span>
               <span>•</span>
               <span className="text-[#3A0E1E] font-medium underline cursor-pointer">READ FOLIO (12)</span>
             </div>

@@ -88,7 +88,7 @@ export const CustomOrdersView: React.FC = () => {
     setQuoteNotes(
       order.quotation?.customizationDetails ||
       (order.inquiryType === "YOUR_LISTED_PRODUCT"
-        ? `Bespoke artisanal alterations for ${order.baseProduct?.title}: ${order.requestedAlterations.requestedColour || ""} ${order.requestedAlterations.otherAlterations || ""}. Handcrafted to submitted patron measurements.`
+        ? `Bespoke artisanal alterations for ${order.baseProduct?.title}: ${order.requestedAlterations.requestedColour || ""} ${order.requestedAlterations.otherAlterations || ""}. Handcrafted to submitted customer measurements.`
         : `Bespoke artisanal tailoring: ${order.newGarmentReference?.requestedDesign || order.customerNotes}. Custom handloom fabrics and zardozi wire embroidery.`)
     );
     setIsQuotationModalOpen(true);
@@ -101,7 +101,7 @@ export const CustomOrdersView: React.FC = () => {
     const deadline = new Date(Date.now() + quoteDays * 24 * 3600 * 1000).toISOString().split("T")[0];
 
     const quoteData: QuotationData = {
-      customerSize: selectedOrder.requestedAlterations.requestedSize || "Bespoke Patron Fit",
+      customerSize: selectedOrder.requestedAlterations.requestedSize || "Bespoke Customer Fit",
       measurements: selectedOrder.requestedAlterations.measurements || {
         bust: "35 in",
         waist: "28 in",
@@ -300,7 +300,7 @@ export const CustomOrdersView: React.FC = () => {
                       20 Oct 2024
                     </span>
                     <span className="bg-[#fce9f4] px-2 py-0.5 text-[10px] text-[#3a0e1e] uppercase tracking-widest font-semibold">
-                      VIP Patron
+                      VIP Customer
                     </span>
                   </div>
 
@@ -559,7 +559,7 @@ export const CustomOrdersView: React.FC = () => {
                   </p>
 
                   <p className="text-xs text-[#837376] line-clamp-1 max-w-xl">
-                    Initial patron virtual consultation concluded. Curating swatches between Liquid Gold Lamé and Champagne Organza.
+                    Initial customer virtual consultation concluded. Curating swatches between Liquid Gold Lamé and Champagne Organza.
                   </p>
 
                   <div className="flex flex-wrap items-center gap-3 mt-1 text-xs">
@@ -705,7 +705,7 @@ export const CustomOrdersView: React.FC = () => {
           <div className="p-12 text-center bg-white rounded-2xl border border-[#d5c2c5]/40 shadow-xs space-y-4">
             <p className="font-editorial text-2xl text-[#3a0e1e]">24 Certified Commissions Fulfilled</p>
             <p className="text-xs text-[#837376] max-w-md mx-auto leading-relaxed">
-              Archived historical patron commissions with verified provenance seals and escrow releases.
+              Archived historical customer commissions with verified provenance seals and escrow releases.
             </p>
           </div>
         )}
@@ -724,7 +724,7 @@ export const CustomOrdersView: React.FC = () => {
                   BESPOKE ATELIER STANDARDS
                 </p>
                 <p className="text-xs text-[#837376] mt-0.5">
-                  Every custom commission adheres to Atelier Maison Privée's master craftsmanship charter. Escrow deposits are held securely until final patron fitting approval.
+                  Every custom commission adheres to Atelier Maison Privée's master craftsmanship charter. Escrow deposits are held securely until final customer fitting approval.
                 </p>
               </div>
             </div>
@@ -769,7 +769,7 @@ export const CustomOrdersView: React.FC = () => {
 
               <div className="space-y-4 text-xs">
                 <div>
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#837376]">Patron</label>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#837376]">Customer</label>
                   <p className="font-editorial text-lg text-[#3a0e1e] font-bold mt-0.5">{selectedOrder?.customerName}</p>
                 </div>
 
@@ -869,11 +869,11 @@ export const CustomOrdersView: React.FC = () => {
                       </h3>
                     </div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#865040] bg-white px-2 py-0.5 rounded border border-[#d5c2c5]/40">
-                      Patron Specifications
+                      Customer Specifications
                     </span>
                   </div>
 
-                  {/* Patron Identity Card */}
+                  {/* Customer Identity Card */}
                   <div className="p-4 rounded-xl bg-white border border-[#d5c2c5]/40 shadow-xs space-y-2">
                     <div className="flex items-start justify-between">
                       <div>
@@ -888,7 +888,7 @@ export const CustomOrdersView: React.FC = () => {
                         )}
                       </div>
                       <span className="bg-[#fce9f4] px-2 py-0.5 text-[10px] text-[#3a0e1e] uppercase tracking-widest font-semibold rounded">
-                        VIP Patron
+                        VIP Customer
                       </span>
                     </div>
                   </div>
@@ -924,7 +924,7 @@ export const CustomOrdersView: React.FC = () => {
                       <div className="flex justify-between py-1 border-b border-[#d5c2c5]/20">
                         <span className="text-[#837376] font-medium">Requested Fit / Size:</span>
                         <span className="font-semibold text-[#3a0e1e] text-right">
-                          {selectedOrder.requestedAlterations?.requestedSize || selectedOrder.newGarmentReference?.measurements || "Bespoke Patron Fit"}
+                          {selectedOrder.requestedAlterations?.requestedSize || selectedOrder.newGarmentReference?.measurements || "Bespoke Customer Fit"}
                         </span>
                       </div>
                       <div className="flex justify-between py-1 border-b border-[#d5c2c5]/20">
@@ -951,7 +951,7 @@ export const CustomOrdersView: React.FC = () => {
                   {/* Precision Measurements Dossier */}
                   <div className="space-y-2">
                     <p className="text-[11px] font-bold uppercase tracking-wider text-[#865040]">
-                      Patron Measurements Breakdown
+                      Customer Measurements Breakdown
                     </p>
                     <div className="grid grid-cols-5 gap-2 text-center">
                       <div className="bg-white p-2.5 rounded-lg border border-[#d5c2c5]/40">
@@ -991,7 +991,7 @@ export const CustomOrdersView: React.FC = () => {
                   {selectedOrder.customerNotes && (
                     <div className="p-3.5 bg-white rounded-xl border border-[#d5c2c5]/40 text-xs">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-[#865040] mb-1">
-                        Patron Direct Instructions
+                        Customer Direct Instructions
                       </p>
                       <p className="text-[#3a0e1e] italic leading-relaxed">
                         "{selectedOrder.customerNotes}"
@@ -1020,7 +1020,7 @@ export const CustomOrdersView: React.FC = () => {
                       </div>
                     ) : (
                       <p className="text-xs text-[#837376]">
-                        No formal quotation has been sent to this patron yet. Review the details above and transmit the official quote form on the right.
+                        No formal quotation has been sent to this customer yet. Review the details above and transmit the official quote form on the right.
                       </p>
                     )}
                   </div>
@@ -1043,7 +1043,7 @@ export const CustomOrdersView: React.FC = () => {
                   </div>
 
                   <p className="text-xs text-[#837376] leading-relaxed">
-                    Set the bespoke price valuation, artisan timeline, and itemized craftsmanship details. Once transmitted, the patron can accept and deposit 50% into secure Atelier Escrow.
+                    Set the bespoke price valuation, artisan timeline, and itemized craftsmanship details. Once transmitted, the customer can accept and deposit 50% into secure Atelier Escrow.
                   </p>
 
                   <form onSubmit={handleSendQuotation} className="space-y-4 text-xs">
@@ -1162,10 +1162,10 @@ export const CustomOrdersView: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Notes for Patron */}
+                    {/* Notes for Customer */}
                     <div>
                       <label className="text-[11px] font-bold uppercase tracking-wider text-[#837376]">
-                        Craftsmanship Notes & Patron Instructions
+                        Craftsmanship Notes & Customer Instructions
                       </label>
                       <textarea
                         rows={3}
@@ -1190,7 +1190,7 @@ export const CustomOrdersView: React.FC = () => {
                         className="px-6 py-3 text-xs uppercase tracking-wider font-semibold bg-[#3a0e1e] hover:bg-[#542333] text-white rounded-xl shadow-md transition-all flex items-center gap-2 border border-[#D4AF37]/40"
                       >
                         <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
-                        <span>Transmit Quotation to Patron</span>
+                        <span>Transmit Quotation to Customer</span>
                       </button>
                     </div>
                   </form>
@@ -1236,12 +1236,12 @@ export const CustomOrdersView: React.FC = () => {
               </div>
 
               <p className="text-xs text-[#837376] leading-relaxed">
-                Are you sure you want to cancel this bespoke custom commission? This will decline the inquiry, update the dossier status, and notify the patron immediately.
+                Are you sure you want to cancel this bespoke custom commission? This will decline the inquiry, update the dossier status, and notify the customer immediately.
               </p>
 
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-wider text-[#837376]">
-                  Cancellation Reason (Optional note for patron)
+                  Cancellation Reason (Optional note for customer)
                 </label>
                 <input
                   type="text"
@@ -1300,7 +1300,7 @@ export const CustomOrdersView: React.FC = () => {
 
               <div className="space-y-3 text-xs">
                 <div className="flex justify-between py-1 border-b border-[#d5c2c5]/20">
-                  <span className="text-[#837376] uppercase tracking-wider font-semibold">Patron</span>
+                  <span className="text-[#837376] uppercase tracking-wider font-semibold">Customer</span>
                   <span className="font-bold text-[#3a0e1e]">{selectedOrder.customerName}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[#d5c2c5]/20">

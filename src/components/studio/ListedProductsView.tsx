@@ -647,7 +647,7 @@ export const ListedProductsView: React.FC = () => {
             >
               <h3 className="font-editorial text-2xl font-bold text-[#3A0E1E]">Delist from Boutique?</h3>
               <p className="text-xs text-[#837376]">
-                Hides <strong>"{delistModalProduct.title}"</strong> from public patron catalogs. You can relist anytime.
+                Hides <strong>"{delistModalProduct.title}"</strong> from public customer catalogs. You can relist anytime.
               </p>
               <div className="flex items-center justify-end gap-3 pt-3">
                 <button onClick={() => setDelistModalProduct(null)} className="px-4 py-2 text-xs font-semibold text-[#837376]">Cancel</button>

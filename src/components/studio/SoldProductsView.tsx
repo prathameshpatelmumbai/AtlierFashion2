@@ -148,7 +148,7 @@ export const SoldProductsView: React.FC = () => {
             </h1>
 
             <p className="text-sm text-[#837376] mt-1 max-w-2xl leading-relaxed">
-              Archival ledger of acquired bespoke creations, historic salon valuations, certified patron provenance records, and authenticated haute couture acquisitions.
+              Archival ledger of acquired bespoke creations, historic salon valuations, certified customer provenance records, and authenticated haute couture acquisitions.
             </p>
           </div>
 
@@ -186,7 +186,7 @@ export const SoldProductsView: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search archive by patron, piece, or certificate ID..."
+              placeholder="Search archive by customer, piece, or certificate ID..."
               className="bg-transparent text-xs text-[#231820] placeholder:text-[#837376]/50 focus:outline-none w-full"
             />
           </div>

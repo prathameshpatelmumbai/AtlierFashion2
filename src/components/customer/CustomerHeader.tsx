@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useStudio } from "@/context/StudioContext";
-import { ArrowRightLeft, Heart, ShoppingBag, Search, User } from "lucide-react";
-import { motion } from "framer-motion";
+import { Bell, ShoppingCart, Search, User, LogOut, Sparkles } from "lucide-react";
 
 export const CustomerHeader: React.FC = () => {
   const {
@@ -11,14 +10,30 @@ export const CustomerHeader: React.FC = () => {
     setCustomerSection,
     customerSearchQuery,
     setCustomerSearchQuery,
+    setCustomerNotificationsOpen,
     setPortalMode,
+    requestStudioAccess,
     setSelectedProductId,
     cartCount,
     setCartOpen,
+    customerProfile,
+    logoutCustomer,
     showToast
   } = useStudio();
 
   const [activeTopNavItem, setActiveTopNavItem] = useState<string>("home");
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleNavClick = (section: any, navId: string = "home") => {
     setActiveTopNavItem(navId);
@@ -27,90 +42,82 @@ export const CustomerHeader: React.FC = () => {
   };
 
   const navItems = [
-    { 
-      id: "home", 
-      label: "HOME", 
-      onClick: () => handleNavClick("discover", "home") 
+    {
+      id: "home",
+      label: "HOME",
+      onClick: () => handleNavClick("discover", "home")
     },
-    { 
-      id: "top-deals", 
-      label: "TOP DEALS", 
+    {
+      id: "top-deals",
+      label: "TOP DEALS",
       onClick: () => {
-        setActiveTopNavItem("top-deals");
-        if (customerSection !== "discover") {
-          setSelectedProductId(null);
-          setCustomerSection("discover");
-        }
-        setTimeout(() => {
-          document.getElementById("top-deals")?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      } 
+        handleNavClick("top-deals", "top-deals");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     },
-    { 
-      id: "custom-orders", 
-      label: "CUSTOM ORDERS", 
-      onClick: () => handleNavClick("custom-orders", "custom-orders") 
+    {
+      id: "custom-orders",
+      label: "CUSTOM ORDERS",
+      onClick: () => handleNavClick("custom-orders", "custom-orders")
     },
-    { 
-      id: "qa", 
-      label: "Q&A", 
+    {
+      id: "uvibe",
+      label: "UVIBE",
       onClick: () => {
-        setActiveTopNavItem("qa");
-        showToast("Atelier Concierge Q&A and FAQ Archive");
-      } 
+        handleNavClick("uvibe", "uvibe");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   ];
 
   return (
     <header
-      className="sticky top-0 left-0 right-0 w-full z-50 shadow-[0_2px_12px_rgba(30,10,16,0.25)] border-b"
+      className="sticky top-0 left-0 right-0 w-full z-50 border-b"
       style={{
-        backgroundColor: "#38151D",
-        borderColor: "rgba(200, 164, 99, 0.25)"
+        backgroundColor: "#44141C",
+        borderColor: "rgba(232, 210, 183, 0.16)"
       }}
     >
-      <div className="h-16 lg:h-18 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between gap-4">
-        {/* Brand Logo matching the exact reference: ATELIER MAISON PRIVÉE */}
-        <div
+      <div className="h-[58px] max-w-[1240px] mx-auto px-5 sm:px-8 flex items-center justify-between gap-4">
+        {/* Left Brand Wordmark: ATELIER / MAISON PRIVÉE */}
+        <button
+          type="button"
           onClick={() => handleNavClick("discover", "home")}
-          className="flex flex-col items-start leading-none cursor-pointer group shrink-0"
+          className="flex flex-col items-start leading-none cursor-pointer group shrink-0 text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E8D2B7]"
           title="Atelier Maison Privée"
         >
-          <span 
-            className="text-[9px] tracking-[0.32em] text-[#C8A463] uppercase font-semibold transition-colors group-hover:text-[#E6C994]"
-            style={{ fontFamily: "var(--font-cormorant), 'Playfair Display', serif" }}
+          <span
+            className="text-[8px] tracking-[0.28em] text-[#D9BFA4] uppercase italic font-normal"
+            style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
           >
             ATELIER
           </span>
-          <span 
-            className="text-[14px] sm:text-[16px] tracking-[0.2em] text-[#F8E8D9] font-serif uppercase font-normal transition-colors group-hover:text-white mt-0.5"
-            style={{ fontFamily: "var(--font-cormorant), 'Playfair Display', serif" }}
+          <span
+            className="text-[14px] sm:text-[15px] tracking-[0.16em] text-[#FAF4ED] font-normal uppercase mt-0.5"
+            style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
           >
             MAISON PRIVÉE
           </span>
-        </div>
+        </button>
 
-        {/* Center Main Navigation: HOME, TOP DEALS, CUSTOM ORDERS, Q&A */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 h-full">
+        {/* Navigation Links: HOME, TOP DEALS, CUSTOM ORDERS, UVIBE */}
+        <nav className="hidden lg:flex items-center gap-6 h-full ml-2">
           {navItems.map((item) => {
             const isActive =
-              (item.id === "home" && customerSection === "discover" && activeTopNavItem !== "top-deals") ||
-              (item.id === "top-deals" && activeTopNavItem === "top-deals" && customerSection === "discover") ||
+              (item.id === "home" && customerSection === "discover") ||
+              (item.id === "top-deals" && customerSection === "top-deals") ||
               (item.id === "custom-orders" && customerSection === "custom-orders") ||
-              (item.id === "qa" && activeTopNavItem === "qa");
+              (item.id === "uvibe" && customerSection === "uvibe");
 
             return (
               <button
                 key={item.id}
                 onClick={item.onClick}
-                className={`h-full flex items-center uppercase text-[11px] lg:text-[12px] tracking-[0.2em] transition-all duration-300 border-b-2 cursor-pointer font-serif ${
+                className={`h-full flex items-center uppercase text-[10px] tracking-[0.16em] transition-colors cursor-pointer font-sans ${
                   isActive
-                    ? "text-[#C8A463] font-semibold border-[#C8A463]"
-                    : "text-[#F8E8D9]/75 hover:text-[#C8A463] border-transparent font-normal"
+                    ? "text-[#FAF4ED] font-semibold"
+                    : "text-[#EEDFD5]/75 hover:text-[#FAF4ED] font-medium"
                 }`}
-                style={{
-                  fontFamily: "var(--font-cormorant), 'Playfair Display', serif"
-                }}
               >
                 {item.label}
               </button>
@@ -118,8 +125,8 @@ export const CustomerHeader: React.FC = () => {
           })}
         </nav>
 
-        {/* Search Bar matching the pill layout in mockup */}
-        <div className="relative hidden sm:block flex-1 max-w-[280px] lg:max-w-[340px]">
+        {/* Sleek Rectangular Search Bar */}
+        <div className="relative hidden sm:block flex-1 max-w-[330px] ml-auto mr-2">
           <input
             type="text"
             value={customerSearchQuery}
@@ -130,60 +137,99 @@ export const CustomerHeader: React.FC = () => {
               }
             }}
             placeholder="Search designers, silhouettes, etc."
-            className="w-full h-8 sm:h-9 bg-white/10 hover:bg-white/15 focus:bg-white/20 px-3.5 pr-8 text-[12px] text-[#F8E8D9] placeholder:text-[#F8E8D9]/50 placeholder:italic focus:outline-none transition-all rounded-full border border-white/20 focus:border-[#C8A463]"
-            style={{ fontFamily: "var(--font-cormorant), 'Playfair Display', serif" }}
+            className="w-full h-8 bg-[#2E0B12]/70 hover:bg-[#2E0B12]/90 focus:bg-[#2E0B12] px-3 pr-8 text-[11px] text-[#FAF4ED] placeholder:text-[#E8D2B7]/55 focus:outline-none transition-colors rounded-[2px] border border-[#E8D2B7]/25 focus:border-[#E8D2B7]/60 font-sans"
           />
-          <Search className="w-3.5 h-3.5 absolute right-3 top-2.5 text-[#C8A463] pointer-events-none" />
+          <Search className="w-3.5 h-3.5 absolute right-2.5 top-2.5 text-[#E8D2B7]/70 pointer-events-none" />
         </div>
 
-        {/* Right Action Icons: Shopping Bag, Wishlist Heart, Profile, STUDIO button */}
-        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-          {/* Wishlist Heart */}
+        {/* Right Utility Controls: Bell, Bag, User Profile, Rectangular STUDIO Button */}
+        <div className="flex items-center gap-3.5 shrink-0">
           <button
-            aria-label="Wishlist"
-            onClick={() => showToast("Wishlist Vault — Curated private selections saved")}
-            className="p-1 text-[#F8E8D9]/80 hover:text-[#C8A463] transition-colors relative flex items-center justify-center cursor-pointer"
+            aria-label="Notifications"
+            onClick={() => setCustomerNotificationsOpen(true)}
+            className="p-1 text-[#FAF4ED]/85 hover:text-[#E8D2B7] transition-colors relative flex items-center justify-center cursor-pointer"
             type="button"
-            title="Wishlist"
+            title="Salon Notifications"
           >
-            <Heart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <Bell className="w-[16px] h-[16px]" strokeWidth={1.6} />
           </button>
 
-          {/* Shopping Bag */}
           <button
             aria-label="Shopping Cart"
             onClick={() => setCartOpen(true)}
-            className="p-1 text-[#F8E8D9]/80 hover:text-[#C8A463] transition-colors relative flex items-center justify-center cursor-pointer"
+            className="p-1 text-[#FAF4ED]/85 hover:text-[#E8D2B7] transition-colors relative flex items-center justify-center cursor-pointer"
             type="button"
-            title="Atelier Bag"
+            title="Shopping Cart"
           >
-            <ShoppingBag className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-            <span className="absolute -top-1 -right-1.5 min-w-[15px] h-[15px] px-0.5 rounded-full bg-[#C8A463] text-[#38151D] text-[9px] flex items-center justify-center font-bold font-sans">
-              {cartCount > 0 ? cartCount : 2}
-            </span>
+            <ShoppingCart className="w-[16px] h-[16px]" strokeWidth={1.6} />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] px-0.5 rounded-full bg-[#C8A463] text-[#38151D] text-[8px] flex items-center justify-center font-bold font-sans">
+                {cartCount}
+              </span>
+            )}
           </button>
 
-          {/* User Profile */}
-          <button
-            aria-label="User Profile"
-            onClick={() => {
-              setSelectedProductId(null);
-              setCustomerSection("profile");
-            }}
-            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 border border-white/25 flex items-center justify-center text-[#F8E8D9] hover:bg-white/20 hover:border-[#C8A463] transition-colors cursor-pointer"
-            type="button"
-            title="Patron Profile"
-          >
-            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          </button>
+          {/* User Profile & Customer Session Dropdown */}
+          <div className="relative" ref={userMenuRef}>
+            <button
+              aria-label="User Profile"
+              onClick={() => setUserMenuOpen((prev) => !prev)}
+              className="p-1 text-[#FAF4ED]/85 hover:text-[#E8D2B7] transition-colors flex items-center justify-center cursor-pointer"
+              type="button"
+              title="Customer Profile & Session"
+            >
+              <User className="w-[16px] h-[16px]" strokeWidth={1.6} />
+            </button>
 
-          {/* STUDIO Pill Button matching reference */}
+            {userMenuOpen && (
+              <div className="absolute right-0 top-9 w-60 rounded-xl bg-[#280914] border border-[#C59347]/40 shadow-[0_10px_35px_rgba(0,0,0,0.7),0_0_20px_rgba(197,147,71,0.25)] py-2 z-50 text-left backdrop-blur-md">
+                <div className="px-3.5 py-2 border-b border-[#C59347]/15">
+                  <div className="text-[11px] font-semibold text-[#FAF4ED] truncate">
+                    {customerProfile.customerName}
+                  </div>
+                  <div className="text-[9px] text-[#E8D2B7]/70 truncate">
+                    {customerProfile.email}
+                  </div>
+                  <div className="mt-1 inline-flex items-center gap-1 text-[8px] uppercase tracking-wider text-[#C59347] font-semibold bg-[#3A0E1E] px-2 py-0.5 rounded-full border border-[#C59347]/30">
+                    <Sparkles className="w-2.5 h-2.5" />
+                    <span>VIP Salon Customer</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedProductId(null);
+                    setCustomerSection("profile");
+                    setUserMenuOpen(false);
+                  }}
+                  className="w-full px-3.5 py-2 text-[10px] uppercase tracking-wider text-[#FAF4ED]/85 hover:text-[#FAF4ED] hover:bg-[#3A0E1E] flex items-center gap-2 cursor-pointer transition-colors"
+                >
+                  <User className="w-3.5 h-3.5 text-[#C59347]" />
+                  <span>Customer Profile & Fits</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserMenuOpen(false);
+                    logoutCustomer();
+                  }}
+                  className="w-full px-3.5 py-2 text-[10px] uppercase tracking-wider text-rose-300 hover:text-rose-200 hover:bg-rose-950/40 flex items-center gap-2 cursor-pointer transition-colors border-t border-[#C59347]/15 mt-1"
+                >
+                  <LogOut className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Sign Out of Salon</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           <button
-            onClick={() => setPortalMode("designer")}
-            className="flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-white/5 hover:bg-[#C8A463] text-[#EAD8BA] hover:text-[#38151D] border border-[#C8A463]/40 rounded-full text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-xs"
-            title="Switch to Designer Studio"
+            type="button"
+            onClick={requestStudioAccess}
+            className="px-3.5 py-1.5 bg-transparent hover:bg-[#FAF4ED] text-[#FAF4ED] hover:text-[#44141C] border border-[#E8D2B7]/50 rounded-[2px] text-[10px] font-sans font-medium uppercase tracking-[0.2em] transition-colors duration-300 cursor-pointer flex items-center gap-1.5"
+            title="Protected Couturier Studio (Passkey Required)"
           >
-            <ArrowRightLeft className="w-2.5 h-2.5" />
             <span>STUDIO</span>
           </button>
         </div>

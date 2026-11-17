@@ -36,14 +36,14 @@ export const KNOWLEDGE_BASE: KnowledgeDocument[] = [
 Brand: Prathamesh Atelier Haute Couture
 Location: Level 3, The Atelier Pavilion, Waterfield Road, Bandra West, Mumbai, MH.
 Specialty: Royal Sherwanis & Bandhgalas, Bespoke Royal Groom Wear, and Contemporary Indo-Western Men's Couture. Renowned for sculptural shoulders, Bangalore raw silks, and antique brass filigree crest buttons.
-Patron Rating: 4.99/5 (Ranked #1 for Royal Menswear and Groom Ensembles)
+Customer Rating: 4.99/5 (Ranked #1 for Royal Menswear and Groom Ensembles)
 Pricing Range: ₹65,000 to ₹2,80,000 INR
 Signature Masterpieces: 
 1. Royal Zardozi Raw Silk Sherwani & Tissue Stole (₹1,45,000)
 2. Obsidian Velvet Jodhpuri Bandhgala with Antique Brass Buttons (₹88,000)
 3. Crimson Maharani Kalidar Velvet Lehenga (Co-created with Adarsh Makharia, ₹2,60,000)
 Delivery Timelines: Ready Salon Inventory: 3–5 days. Bespoke Bespoke Tailoring & Fittings: 14–21 days.
-Patron Feedback: Celebrated for commanding royal silhouettes, impeccable armhole comfort, and museum-grade zardozi wire embroidery.`,
+Customer Feedback: Celebrated for commanding royal silhouettes, impeccable armhole comfort, and museum-grade zardozi wire embroidery.`,
     metadata: {
       designerId: "des-003",
       rating: 4.99,
@@ -59,14 +59,14 @@ Patron Feedback: Celebrated for commanding royal silhouettes, impeccable armhole
 Brand: Adarsh Couture Privée
 Location: Haveli 7, One Style Mile, Mehrauli Heritage Complex, New Delhi, DL.
 Specialty: Heirloom Bridal Lehengas & Hand-Draped Metallic Tissue Ensembles. Renowned for reviving royal Mughal court embroidery, hand-beaded rose gold tissue silks, and structured boned saree gowns.
-Patron Rating: 4.98/5 (Ranked #1 for Modern Imperial Bridal Couture)
+Customer Rating: 4.98/5 (Ranked #1 for Modern Imperial Bridal Couture)
 Pricing Range: ₹85,000 to ₹3,50,000 INR
 Signature Masterpieces:
 1. Heirloom Rose Gold Tissue Silk Bridal Lehenga (₹1,95,000)
 2. Hand-Draped Metallic Tissue Saree Gown with Boned Corset (₹1,15,000)
 3. Crimson Maharani Kalidar Velvet Lehenga (Co-created with Prathamesh Shinde, ₹2,60,000)
 Delivery Timelines: Ready Boutique Pieces: 3–5 days. Custom Bridal Commissions: 25–35 days with personalized toile trials.
-Patron Feedback: Revered by royal families and high-fashion brides for lightweight multi-layered kalidars and luminous rose-gold metallic finishes.`,
+Customer Feedback: Revered by royal families and high-fashion brides for lightweight multi-layered kalidars and luminous rose-gold metallic finishes.`,
     metadata: {
       designerId: "des-004",
       rating: 4.98,
@@ -82,14 +82,14 @@ Patron Feedback: Revered by royal families and high-fashion brides for lightweig
 Brand: Rohit Balaji Haute Couture
 Location: Studio 4B, The Heritage Mill Compound, Kala Ghoda Arts District, Mumbai, MH.
 Specialty: Bespoke Bridal Couture & Heritage Indo-Western. Revival of ancestral handloom weaves, antique badla zardozi, and architectural draping.
-Patron Rating: 4.96/5 (Based on 140+ verified salon reviews)
+Customer Rating: 4.96/5 (Based on 140+ verified salon reviews)
 Pricing Range: ₹45,000 to ₹1,80,000 INR
 Signature Masterpieces: 
 1. Rose Gold Tissue Silk Lehenga with Zardozi Borders (₹1,20,000)
 2. Hand-Embroidered Zardozi Corset Top (₹45,000)
 3. Midnight Velvet Bandhgala & Raw Silk Sherwani Ensemble (₹95,000)
 Delivery Timelines: Ready Boutique Pieces: 3–5 days. Bespoke Alterations: 18–24 days.
-Patron Feedback: Acclaimed for supreme fit precision, immaculate French wire embroidery, and private Mumbai salon fittings.`,
+Customer Feedback: Acclaimed for supreme fit precision, immaculate French wire embroidery, and private Mumbai salon fittings.`,
     metadata: {
       designerId: "des-001",
       rating: 4.96,
@@ -105,14 +105,14 @@ Patron Feedback: Acclaimed for supreme fit precision, immaculate French wire emb
 Brand: Maison Singhal
 Location: Mayfair, London (UK Salon) & Mehrauli Heritage Courtyard, New Delhi.
 Specialty: Sculptural avant-garde draping, Kashmiri Aari micro-needlework, and hand-pleated metallic lamé.
-Patron Rating: 4.98/5 (Highest Rated for Contemporary Couture)
+Customer Rating: 4.98/5 (Highest Rated for Contemporary Couture)
 Pricing Range: ₹35,000 to ₹2,50,000 INR
 Signature Masterpieces:
 1. Sculpted Duchesse Silk Evening Gown (₹98,400)
 2. Plissé Organza Architectural Trench (₹34,950)
 3. Hand-Draped Silk Duchesse Ball Gown with Corsetry (₹1,65,000)
 Delivery Timelines: Ready Boutique Pieces: 3–5 days. Bespoke Commissions: 21–30 days with Mayfair or Delhi toile fittings.
-Patron Feedback: Celebrated internationally for red-carpet gowns, architectural corsetry, and lightweight silk organza layering.`,
+Customer Feedback: Celebrated internationally for red-carpet gowns, architectural corsetry, and lightweight silk organza layering.`,
     metadata: {
       designerId: "des-002",
       rating: 4.98,
@@ -127,7 +127,7 @@ Patron Feedback: Celebrated internationally for red-carpet gowns, architectural 
     content: `Designer: Ananya Malhotra Atelier
 Location: Colaba, Mumbai & Bandra Studio.
 Specialty: Red carpet capes, metallic micro-pleated lamé, and sculptural minimalist evening outerwear.
-Patron Rating: 4.91/5
+Customer Rating: 4.91/5
 Signature Masterpiece: Sculptural Pleated Lamé Evening Cape (₹78,000).
 Delivery Timelines: 14–20 days for custom color swatches and fitting.`,
     metadata: {
@@ -164,7 +164,7 @@ Why Rohit Balaji is Ranked #1:
 - Heritage Ancestral Techniques: Master craftsmen hand-weave pure mulberry tissue silk and execute antique gold zardozi wire embroidery.
 - Tailored Toile Fittings: Includes private salon drape fittings to ensure zero slippage and optimal waist-to-hem movement.
 - Top Creations: Rose Gold Tissue Silk Lehenga (₹1,20,000), Midnight Velvet Bandhgala & Sherwani Groom Ensemble (₹95,000).
-- Patron Escrow: 50% advance deposit held securely in escrow until final wedding fitting approval.`,
+- Customer Escrow: 50% advance deposit held securely in escrow until final wedding fitting approval.`,
     metadata: {
       designerId: "des-001"
     }
@@ -200,7 +200,7 @@ Why Kavita Singhal is Ranked #1:
    - Runway Status: #1 Most Saved Piece, 1 Piece Available
 2. Hand-Embroidered Zardozi Corset Top by Rohit Balaji (₹45,000)
    - Category: Couture Bodices • Deep Plum Velvet & Antique Gold
-   - Status: Trending Curator's Showcase (14,200 impressions, 142 patron saves)
+   - Status: Trending Curator's Showcase (14,200 impressions, 142 customer saves)
 3. Plissé Organza Architectural Trench by Maison Singhal (₹34,950)
    - Category: Avant-Garde Outerwear • Champagne Sheer Organza
    - Status: Trending in Parisian and London trunk shows
@@ -309,9 +309,9 @@ Why Kavita Singhal is Ranked #1:
     keywords: ["boost", "promotion", "promote", "ad spend", "impressions", "curator showcase", "salon spotlight", "grand salon"],
     content: `Paid Algorithmic Placement & Showcase Tiers:
 - Salon Spotlight (3 Days) — ₹3,500 + GST: High-visibility placement in trending boutique discovery feeds.
-- Curator's Showcase (7–14 Days) — ₹7,500 to ₹8,500 + GST: Featured in runway editorial spotlights and patron private newsletters.
+- Curator's Showcase (7–14 Days) — ₹7,500 to ₹8,500 + GST: Featured in runway editorial spotlights and customer private newsletters.
 - Grand Salon Feature (30 Days) — ₹14,000 + GST: Marquee header placement, global push notifications, and priority concierge recommendation.
-- Performance Analytics: Track recorded impressions, catalog clicks, patron wishlist saves, and direct consultation inquiries live in 'Boosted for Promotion' tab.`,
+- Performance Analytics: Track recorded impressions, catalog clicks, customer wishlist saves, and direct consultation inquiries live in 'Boosted for Promotion' tab.`,
     metadata: {
       actionLink: {
         label: "View Boosted Campaigns",
@@ -327,9 +327,9 @@ Why Kavita Singhal is Ranked #1:
     keywords: ["handle custom order", "transmit quote", "review inquiry", "approve measurement", "specs", "custom orders designer"],
     content: `Managing Custom Orders Workflow for Designers:
 1. Navigate to 'Custom Orders': View inquiry dossiers sorted into 'New Inquiries', 'In Progress', and 'Completed'.
-2. Review Patron Specs: Inspect patron reference photos, custom waist/bust/length parameters, and alteration requests.
+2. Review Customer Specs: Inspect customer reference photos, custom waist/bust/length parameters, and alteration requests.
 3. Transmit Comprehensive Quote: Click 'Review Inquiry' to input total quote in INR, estimated completion days, and craftsmanship notes.
-4. Verify Escrow Advance: Once the patron accepts, 50% advance deposit is locked in escrow.
+4. Verify Escrow Advance: Once the customer accepts, 50% advance deposit is locked in escrow.
 5. Approve Toile & Measurements: Confirm fitting dates or upload swatch cards via 'Send Fabric Swatches'.
 6. Mark In-Progress & Complete: Transition the order stage once final fitting is certified.`,
     metadata: {
@@ -350,8 +350,8 @@ Why Kavita Singhal is Ranked #1:
     title: "How Does ALTIER Escrow Payment Protection Work?",
     keywords: ["escrow", "payment", "safe", "security", "refund", "deposit", "money", "protection"],
     content: `ALTIER Escrow Guarantee:
-- For Bespoke Orders: Patrons pay a 50% advance deposit. These funds are held in secure escrow (powered by HDFC/ICICI Corporate Banking).
-- Fund Release Conditions: The designer receives advance material reimbursement, but the full balance is released only after the patron has attended the fitting or approved the finished piece.
+- For Bespoke Orders: Customers pay a 50% advance deposit. These funds are held in secure escrow (powered by HDFC/ICICI Corporate Banking).
+- Fund Release Conditions: The designer receives advance material reimbursement, but the full balance is released only after the customer has attended the fitting or approved the finished piece.
 - Dispute Mediation: In the unlikely event of non-conformance with submitted measurements, ALTIER master concierges arbitrate complimentary alterations or a full escrow refund.`,
     metadata: {
       tags: ["Escrow", "Security", "Payments"]

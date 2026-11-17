@@ -614,7 +614,7 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
                 key={product.id}
                 whileHover={{ y: -6 }}
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                className="group bg-white rounded-2xl border border-[#E8D2B7] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#D4AF37] transition-all flex flex-col justify-between"
+                className="group bg-white rounded-2xl border-[1.5px] border-[#C59347]/65 overflow-hidden shadow-xs hover:border-[#F2D8A7] hover:shadow-[0_0_24px_rgba(212,175,55,0.48),0_0_48px_rgba(212,175,55,0.22),0_18px_36px_rgba(69,20,28,0.18)] transition-all duration-400 flex flex-col justify-between gold-lined-card"
               >
                 <div>
                   {/* Photo with hover zoom */}

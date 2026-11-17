@@ -253,7 +253,7 @@ export const AiChatbot: React.FC = () => {
                       {portalMode === "designer" ? "Studio Copilot" : "AURA Salon Concierge"}
                     </span>
                     <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#3f1220] text-[#F6DFC4] border border-[#D4AF37]/40 uppercase font-bold tracking-wider shadow-2xs">
-                      {portalMode === "designer" ? "Designer OS" : "Patron Boutique"}
+                      {portalMode === "designer" ? "Designer OS" : "Customer Boutique"}
                     </span>
                   </div>
                   <span className="text-[10px] text-white/60 tracking-wider flex items-center gap-1.5 mt-0.5">

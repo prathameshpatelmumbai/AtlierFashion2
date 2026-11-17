@@ -756,7 +756,7 @@ export const ProfileView: React.FC = () => {
                   Bank Details Updated Successfully
                 </h4>
                 <p className="text-xs text-[#8F8178] mt-1 leading-relaxed">
-                  Your settlement account has been updated following verified two-factor OTP authentication. Future patron payouts will disburse to this new account.
+                  Your settlement account has been updated following verified two-factor OTP authentication. Future customer payouts will disburse to this new account.
                 </p>
               </div>
 

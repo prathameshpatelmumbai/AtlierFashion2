@@ -83,7 +83,7 @@ export const OrdersLogisticsView: React.FC = () => {
             Orders & Logistics
           </h1>
           <p className="text-sm text-[#837376] mt-1 max-w-2xl leading-relaxed">
-            Coordinate high-value courier collections, print insured airway documentation, and oversee patron exchange requests with verified white-glove logistics.
+            Coordinate high-value courier collections, print insured airway documentation, and oversee customer exchange requests with verified white-glove logistics.
           </p>
         </div>
       </div>
@@ -130,7 +130,7 @@ export const OrdersLogisticsView: React.FC = () => {
                 No orders waiting for courier dispatch.
               </p>
               <p className="text-xs text-[#8F8178]">
-                When patrons purchase listed products, their confirmed orders appear here for pickup scheduling and label generation.
+                When customers purchase listed products, their confirmed orders appear here for pickup scheduling and label generation.
               </p>
             </div>
           ) : (
@@ -278,7 +278,7 @@ export const OrdersLogisticsView: React.FC = () => {
                         <div>•</div>
                         <div>Tracking ID: <strong className="font-mono text-[#542333]">{order.trackingId || "BD-LUX-9481029"}</strong></div>
                         <div>•</div>
-                        <div>Current Status: <strong className="text-emerald-800">{order.trackingStatus === "DELIVERED" ? "Delivered to Patron" : "In Transit"}</strong></div>
+                        <div>Current Status: <strong className="text-emerald-800">{order.trackingStatus === "DELIVERED" ? "Delivered to Customer" : "In Transit"}</strong></div>
                       </div>
 
                       {/* Shipment Timeline: Order Confirmed -> Picked Up / Dispatched -> In Transit -> Delivered */}

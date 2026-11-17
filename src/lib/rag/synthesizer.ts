@@ -32,7 +32,7 @@ export function synthesizeRagResponse(
   if (q.includes("prathamesh")) {
     return {
       reply: `### Couturier Profile: **Prathamesh Shinde**\n\n` +
-        `**Prathamesh Shinde** (*Prathamesh Atelier Haute Couture*) is ALTIER's premier master couturier for **Royal Sherwanis & Bandhgalas** with a **4.99 / 5.0** patron rating.\n\n` +
+        `**Prathamesh Shinde** (*Prathamesh Atelier Haute Couture*) is ALTIER's premier master couturier for **Royal Sherwanis & Bandhgalas** with a **4.99 / 5.0** customer rating.\n\n` +
         `* **Atelier Location**: Level 3, The Atelier Pavilion, Waterfield Road, Bandra West, Mumbai, MH.\n` +
         `* **Signature Specialties**: Royal Zardozi Sherwanis, Italian Micro-Velvet Bandhgalas, and Architectural Menswear Draping.\n` +
         `* **Top Pieces in Boutique**:\n` +
@@ -74,7 +74,7 @@ export function synthesizeRagResponse(
     if (q.includes("groom") || q.includes("sherwani") || q.includes("bandhgala") || q.includes("menswear") || q.includes("men")) {
       return {
         reply: `### Premier Royal Menswear & Groom Couturier: **Prathamesh Shinde**\n\n` +
-          `**Prathamesh Shinde** (*Prathamesh Atelier Haute Couture*) is ranked **#1 for Royal Menswear and Groom Ensembles** with a verified patron rating of **4.99 / 5.0**.\n\n` +
+          `**Prathamesh Shinde** (*Prathamesh Atelier Haute Couture*) is ranked **#1 for Royal Menswear and Groom Ensembles** with a verified customer rating of **4.99 / 5.0**.\n\n` +
           `* **Heritage Specialty**: Handcrafted Bangalore raw silks, antique gold zardozi wire embroidery, and razor-sharp Jodhpuri bandhgalas with cast brass crest buttons.\n` +
           `* **Signature Creations**:\n` +
           `  - *Royal Zardozi Raw Silk Sherwani & Tissue Stole* (₹1,45,000)\n` +
@@ -93,7 +93,7 @@ export function synthesizeRagResponse(
     if (q.includes("bridal") || q.includes("wedding") || q.includes("lehenga")) {
       return {
         reply: `### Premier Imperial Bridal Couturier: **Adarsh Makharia**\n\n` +
-          `**Adarsh Makharia** (*Adarsh Couture Privée*) holds the #1 ranking for bridal lehengas on ALTIER with a verified patron rating of **4.98 / 5.0**.\n\n` +
+          `**Adarsh Makharia** (*Adarsh Couture Privée*) holds the #1 ranking for bridal lehengas on ALTIER with a verified customer rating of **4.98 / 5.0**.\n\n` +
           `* **Heritage Specialty**: Imperial handloom rose gold tissue silks, 480-hour zardozi needlecraft, and grand kalidar silhouettes.\n` +
           `* **Signature Masterpieces**:\n` +
           `  - *Heirloom Rose Gold Tissue Silk Bridal Lehenga* (₹1,95,000)\n` +
@@ -163,7 +163,7 @@ export function synthesizeRagResponse(
         `Here are the most celebrated Indian and international creations currently in high demand across the ALTIER boutique feeds:\n\n` +
         `1. **Royal Zardozi Raw Silk Sherwani & Tissue Stole** by *Prathamesh Shinde*\n` +
         `   * *Valuation*: **₹1,45,000** | *Category*: Royal Sherwanis & Bandhgalas\n` +
-        `   * *Highlight*: Over 24,800 patron impressions, pure Bangalore raw silk with handcrafted antique gold wire embroidery.\n\n` +
+        `   * *Highlight*: Over 24,800 customer impressions, pure Bangalore raw silk with handcrafted antique gold wire embroidery.\n\n` +
         `2. **Heirloom Rose Gold Tissue Silk Bridal Lehenga** by *Adarsh Makharia*\n` +
         `   * *Valuation*: **₹1,95,000** | *Category*: Bridal & Heritage Lehengas\n` +
         `   * *Highlight*: 38,200 impressions, handloom Banarasi rose-gold tissue with 480 hours of seed pearl & cutdana needlecraft.\n\n` +
@@ -194,7 +194,7 @@ export function synthesizeRagResponse(
           `* **Tier 1: Salon Spotlight (3 Days) — ₹3,500 + 18% GST**\n` +
           `  * Elevated placement in customer category discovery feeds and algorithmic recommendations.\n\n` +
           `* **Tier 2: Curator's Showcase (7–14 Days) — ₹7,500 to ₹8,500 + 18% GST**\n` +
-          `  * Runway spotlight badge, dedicated editorial cards, and VIP patron newsletter feature.\n\n` +
+          `  * Runway spotlight badge, dedicated editorial cards, and VIP customer newsletter feature.\n\n` +
           `* **Tier 3: Grand Salon Feature (30 Days) — ₹14,000 + 18% GST**\n` +
           `  * Permanent marquee showcase banner on boutique homepage with verified push alerts.\n\n` +
           `* **How to Launch**: In Designer Studio, open the **Boosted for Promotion** tab or click the **Boost** button on any listed product card.`,
@@ -247,7 +247,7 @@ export function synthesizeRagResponse(
   // 4. HOW TO USE THE WEBSITE (CUSTOMER QUERIES)
   if (q.includes("how to use") || q.includes("how to buy") || q.includes("how does it work") || q.includes("order") || q.includes("custom commission")) {
     return {
-      reply: `### Patron Concierge Guide: Navigating ALTIER\n\n` +
+      reply: `### Customer Concierge Guide: Navigating ALTIER\n\n` +
         `ALTIER Maison Privée brings Paris & Mayfair haute couture commissioning directly to your private screen:\n\n` +
         `* **1. Instant Acquisition (Ready Boutique Pieces)**:\n` +
         `  * Browse our **Discover** salon catalog.\n` +
@@ -271,8 +271,8 @@ export function synthesizeRagResponse(
   // 5. ESCROW, PAYMENTS & SAFETY FAQS
   if (q.includes("escrow") || q.includes("payment") || q.includes("refund") || q.includes("security") || q.includes("safe")) {
     return {
-      reply: `### ALTIER Escrow & Patron Protection Guarantee\n\n` +
-        `To protect both discerning patrons and master couturiers, all bespoke commissions utilize institutional banking escrow:\n\n` +
+      reply: `### ALTIER Escrow & Customer Protection Guarantee\n\n` +
+        `To protect both discerning customers and master couturiers, all bespoke commissions utilize institutional banking escrow:\n\n` +
         `1. **50% Advance Locked in Escrow**: Upon accepting a designer's quote, your deposit is held securely in escrow (powered by HDFC & ICICI Corporate Trust).\n` +
         `2. **Toile Fitting Verification**: Funds remain untouched until your physical toile structure or virtual fitting is approved.\n` +
         `3. **Complimentary Alterations**: If the delivered garment deviates from your submitted specifications, ALTIER covers 100% complimentary atelier refittings.\n` +

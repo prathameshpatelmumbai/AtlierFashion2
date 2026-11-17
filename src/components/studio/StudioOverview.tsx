@@ -94,7 +94,7 @@ export const StudioOverview: React.FC = () => {
     {
       id: "sold" as const,
       title: "Sold Products",
-      subtitle: "Permanent archive of bespoke and ready-to-wear orders dispatched to patrons.",
+      subtitle: "Permanent archive of bespoke and ready-to-wear orders dispatched to customers.",
       count: soldProducts.length,
       icon: Archive,
       action: () => setActiveStudioTab("sold"),

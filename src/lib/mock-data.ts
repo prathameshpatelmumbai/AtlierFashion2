@@ -90,7 +90,7 @@ export const INITIAL_DESIGNERS: DesignerProfile[] = [
     brandDetails: {
       brandName: "Rohit Balaji Haute Couture",
       logo: "RB",
-      brandStory: "Dedicated to reviving ancestral handloom weaves, antique badla zardozi, and architectural draping techniques for modern global patrons.",
+      brandStory: "Dedicated to reviving ancestral handloom weaves, antique badla zardozi, and architectural draping techniques for modern global customers.",
       speciality: "Bespoke Bridal Couture & Heritage Indo-Western",
       fashionCategories: ["Bridal & Heritage Lehengas", "Contemporary Indo-Western Couture"],
       coverImage: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1200&auto=format&fit=crop",
@@ -286,8 +286,8 @@ export const INITIAL_LISTED_PRODUCTS: ListedProduct[] = [
     initialStock: 6,
     isOneOfOne: false,
     images: [
-      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=1000&auto=format&fit=crop"
+      "/images/salon/obsidian-bandhgala.jpg",
+      "/images/salon/arrival-3.jpg"
     ],
     sizes: ["38", "40", "42", "44", "Custom Fit"],
     measurements: {
@@ -1042,7 +1042,7 @@ export const INITIAL_BOOST_CAMPAIGNS: BoostCampaign[] = [
 // ==========================================
 
 export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
-  // 1. VIP Patron Inquiries (from Haute Atelier Dossiers)
+  // 1. VIP Customer Inquiries (from Haute Atelier Dossiers)
   {
     id: "co-9042",
     orderNumber: "CO-9042",
@@ -1054,7 +1054,7 @@ export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
     customerEmail: "samira.mehta@hautecouture.in",
     designerName: "Rohit K. Balaji",
     brandName: "Rohit Balaji Haute Couture",
-    customerNotes: "VIP Patron. Custom waist-to-hem drape specifications submitted. Requesting hand-stitched French wire accents along borders.",
+    customerNotes: "VIP Customer. Custom waist-to-hem drape specifications submitted. Requesting hand-stitched French wire accents along borders.",
     baseProduct: {
       id: "prod-002",
       title: "Rose Gold Tissue Silk Lehenga with Zardozi Borders",
@@ -1079,7 +1079,7 @@ export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
       }
     },
     quotation: {
-      customerSize: "Custom Patron Fit",
+      customerSize: "Custom Customer Fit",
       measurements: {
         bust: "35 in",
         waist: "28 in",
@@ -1097,7 +1097,7 @@ export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
     advancePaymentAmount: 60000,
     advancePaymentConfirmed: true,
     orderHistory: [
-      { stage: "Inquiry Submitted", timestamp: "20 Oct 2026, 10:15 AM", note: "VIP Patron submitted custom lehenga drape dossier." },
+      { stage: "Inquiry Submitted", timestamp: "20 Oct 2026, 10:15 AM", note: "VIP Customer submitted custom lehenga drape dossier." },
       { stage: "Quotation Transmitted", timestamp: "20 Oct 2026, 02:30 PM", note: "Comprehensive quote of ₹1,20,000 sent." },
       { stage: "Quotation Accepted", timestamp: "21 Oct 2026, 11:00 AM" },
       { stage: "Advance Payment Received", timestamp: "21 Oct 2026, 04:45 PM", note: "₹60,000 advance confirmed into Atelier Escrow." }
@@ -1211,7 +1211,7 @@ export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
     customerPhone: "+91 98202 55910",
     designerName: "Rohit K. Balaji",
     brandName: "Rohit Balaji Haute Couture",
-    customerNotes: "Red Carpet. Initial patron virtual consultation concluded. Curating swatches between Liquid Gold Lamé and Champagne Organza.",
+    customerNotes: "Red Carpet. Initial customer virtual consultation concluded. Curating swatches between Liquid Gold Lamé and Champagne Organza.",
     baseProduct: {
       id: "prod-004",
       title: "Sculptural Pleated Lamé Evening Cape",
@@ -1258,10 +1258,10 @@ export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
     orderNumber: "INQ-7821",
     inquiryType: "YOUR_LISTED_PRODUCT",
     lifecycleStatus: "QUOTATION_SENT",
-    customerName: "Meera Singhania",
+    customerName: "Prathamesh Patel",
     customerCity: "Mumbai, Maharashtra",
     customerPhone: "+91 98201 44920",
-    customerEmail: "meera.singhania@heritageatelier.in",
+    customerEmail: "prathamesh.patel@heritageatelier.in",
     designerName: "Rohit K. Balaji",
     brandName: "Rohit Balaji Haute Couture",
     customerNotes: "Requires expedited completion before destination wedding in Udaipur.",
@@ -1362,7 +1362,7 @@ export const INITIAL_CUSTOM_ORDERS: CustomOrder[] = [
     orderNumber: "ORD-CUST-2901",
     inquiryType: "NEW_CUSTOMIZED_ORDER",
     lifecycleStatus: "COMPLETED",
-    customerName: "Meera Singhania",
+    customerName: "Prathamesh Patel",
     customerCity: "Mumbai, Maharashtra",
     designerName: "Rohit K. Balaji",
     brandName: "Rohit Balaji Haute Couture",
@@ -1417,7 +1417,7 @@ export const INITIAL_LOGISTICS_ORDERS: LogisticsOrder[] = [
     shippingTag: "Free Shipping",
     orderConfirmed: true,
     status: "READY_TO_DISPATCH",
-    customerName: "Meera Singhania",
+    customerName: "Prathamesh Patel",
     shippingAddress: "Villa 14, Altius Estates, Altamount Road, South Mumbai, MH — 400026",
     timeline: [
       { stage: "ORDER_CONFIRMED", label: "Order Confirmed & Paid", timestamp: "27 Oct 2026, 09:30 AM", completed: true },
@@ -1439,7 +1439,7 @@ export const INITIAL_LOGISTICS_ORDERS: LogisticsOrder[] = [
     shippingTag: "Free Shipping",
     orderConfirmed: true,
     status: "SHIPPED_AND_DELIVERED",
-    customerName: "Meera Singhania",
+    customerName: "Prathamesh Patel",
     shippingAddress: "Villa 14, Altius Estates, Altamount Road, South Mumbai, MH — 400026",
     courierInfo: {
       courierCompany: "BlueDart Apex Luxury",
@@ -1453,7 +1453,7 @@ export const INITIAL_LOGISTICS_ORDERS: LogisticsOrder[] = [
       { stage: "ORDER_CONFIRMED", label: "Order Confirmed & Paid", timestamp: "18 Oct 2026, 11:00 AM", completed: true },
       { stage: "PICKED_UP_DISPATCHED", label: "Picked Up by Courier", timestamp: "20 Oct 2026, 12:30 PM", completed: true },
       { stage: "IN_TRANSIT", label: "Out for White-Glove Delivery", timestamp: "28 Oct 2026, 08:30 AM", completed: true },
-      { stage: "DELIVERED", label: "Delivered to Patron", completed: false }
+      { stage: "DELIVERED", label: "Delivered to Customer", completed: false }
     ]
   },
   {
@@ -1469,7 +1469,7 @@ export const INITIAL_LOGISTICS_ORDERS: LogisticsOrder[] = [
     shippingTag: "Free Shipping",
     orderConfirmed: true,
     status: "RETURNS_AND_EXCHANGES",
-    customerName: "Meera Singhania",
+    customerName: "Prathamesh Patel",
     shippingAddress: "Villa 14, Altius Estates, Altamount Road, South Mumbai, MH — 400026",
     returnExchange: {
       requestType: "Exchange",
@@ -1483,7 +1483,7 @@ export const INITIAL_LOGISTICS_ORDERS: LogisticsOrder[] = [
     },
     timeline: [
       { stage: "ORDER_CONFIRMED", label: "Original Order Fulfilled", timestamp: "15 Oct 2026", completed: true },
-      { stage: "DELIVERED", label: "Delivered to Patron", timestamp: "20 Oct 2026", completed: true }
+      { stage: "DELIVERED", label: "Delivered to Customer", timestamp: "20 Oct 2026", completed: true }
     ]
   }
 ];
@@ -1493,10 +1493,10 @@ export const INITIAL_LOGISTICS_ORDERS: LogisticsOrder[] = [
 // ==========================================
 
 export const INITIAL_CUSTOMER_PROFILE: CustomerProfile = {
-  customerName: "Meera Singhania",
+  customerName: "Prathamesh Patel",
   profilePhoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
   phone: "+91 98201 44920",
-  email: "meera.singhania@heritageatelier.in",
+  email: "prathamesh.patel@heritageatelier.in",
   deliveryAddress: {
     addressLine: "Villa 14, Altius Estates, Altamount Road",
     city: "Mumbai",
@@ -1541,7 +1541,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
     id: "notif-d1",
     category: "New custom inquiry",
     title: "New custom inquiry received",
-    shortDescription: "Meera Singhania submitted custom specifications for Rose Quartz Lehenga.",
+    shortDescription: "Prathamesh Patel submitted custom specifications for Rose Quartz Lehenga.",
     timestamp: "3 mins ago",
     read: false,
     audience: "designer"

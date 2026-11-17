@@ -29,7 +29,7 @@ const BOOST_PLANS = [
     days: 30,
     price: 7999,
     reachEstimate: "45,000 – 60,000 Connoisseurs & Stylists",
-    placement: "Editorial Lookbook header, Dedicated Designer Push, and VIP Patron Salon",
+    placement: "Editorial Lookbook header, Dedicated Designer Push, and VIP Customer Salon",
     badge: "High Conversion"
   },
   {
@@ -167,7 +167,7 @@ export const BoostModal: React.FC = () => {
             <span>Editorial Integrity Terms</span>
           </div>
           <p>
-            Boosting secures targeted placement in high-visibility buyer salons. Atelier does not promise guaranteed sales conversion or volume; patron acquisition remains based on design appeal and client preference.
+            Boosting secures targeted placement in high-visibility buyer salons. Atelier does not promise guaranteed sales conversion or volume; customer acquisition remains based on design appeal and client preference.
           </p>
         </div>
 

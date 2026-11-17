@@ -768,7 +768,7 @@ export const ListNewProductForm: React.FC = () => {
                   />
                 </div>
                 <p className={`text-xs leading-relaxed ${formData.isOneOfOne ? "text-white/80" : "text-[#837376]"}`}>
-                  Single exclusive artifact crafted once. Once acquired by a patron, this creation is cataloged into private vaults and permanently marked Sold Out.
+                  Single exclusive artifact crafted once. Once acquired by a customer, this creation is cataloged into private vaults and permanently marked Sold Out.
                 </p>
                 <div className="flex items-center gap-2 pt-2 border-t border-white/20">
                   <Diamond className={`w-4 h-4 ${formData.isOneOfOne ? "text-[#D4AF37]" : "text-[#865040]"}`} />
@@ -920,7 +920,7 @@ export const ListNewProductForm: React.FC = () => {
                 Pricing & Fulfilment Logistics
               </h2>
               <p className="text-xs text-[#837376]">
-                Set patron investment in Indian Rupees (INR) and configure secure climate-controlled packaging parameters.
+                Set customer investment in Indian Rupees (INR) and configure secure climate-controlled packaging parameters.
               </p>
             </div>
 
@@ -1081,7 +1081,7 @@ export const ListNewProductForm: React.FC = () => {
                   </div>
 
                   <p className="text-[11px] text-white/60 leading-relaxed">
-                    Upon publishing, this listing undergoes automated algorithmic verification before appearing in international patron searches within 3 minutes.
+                    Upon publishing, this listing undergoes automated algorithmic verification before appearing in international customer searches within 3 minutes.
                   </p>
                 </div>
 

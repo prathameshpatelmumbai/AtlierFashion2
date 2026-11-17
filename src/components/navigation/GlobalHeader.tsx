@@ -14,7 +14,8 @@ export const GlobalHeader: React.FC = () => {
     designerNotificationCount: notificationCount,
     openUtilityModal,
     subscription,
-    setPortalMode
+    setPortalMode,
+    lockStudioVault
   } = useStudio();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,14 +48,24 @@ export const GlobalHeader: React.FC = () => {
               Atelier Maison Privée — Haute Curated Sanctuary
             </span>
           </div>
-          <button
-            onClick={() => setPortalMode("customer")}
-            className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary-container/80 hover:bg-primary text-tertiary-fixed text-[11px] font-medium transition-all border border-outline-variant/30"
-            title="Switch to Customer Boutique"
-          >
-            <span className="material-symbols-outlined text-[13px] text-secondary-container">sync_alt</span>
-            <span>Switch to Customer Boutique</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPortalMode("customer")}
+              className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary-container/80 hover:bg-primary text-tertiary-fixed text-[11px] font-medium transition-all border border-outline-variant/30 cursor-pointer"
+              title="Switch to Customer Boutique"
+            >
+              <span className="material-symbols-outlined text-[13px] text-secondary-container">sync_alt</span>
+              <span>Customer Boutique</span>
+            </button>
+            <button
+              onClick={lockStudioVault}
+              className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-950/60 hover:bg-rose-900/80 text-rose-200 text-[10px] font-medium transition-all border border-rose-500/30 cursor-pointer"
+              title="Lock Couturier Vault & Return to Salon"
+            >
+              <span className="material-symbols-outlined text-[12px] text-rose-400">lock</span>
+              <span>Lock Vault</span>
+            </button>
+          </div>
         </div>
 
         <div className="h-20 w-full px-4 sm:px-8 lg:px-16 flex items-center justify-between">

@@ -1,6 +1,24 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Cormorant_Garamond, Playfair_Display, Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
+
+const nevrada = localFont({
+  src: [
+    {
+      path: "./fonts/AL_Nevrada_PersonalUseOnly.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AL_Nevrada_PersonalUseOnly.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-nevrada",
+  display: "swap",
+});
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -34,7 +52,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === 
 
 export const metadata: Metadata = {
   title: "ALTIER MAISON PRIVÉE — Haute Couture Designer Operating System",
-  description: "The digital atelier for world-class independent fashion designers and discerning luxury patrons.",
+  description: "The digital atelier for world-class independent fashion designers and discerning luxury customers.",
   icons: {
     icon: `${basePath}/images/altier-logo.svg`,
   },
@@ -46,17 +64,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${playfair.variable} ${jakarta.variable} ${inter.variable} h-full`}>
+    <html lang="en" className={`${nevrada.variable} ${cormorant.variable} ${playfair.variable} ${jakarta.variable} ${inter.variable} h-full`}>
       <head>
         <link rel="icon" type="image/svg+xml" href={`${basePath}/images/altier-logo.svg`} />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
       </head>
-      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#FFF7F9] text-[#231820] antialiased relative">
-        {/* Luxury Gold Shimmer Textured Atelier Background */}
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#FAF4ED] text-[#231820] antialiased relative">
+        {/* Luxury Draped Silk Atelier Background with Chroma Keyed Silk Canopy */}
         <div 
           className="fixed inset-0 pointer-events-none z-0"
           style={{
-            backgroundImage: `url('${basePath}/images/atelier-gold-bg.jpg')`,
+            backgroundImage: `url('${basePath}/images/champagne-silk-bg.webp')`,
             backgroundSize: "cover",
             backgroundPosition: "center top",
             backgroundRepeat: "no-repeat",
