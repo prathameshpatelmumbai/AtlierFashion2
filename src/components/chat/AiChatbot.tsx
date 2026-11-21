@@ -205,31 +205,31 @@ export const AiChatbot: React.FC = () => {
   return (
     <>
       {/* FLOATING TRIGGER BUTTON (BOTTOM-RIGHT) */}
-      <div className="fixed bottom-6 right-6 z-40">
+      <div className="fixed bottom-5 right-5 z-40">
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           onClick={() => setIsOpen(!isOpen)}
-          className="relative group flex items-center gap-3 px-5 py-3.5 rounded-full bg-[#3a0e1e] text-white shadow-2xl border border-[#D4AF37]/70 hover:border-[#F6DFC4] transition-all duration-300"
+          className="relative group flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#3a0e1e]/95 text-white shadow-xl border border-[#D4AF37]/60 hover:border-[#F6DFC4] transition-all duration-300 backdrop-blur-xs"
           title="Open AI Haute Concierge"
         >
           {/* Animated Gold Aura Pulse */}
-          <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#D4AF37]/30 via-[#F6DFC4]/40 to-[#D4AF37]/30 blur-sm opacity-70 group-hover:opacity-100 animate-pulse pointer-events-none" />
+          <span className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-[#D4AF37]/25 via-[#F6DFC4]/30 to-[#D4AF37]/25 blur-xs opacity-60 group-hover:opacity-100 animate-pulse pointer-events-none" />
 
-          <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-[#F6DFC4] to-[#D4AF37] text-[#3a0e1e] shadow-xs">
-            <Sparkles className="w-4 h-4" />
+          <div className="relative flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-br from-[#F6DFC4] to-[#D4AF37] text-[#3a0e1e] shadow-xs shrink-0">
+            <Sparkles className="w-2.5 h-2.5" />
           </div>
 
-          <div className="relative flex flex-col text-left">
-            <span className="font-editorial text-xs tracking-wider uppercase font-semibold text-[#F6DFC4]">
+          <div className="relative flex flex-col text-left leading-tight pr-0.5">
+            <span className="font-sans text-[8.5px] font-medium tracking-[0.12em] uppercase text-[#F6DFC4] whitespace-nowrap">
               {portalMode === "designer" ? "Studio Copilot" : "Salon Concierge"}
             </span>
-            <span className="text-[9px] text-white/70 tracking-widest uppercase -mt-0.5">
+            <span className="font-sans text-[6.5px] text-white/60 tracking-[0.14em] uppercase whitespace-nowrap">
               RAG AI Intelligence
             </span>
           </div>
 
-          <span className="relative w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+          <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] shrink-0 ml-0.5" />
         </motion.button>
       </div>
 

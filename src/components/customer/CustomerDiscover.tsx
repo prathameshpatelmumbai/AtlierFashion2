@@ -9,12 +9,10 @@ import {
   Mail,
   Globe,
   MapPin,
-  Sparkles,
   X,
   Star,
   LayoutGrid,
-  List,
-  Wand2
+  List
 } from "lucide-react";
 import { useStudio } from "@/context/StudioContext";
 import { ListedProduct } from "@/types/studio";
@@ -25,6 +23,9 @@ import {
   SatinSilkWaveSeam
 } from "./SalonSilkDecorations";
 import HeroModelSlideshow from "./HeroModelSlideshow";
+import HeroTextSlideshow from "./HeroTextSlideshow";
+import SignatureCollectionsCluster from "./SignatureCollectionsCluster";
+import DesignerLogosMarquee from "./DesignerLogosMarquee";
 
 const BASE_PATH =
   process.env.NEXT_PUBLIC_BASE_PATH ??
@@ -114,6 +115,36 @@ const SIGNATURE_COLLECTIONS = [
       "Architectural cape gowns merging structural French corsetry with fluid Indian organza, tailored on private salon commission.",
     image: "/images/salon/sig-parisian.jpg",
     filterCategory: "Couture & Gowns"
+  },
+  {
+    id: "sig-sapphire-gown",
+    badge: "OPÉRA DE PARIS",
+    eyebrow: "MIDNIGHT SILK & VELVET",
+    title: "Sapphire Gala",
+    description:
+      "Sculptural midnight-blue velvet bodice cascading into voluminous micro-pleated tulle with constellation crystal embroidery.",
+    image: "/images/salon/sapphire-gala-gown.jpg",
+    filterCategory: "Couture & Gowns"
+  },
+  {
+    id: "sig-obsidian-bandhgala",
+    badge: "ROYAL JODHPUR",
+    eyebrow: "BESPOKE CUT & RAW SILK",
+    title: "Obsidian Bandhgala",
+    description:
+      "Architectural structured Jodhpuri jacket in matte obsidian silk, accented with hand-carved vintage filigree gold buttons.",
+    image: "/images/salon/obsidian-bandhgala.jpg",
+    filterCategory: "Royal Sherwanis & Bandhgalas"
+  },
+  {
+    id: "sig-royal-kalidar",
+    badge: "IMPERIAL GUILD",
+    eyebrow: "ARCHIVAL ZARDOZI & SILK",
+    title: "Royal Kalidar",
+    description:
+      "Heirloom pure silk flared kalidar gown encrusted with hand-couched crystals and antique gold dabka filigree.",
+    image: "/images/salon/arrival-4.jpg",
+    filterCategory: "Contemporary Indo-Western Couture"
   }
 ];
 
@@ -294,20 +325,20 @@ const LOOKBOOK_PLATES = [
   }
 ];
 
-const CATEGORY_TILES = [
-  { name: "Outerwear & Overcoats", image: "/images/categories/outerwear-overcoats.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "T-Shirts", image: "/images/categories/t-shirts.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Sweat & Hoodies", image: "/images/categories/sweat-hoodies.png", filter: "Contemporary Indo-Western" },
-  { name: "Suits & Tailoring", image: "/images/categories/suits-tailoring.png", filter: "Royal Sherwanis & Bandhgalas" },
-  { name: "Casual & Formal Shirts", image: "/images/categories/casual-formal-shirts.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Knitwear & Sweaters", image: "/images/categories/knitwear-sweaters.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Bottoms & Trousers", image: "/images/categories/bottoms-trousers.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Denim", image: "/images/categories/denim.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Activewear", image: "/images/categories/activewear.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Footwear", image: "/images/categories/footwear.png", filter: "Couture & Gowns" },
-  { name: "Leather Goods & Bags", image: "/images/categories/leather-goods-bags.png", filter: "Couture & Gowns" },
-  { name: "Fragrance", image: "/images/categories/fragrance.png", filter: "Bridal & Heritage Lehengas" }
+const WOMENS_CATEGORY_TILES = [
+  { name: "Jackets & Blazers", image: "/images/categories/women/women-blazer.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "Trousers & Pants", image: "/images/categories/women/women-pants.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "Knitwear & Sweaters", image: "/images/categories/women/women-sweater.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "Kurtas & Tunics", image: "/images/categories/women/women-kurta.png", filter: "Contemporary Indo-Western" },
+  { name: "Couture Gowns", image: "/images/categories/women/women-gown.png", filter: "Couture & Gowns" },
+  { name: "Pleated Skirts", image: "/images/categories/women/women-skirt.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "T-Shirts & Tops", image: "/images/categories/women/women-tshirt.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "Shirts & Blouses", image: "/images/categories/women/women-shirt.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "Sarees & Drapes", image: "/images/categories/women/women-saree.png", filter: "Sarees & Drapes" },
+  { name: "Lehengas & Sets", image: "/images/categories/women/women-lehenga.png", filter: "Lehengas & Sets" }
 ];
+
+const CATEGORY_TILES = WOMENS_CATEGORY_TILES;
 
 const MENS_CATEGORY_TILES = [
   { name: "T-Shirts", image: "/images/categories/men/men-tshirt.png", filter: "Luxury Prêt & Coordinates" },
@@ -437,10 +468,11 @@ const KIDS_TRENDING: SalonShowcaseItem[] = [
   }
 ];
 
-const getCategoryTiles = (gender: "men" | "women" | "kids" | "features" | null) => {
+const getCategoryTiles = (gender: "men" | "women" | "kids" | null) => {
   if (gender === "men") return MENS_CATEGORY_TILES;
   if (gender === "kids") return KIDS_CATEGORY_TILES;
-  return CATEGORY_TILES;
+  if (gender === "women") return WOMENS_CATEGORY_TILES;
+  return WOMENS_CATEGORY_TILES;
 };
 
 export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
@@ -462,29 +494,24 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
 
   const [showCurtain, setShowCurtain] = useState(true);
   const [savedIds, setSavedIds] = useState<string[]>([]);
-  const [openDrawer, setOpenDrawer] = useState<"men" | "women" | "kids" | "features" | null>(null);
+  const [openDrawer, setOpenDrawer] = useState<"men" | "women" | "kids" | null>(null);
   const [inlineCategoryGender, setInlineCategoryGender] = useState<"men" | "women" | "kids" | null>(null);
   const [lookbookOpen, setLookbookOpen] = useState(false);
   const [lookbookIndex, setLookbookIndex] = useState(0);
+  const [heroSlideIndex, setHeroSlideIndex] = useState(0);
+
+  // Synchronized 7-second interval for both Hero Text Slides and Model Photos
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroSlideIndex((prev) => (prev + 1) % 4);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, []);
 
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 180,
     damping: 32,
-    restDelta: 0.001
-  });
-
-  // Dynamic non-static silk background scroll tracking for Section 3 (Signature Collections down)
-  const bodyCanvasRef = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress: bodyCanvasProgress } = useScroll({
-    target: bodyCanvasRef,
-    offset: ["start end", "end start"]
-  });
-  // Smoothly shifts the silk background downward as the user scrolls down through the sections
-  const silkParallaxY = useTransform(bodyCanvasProgress, [0, 1], [-30, 220]);
-  const smoothSilkY = useSpring(silkParallaxY, {
-    stiffness: 100,
-    damping: 30,
     restDelta: 0.001
   });
 
@@ -576,11 +603,17 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
     setActiveCategoryFilter(category);
     setOpenDrawer(null);
     setCustomerSection("catalog");
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
   };
 
   const handleSignatureExplore = (filterCategory: string) => {
     setActiveCategoryFilter(filterCategory);
     setCustomerSection("catalog");
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
   };
 
   const renderProductCard = (
@@ -596,7 +629,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.65, delay: index * 0.08, ease: EASE_LUXURY }}
         onClick={() => handleInspectProduct(item)}
-        className="group bg-[#FDF9F5] p-2.5 border-[1.5px] border-[#C59347]/65 flex flex-col cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:border-[#F2D8A7] hover:shadow-[0_0_24px_rgba(212,175,55,0.48),0_0_48px_rgba(212,175,55,0.22),0_18px_36px_rgba(69,20,28,0.18)] gold-lined-card"
+        className="group bg-[#FDF9F5] p-2.5 border-[1.5px] border-[#C59347]/65 flex flex-col cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C59347] hover:shadow-[0_14px_28px_-6px_rgba(69,20,28,0.14)] gold-lined-card"
       >
         {/* Product Photograph */}
         <div className="relative aspect-[4/4.35] w-full overflow-hidden bg-[#EFE6DC]">
@@ -751,8 +784,8 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                 ATELIER
               </p>
               <h1
-                className="text-2xl sm:text-4xl text-[#FAF3EB] uppercase tracking-[0.26em] font-normal"
-                style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+                className="text-2xl sm:text-4xl text-[#FAF3EB] uppercase tracking-[0.26em] font-normal font-prata"
+                style={{ fontFamily: "var(--font-prata), 'Prata', Georgia, serif" }}
               >
                 MAISON PRIVÉE
               </h1>
@@ -799,16 +832,6 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
               );
             })}
           </div>
-
-          <button
-            type="button"
-            aria-expanded={openDrawer === "features"}
-            onClick={() => setOpenDrawer((prev) => (prev === "features" ? null : "features"))}
-            className="inline-flex items-center gap-1.5 text-[9.5px] tracking-[0.2em] uppercase text-[#56333A] hover:text-[#45141C] transition-colors cursor-pointer"
-          >
-            <Sparkles className="w-2.5 h-2.5 text-[#9C7644]" aria-hidden="true" />
-            FEATURES
-          </button>
         </div>
 
         {/* Category & Features Slide-Down Drawer (Restored 12-Tile Category Grid & Dense List) */}
@@ -823,54 +846,15 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
             >
               <div className="max-w-[1240px] mx-auto px-5 sm:px-8 py-5 space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EAE0D4] pb-3.5">
-                  {openDrawer === "features" ? (
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="text-[9.5px] tracking-[0.22em] uppercase text-[#8A6D63] mr-1">
-                        SALON CONCIERGE FEATURES:
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpenDrawer(null);
-                          setCustomerSection("uvibe");
-                        }}
-                        className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#45141C] text-[#FAF3EB] text-[10px] tracking-[0.16em] uppercase hover:bg-[#5E1E28] transition-colors cursor-pointer"
-                      >
-                        <Wand2 className="w-3.5 h-3.5 text-[#DFC294]" aria-hidden="true" />
-                        Imagine Your Wardrobe (AI Studio)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpenDrawer(null);
-                          onOpenCustomRequest();
-                        }}
-                        className="inline-flex items-center gap-2 px-3.5 py-2 border border-[#D8C2B0] text-[#3B171D] text-[10px] tracking-[0.16em] uppercase hover:bg-[#F5E9DC] transition-colors cursor-pointer"
-                      >
-                        Book Private Salon Fitting
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpenDrawer(null);
-                          setCustomerSection("designers");
-                        }}
-                        className="inline-flex items-center gap-2 px-3.5 py-2 border border-[#D8C2B0] text-[#3B171D] text-[10px] tracking-[0.16em] uppercase hover:bg-[#F5E9DC] transition-colors cursor-pointer"
-                      >
-                        Master Designers Directory
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="text-[14px] sm:text-[15px] tracking-[0.14em] uppercase text-[#321218] font-normal"
-                        style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-                      >
-                        {openDrawer === "kids" ? "KIDS’ ATELIER ARCHIVES" : `${openDrawer.toUpperCase()}’S ATELIER ARCHIVES`}
-                      </span>
-                      <span className="hidden sm:inline-block w-8 h-px bg-[#D9C4B2]" />
-                    </div>
-                  )}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="text-[14px] sm:text-[15px] tracking-[0.14em] uppercase text-[#321218] font-normal"
+                      style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+                    >
+                      {openDrawer === "kids" ? "KIDS’ ATELIER ARCHIVES" : `${openDrawer ? openDrawer.toUpperCase() : ""}'S ATELIER ARCHIVES`}
+                    </span>
+                    <span className="hidden sm:inline-block w-8 h-px bg-[#D9C4B2]" />
+                  </div>
 
                   <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
                     <div className="flex items-center border border-[#DFCBB8] bg-white/80 p-0.5">
@@ -909,9 +893,8 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                 </div>
 
                 {/* Restored Visual Category Tiles for MEN / WOMEN / KIDS */}
-                {openDrawer !== "features" && (
-                  catalogLayout === "grid" ? (
-                    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 ${openDrawer === "men" || openDrawer === "kids" ? "lg:grid-cols-5" : "lg:grid-cols-6"} gap-x-5 gap-y-5`}>
+                {catalogLayout === "grid" ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-5">
                       {getCategoryTiles(openDrawer).map((tile, idx) => (
                         <motion.button
                           key={tile.name}
@@ -925,7 +908,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                           }}
                           className="group flex flex-col items-center text-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#45141C] cursor-pointer"
                         >
-                          <div className="w-full aspect-[4/3] overflow-hidden bg-white border-[1.5px] border-[#C59347]/50 group-hover:border-[#E5C278] group-hover:shadow-[0_0_18px_rgba(212,175,55,0.4)] flex items-center justify-center p-2 mb-2 transition-all duration-300 shadow-[0_6px_18px_-12px_rgba(69,20,28,0.12)]">
+                          <div className="w-full aspect-[4/3] overflow-hidden bg-white border-[1.5px] border-[#C59347]/50 group-hover:border-[#C59347] group-hover:shadow-md flex items-center justify-center p-2 mb-2 transition-all duration-300 shadow-[0_6px_18px_-12px_rgba(69,20,28,0.12)]">
                             <img
                               src={asset(tile.image)}
                               alt={tile.name}
@@ -976,8 +959,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                         </motion.button>
                       ))}
                     </div>
-                  )
-                )}
+                  )}
               </div>
             </motion.div>
           )}
@@ -1024,69 +1006,21 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
 
         {/* Single Unified Container Locked to Header & Body Vertical Measure */}
         <div className="relative z-20 max-w-[1280px] w-full mx-auto px-5 sm:px-8 grid grid-cols-1 md:grid-cols-12 items-end gap-6 lg:gap-8">
-          {/* Left Editorial Typography */}
+          {/* Left Editorial Typography Synchronized Slideshow (Transitions in sync with model photos every 7s) */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.15, ease: EASE_LUXURY }}
             className="md:col-span-6 lg:col-span-5 md:self-center pt-8 sm:pt-10 md:pt-6 pb-8 sm:pb-10 md:pb-6 lg:pb-8 flex flex-col items-start text-left z-30 md:-translate-y-4 lg:-translate-y-6 xl:-translate-y-8"
           >
-            {/* Eyebrow + hairline rule + crisp SVG sparkle */}
-            <div className="flex items-center gap-3 w-full max-w-[330px] mb-4">
-              <span className="text-[9.5px] sm:text-[10px] tracking-[0.28em] uppercase text-[#E5CFC2] whitespace-nowrap font-sans font-light">
-                ARCHIVAL VAULT RELEASE
-              </span>
-              <span className="h-px flex-1 bg-[#E5CFC2]/45" />
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                aria-hidden="true"
-                className="w-2.5 h-2.5 text-[#E5CFC2]/90 shrink-0"
-              >
-                <path d="M8 0L9.7 6.3L16 8L9.7 9.7L8 16L6.3 9.7L0 8L6.3 6.3Z" />
-              </svg>
-            </div>
-
-            <h1
-              className="text-[36px] sm:text-[42px] md:text-[42px] lg:text-[54px] xl:text-[60px] leading-[1.04] text-[#FBF4EC] font-normal tracking-[-0.015em]"
-              style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-            >
-              The Archival
-              <br />
-              <span className="whitespace-nowrap">Autumn/Winter ‘25</span>
-              <br />
-              Collection
-            </h1>
-
-            <p className="mt-4 text-[12px] sm:text-[13px] leading-[1.68] text-[#DFC9BE] max-w-[365px] font-sans font-light">
-              Sculpted in silk & charmeuse, structured capes, and artisanal craftsmanship by master
-              artisans. Limited edition bespoke tailoring crafted on commission.
-            </p>
-
-            {/* Buttons: Outlined EXPLORE COLLECTION + Solid Cream VIEW LOOKBOOK */}
-            <div className="mt-8 flex flex-wrap items-center gap-3.5">
-              <button
-                type="button"
-                onClick={() =>
-                  document
-                    .getElementById("signature-collections")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="px-6 py-2.5 border border-[#D9BFA8]/70 hover:border-[#FBF4EC] bg-[#360E15]/50 hover:bg-[#FBF4EC]/10 text-[#FAF4EC] text-[9.5px] tracking-[0.22em] uppercase rounded-[2px] font-sans transition-[background-color,border-color] duration-300 cursor-pointer"
-              >
-                EXPLORE COLLECTION
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setLookbookIndex(0);
-                  setLookbookOpen(true);
-                }}
-                className="px-7 py-2.5 bg-[#FAF3EB] hover:bg-white text-[#3F1219] text-[9.5px] tracking-[0.22em] uppercase font-semibold rounded-[2px] font-sans shadow-sm transition-colors duration-300 cursor-pointer"
-              >
-                VIEW LOOKBOOK
-              </button>
-            </div>
+            <HeroTextSlideshow
+              currentIndex={heroSlideIndex}
+              onSelectIndex={setHeroSlideIndex}
+              onOpenLookbook={() => {
+                setLookbookIndex(0);
+                setLookbookOpen(true);
+              }}
+            />
           </motion.div>
 
           {/* Right Aligned Stage: Crisp Wine Circle + Glowing 4K Magnolia + 4K Portrait */}
@@ -1149,7 +1083,10 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
               </motion.div>
 
               {/* Haute Couture Slideshow with VFX Golden Particle Dissolve & Reassembly */}
-              <HeroModelSlideshow />
+              <HeroModelSlideshow
+                currentIndex={heroSlideIndex}
+                onSelectIndex={setHeroSlideIndex}
+              />
             </motion.div>
           </div>
         </div>
@@ -1161,108 +1098,23 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
       </section>
 
       {/* ======================================================== */}
-      {/* 3. CHAMPAGNE SILK BODY CANVAS (Sections 1 - 5)           */}
+      {/* 3. ATELIER BODY CANVAS (Sections 1 - 5)                  */}
       {/* ======================================================== */}
       <div
-        ref={bodyCanvasRef}
-        className="relative overflow-hidden pb-14 sm:pb-20"
+        className="relative overflow-hidden pb-14 sm:pb-20 bg-[#FAF7F2]"
         style={{
-          backgroundColor: "#FAF2E8"
+          backgroundColor: "#FAF7F2"
         }}
       >
-        {/* Dynamic Non-Static Silk Background: Glides downward as the user scrolls down */}
-        <motion.div
-          aria-hidden="true"
-          className="absolute inset-x-0 -top-10 -bottom-48 pointer-events-none z-0 overflow-hidden"
-          style={{ y: smoothSilkY }}
-        >
-          <div
-            className="w-full h-full"
-            style={{
-              backgroundImage: `url('${asset("/images/champagne-silk-bg.webp")}'), radial-gradient(ellipse 75% 24% at 8% 12%, rgba(226, 200, 177, 0.30), transparent 62%), radial-gradient(ellipse 65% 22% at 96% 24%, rgba(255, 250, 245, 0.65), transparent 65%), radial-gradient(ellipse 65% 24% at 4% 58%, rgba(255, 250, 245, 0.65), transparent 62%), radial-gradient(ellipse 70% 22% at 96% 80%, rgba(226, 200, 177, 0.28), transparent 65%)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center top",
-              backgroundRepeat: "no-repeat"
-            }}
-          />
-        </motion.div>
         {/* Continuous Left & Right Billowing Satin Silk Margin Curtains with Golden Botanicals */}
-        <LeftSilkMarginCurtain className="hidden xl:block absolute left-0 top-0 bottom-0 w-[105px] 2xl:w-[145px] z-0 opacity-85 pointer-events-none" />
-        <RightSilkMarginCurtain className="hidden xl:block absolute right-0 top-0 bottom-0 w-[105px] 2xl:w-[145px] z-0 opacity-85 pointer-events-none" />
+        <LeftSilkMarginCurtain className="hidden xl:block absolute left-0 top-0 bottom-0 w-[105px] 2xl:w-[145px] z-0 opacity-100 pointer-events-none" />
+        <RightSilkMarginCurtain className="hidden xl:block absolute right-0 top-0 bottom-0 w-[105px] 2xl:w-[145px] z-0 opacity-100 pointer-events-none" />
 
         <div className="relative z-10 max-w-[1240px] mx-auto px-5 sm:px-8 pt-6 sm:pt-10 space-y-12 sm:space-y-14">
-          {/* ------------------------------- */}
-          {/* SECTION 1: Signature Collections */}
-          {/* ------------------------------- */}
-          <section id="signature-collections">
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, ease: EASE_LUXURY }}
-              className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6"
-            >
-              <div>
-                <p className="text-[8.5px] tracking-[0.24em] uppercase text-[#8A6D63] font-sans mb-1">
-                  CURATED DISCIPLINES FROM INDIA & PARIS ATELIERS
-                </p>
-                <h2
-                  className="text-[26px] sm:text-[31px] text-[#321218] font-normal leading-tight"
-                  style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-                >
-                  Signature Collections
-                </h2>
-              </div>
-              <p className="text-[10.5px] leading-[1.6] text-[#6B4F4B] max-w-[300px] font-sans">
-                Six pillars of sartorial excellence, each piece accompanied by a physical
-                certificate of lineage, attesting to its serial exclusivity.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {SIGNATURE_COLLECTIONS.map((col, idx) => (
-                <motion.div
-                  key={col.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.65, delay: (idx % 3) * 0.08, ease: EASE_LUXURY }}
-                  onClick={() => handleSignatureExplore(col.filterCategory)}
-                  className="group bg-[#FDF9F4] p-2.5 sm:p-3 border-[1.5px] border-[#C59347]/70 shadow-[0_10px_28px_-16px_rgba(69,20,28,0.12)] cursor-pointer flex flex-col transition-all duration-500 hover:-translate-y-1.5 hover:border-[#F2D8A7] hover:shadow-[0_0_28px_rgba(212,175,55,0.5),0_0_55px_rgba(212,175,55,0.25),0_20px_40px_rgba(69,20,28,0.22)] gold-lined-card"
-                >
-                  <div className="relative aspect-[4/4.2] w-full overflow-hidden bg-[#2D1016]">
-                    <img
-                      src={asset(col.image)}
-                      alt={col.title}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.045]"
-                    />
-                    <span className="absolute top-2.5 left-2.5 bg-[#F7F1E9]/95 text-[#3B171D] text-[8px] tracking-[0.16em] uppercase font-sans font-medium px-2.5 py-1">
-                      {col.badge}
-                    </span>
-                  </div>
-
-                  <div className="pt-3.5 pb-1 px-0.5 flex-1 flex flex-col">
-                    <span className="text-[8.5px] tracking-[0.2em] uppercase text-[#8E6F64] font-sans">
-                      {col.eyebrow}
-                    </span>
-                    <h3
-                      className="text-[20px] sm:text-[21px] text-[#2F1117] font-normal mt-0.5 leading-snug"
-                      style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-                    >
-                      {col.title}
-                    </h3>
-                    <p className="text-[10.5px] leading-[1.55] text-[#6E534E] mt-1 font-sans line-clamp-2">
-                      {col.description}
-                    </p>
-                    <span className="mt-3.5 inline-flex items-center gap-1.5 text-[8.5px] tracking-[0.2em] uppercase font-sans font-medium text-[#3A161D] group-hover:text-[#6B1F2B]">
-                      EXPLORE COLLECTION
-                      <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
+          {/* ------------------------------------------------------------- */}
+          {/* SECTION 1: 3D Clustered Signature Collections (Hover to Unfold) */}
+          {/* ------------------------------------------------------------- */}
+          <SignatureCollectionsCluster />
 
           {/* Subtle Divider Rule: — SHOP BY CATEGORY — + Inline MEN | WOMEN | KIDS */}
           <div className="space-y-4">
@@ -1309,7 +1161,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                   transition={{ duration: 0.35, ease: EASE_LUXURY }}
                   className="overflow-hidden"
                 >
-                  <div className="bg-[#FDF9F5] border-[1.5px] border-[#C59347]/65 p-4 sm:p-5 transition-all duration-500 hover:border-[#F2D8A7] hover:shadow-[0_0_26px_rgba(212,175,55,0.42)] gold-lined-box">
+                  <div className="bg-[#FDF9F5] border-[1.5px] border-[#C59347]/65 p-4 sm:p-5 transition-all duration-500 hover:border-[#C59347] hover:shadow-md gold-lined-box">
                     <div className="flex items-center justify-between mb-3.5 pb-2 border-b border-[#EFE3D7]">
                       <span
                         className="text-[15px] tracking-[0.08em] uppercase text-[#321218]"
@@ -1325,7 +1177,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                         HIDE
                       </button>
                     </div>
-                    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 ${inlineCategoryGender === "men" || inlineCategoryGender === "kids" ? "lg:grid-cols-5" : "lg:grid-cols-6"} gap-3.5`}>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
                       {getCategoryTiles(inlineCategoryGender).map((tile) => (
                         <button
                           key={tile.name}
@@ -1336,7 +1188,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                           }}
                           className="group flex flex-col items-center text-center cursor-pointer"
                         >
-                          <div className="w-full aspect-[4/3] bg-white border-[1.5px] border-[#C59347]/50 group-hover:border-[#E5C278] group-hover:shadow-[0_0_18px_rgba(212,175,55,0.4)] p-1.5 mb-1.5 flex items-center justify-center overflow-hidden transition-all duration-300">
+                          <div className="w-full aspect-[4/3] bg-white border-[1.5px] border-[#C59347]/50 group-hover:border-[#C59347] group-hover:shadow-sm p-1.5 mb-1.5 flex items-center justify-center overflow-hidden transition-all duration-300">
                             <img
                               src={asset(tile.image)}
                               alt={tile.name}
@@ -1364,14 +1216,20 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
           <section id="new-arrivals">
             <div className="flex items-baseline justify-between mb-4">
               <h2
-                className="text-[22px] sm:text-[25px] text-[#321218] font-normal"
-                style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+                className="text-[22px] sm:text-[25px] text-[#321218] font-normal font-prata"
+                style={{ fontFamily: "var(--font-prata), 'Prata', Georgia, serif" }}
               >
                 {activeGender === "kids" ? "New Arrivals • Kids’ Archival Collection" : "New Arrivals • Fresh from the ateliers"}
               </h2>
               <button
                 type="button"
-                onClick={() => setCustomerSection("catalog")}
+                onClick={() => {
+                  setActiveCategoryFilter(null);
+                  setCustomerSection("catalog");
+                  if (typeof window !== "undefined") {
+                    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                  }
+                }}
                 className="inline-flex items-center gap-1 text-[8.5px] tracking-[0.18em] uppercase text-[#6D4F4B] hover:text-[#45141C] font-sans transition-colors cursor-pointer"
               >
                 VIEW ALL COLLECTIONS <ArrowRight className="w-2.5 h-2.5" />
@@ -1391,14 +1249,20 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
           <section id="trending-outfits">
             <div className="flex items-baseline justify-between mb-4">
               <h2
-                className="text-[22px] sm:text-[25px] text-[#321218] font-normal"
-                style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+                className="text-[22px] sm:text-[25px] text-[#321218] font-normal font-prata"
+                style={{ fontFamily: "var(--font-prata), 'Prata', Georgia, serif" }}
               >
                 {activeGender === "kids" ? "Trending Kids’ Designer Outfits" : "Trending Designer Outfits"}
               </h2>
               <button
                 type="button"
-                onClick={() => setCustomerSection("catalog")}
+                onClick={() => {
+                  setActiveCategoryFilter(null);
+                  setCustomerSection("catalog");
+                  if (typeof window !== "undefined") {
+                    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                  }
+                }}
                 className="inline-flex items-center gap-1.5 text-[8.5px] tracking-[0.18em] uppercase font-medium text-[#3B171D] hover:text-[#6B1F2B] font-sans transition-colors cursor-pointer"
               >
                 VIEW ALL COLLECTIONS <ArrowRight className="w-3 h-3" />
@@ -1411,76 +1275,42 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
               )}
             </div>
           </section>
+        </div>
 
-          {/* ------------------------------- */}
-          {/* SECTION 4: Made For You Banner   */}
-          {/* ------------------------------- */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.75, ease: EASE_LUXURY }}
-            className="bg-[#46151E] text-[#FBF4EC] overflow-hidden grid grid-cols-1 md:grid-cols-12 border-[1.5px] border-[#C59347]/80 shadow-[0_22px_45px_-22px_rgba(69,20,28,0.4)] transition-all duration-500 hover:border-[#F3DCAB] hover:shadow-[0_0_35px_rgba(212,175,55,0.5),0_0_70px_rgba(212,175,55,0.25),0_24px_48px_rgba(45,10,18,0.35)] gold-lined-box"
-          >
-            <div className="md:col-span-6 p-7 sm:p-10 lg:p-12 flex flex-col justify-center">
-              <span className="text-[8.5px] tracking-[0.22em] uppercase text-[#D9BFA4] font-sans mb-2">
-                BESPOKE PRIVATE SALON
-              </span>
-              <h2
-                className="text-[27px] sm:text-[33px] lg:text-[35px] leading-[1.12] font-normal text-[#FBF4EC]"
-                style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-              >
-                Made For You. Commission
-                <br />
-                Your Private Atelier Piece
-              </h2>
-              <p className="mt-3 text-[11px] leading-[1.6] text-[#DEC7BD] max-w-[355px] font-sans font-light">
-                Experience bespoke creation where your imagination meets our craftsmanship. Turn
-                your vision into a couture masterpiece, crafted exclusively for you.
-              </p>
+        {/* ------------------------------------------------------------- */}
+        {/* SECTION 4: Continuous Moving Designer Logos Trail Strip       */}
+        {/* Full-Bleed: Touching leftmost end to rightmost end of screen  */}
+        {/* ------------------------------------------------------------- */}
+        <section
+          id="designer-ateliers-trail"
+          aria-label="Haute Couture Designer Ateliers"
+          className="relative w-full my-12 sm:my-14 overflow-hidden"
+        >
+          <DesignerLogosMarquee />
+        </section>
 
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setCustomerSection("uvibe")}
-                  className="px-5 py-2 bg-[#FAF3EB] hover:bg-white text-[#3F1219] text-[8.5px] tracking-[0.18em] uppercase font-semibold rounded-[2px] font-sans transition-colors cursor-pointer"
-                >
-                  LEARN MORE
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onOpenCustomRequest()}
-                  className="px-5 py-2 border border-[#E5D0C3]/55 hover:border-white hover:bg-[#FAF4EC]/10 text-[#FAF4EC] text-[8.5px] tracking-[0.18em] uppercase rounded-[2px] font-sans transition-colors cursor-pointer"
-                >
-                  BOOK A CONSULTATION
-                </button>
-              </div>
-            </div>
-
-            <div className="md:col-span-6 relative min-h-[250px] sm:min-h-[300px] overflow-hidden">
-              <img
-                src={asset("/images/salon/made-for-you.jpg")}
-                alt="Master couturier pinning silk couture gown"
-                className="w-full h-full object-cover object-center transition-transform duration-1000 hover:scale-[1.03]"
-              />
-              <div className="hidden md:block absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#46151E] via-[#46151E]/40 to-transparent pointer-events-none" />
-            </div>
-          </motion.section>
-
+        {/* Lower Discovery Sections (Contained to 1240px) */}
+        <div className="relative z-10 max-w-[1240px] mx-auto px-5 sm:px-8 space-y-12 sm:space-y-14">
           {/* ------------------------------- */}
           {/* SECTION 5: Bestsellers           */}
           {/* ------------------------------- */}
           <section id="bestsellers">
             <div className="flex items-baseline justify-between mb-4">
               <h2
-                className="text-[22px] sm:text-[25px] text-[#321218] font-normal"
-                style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+                className="text-[22px] sm:text-[25px] text-[#321218] font-normal font-prata"
+                style={{ fontFamily: "var(--font-prata), 'Prata', Georgia, serif" }}
               >
                 Bestsellers <span className="text-[#8A6D63] mx-1">•</span> Most Coveted Pieces
               </h2>
               <button
                 type="button"
-                onClick={() => setCustomerSection("catalog")}
+                onClick={() => {
+                  setActiveCategoryFilter(null);
+                  setCustomerSection("catalog");
+                  if (typeof window !== "undefined") {
+                    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                  }
+                }}
                 className="inline-flex items-center gap-1 text-[8.5px] tracking-[0.18em] uppercase text-[#6D4F4B] hover:text-[#45141C] font-sans transition-colors cursor-pointer"
               >
                 VIEW ALL COLLECTIONS <ArrowRight className="w-2.5 h-2.5" />
@@ -1627,8 +1457,8 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
                   </div>
 
                   <h3
-                    className="mt-4 text-[24px] leading-snug text-[#321218] font-normal"
-                    style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+                    className="mt-4 text-[24px] leading-snug text-[#321218] font-normal font-prata"
+                    style={{ fontFamily: "var(--font-prata), 'Prata', Georgia, serif" }}
                   >
                     {LOOKBOOK_PLATES[lookbookIndex].title}
                   </h3>

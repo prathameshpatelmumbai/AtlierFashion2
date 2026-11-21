@@ -49,17 +49,37 @@ export const HERO_MODELS: HeroModelItem[] = [
   }
 ];
 
-export default function HeroModelSlideshow() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export interface HeroModelSlideshowProps {
+  currentIndex?: number;
+  onSelectIndex?: (index: number) => void;
+}
 
-  // 4-second slideshow interval with smooth photo fade-off transition
+export default function HeroModelSlideshow({
+  currentIndex: externalIndex,
+  onSelectIndex: externalOnSelect,
+}: HeroModelSlideshowProps = {}) {
+  const [internalIndex, setInternalIndex] = useState(0);
+
+  const isControlled = externalIndex !== undefined;
+  const currentIndex = isControlled ? externalIndex : internalIndex;
+
+  // 7-second slideshow interval with smooth photo fade-off transition
   useEffect(() => {
+    if (isControlled) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % HERO_MODELS.length);
-    }, 4000);
+      setInternalIndex((prev) => (prev + 1) % HERO_MODELS.length);
+    }, 7000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isControlled]);
+
+  const handleSelect = (idx: number) => {
+    if (isControlled && externalOnSelect) {
+      externalOnSelect(idx);
+    } else {
+      setInternalIndex(idx);
+    }
+  };
 
   return (
     <div
@@ -105,7 +125,7 @@ export default function HeroModelSlideshow() {
           return (
             <button
               key={item.id}
-              onClick={() => setCurrentIndex(idx)}
+              onClick={() => handleSelect(idx)}
               className="relative py-1 px-0.5 group focus:outline-none cursor-pointer"
               aria-label={`View ${item.title}`}
             >

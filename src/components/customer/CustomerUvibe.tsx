@@ -314,11 +314,10 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                       key={tab.id}
                       type="button"
                       onClick={() => setActiveTab(tab.id as any)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-[2px] text-[10px] sm:text-[11px] font-sans tracking-[0.16em] uppercase transition-all cursor-pointer ${
-                        isActive
-                          ? "bg-[#FAF4ED] text-[#3B1218] font-bold shadow-md border border-[#D4AF37]"
-                          : "bg-[#270A10]/80 text-[#E8D4C3]/80 border border-[#D9BFA4]/25 hover:bg-[#340E16] hover:text-[#FAF4ED]"
-                      }`}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-[2px] text-[10px] sm:text-[11px] font-sans tracking-[0.16em] uppercase transition-all cursor-pointer ${isActive
+                        ? "bg-[#FAF4ED] text-[#3B1218] font-bold shadow-md border border-[#D4AF37]"
+                        : "bg-[#270A10]/80 text-[#E8D4C3]/80 border border-[#D9BFA4]/25 hover:bg-[#340E16] hover:text-[#FAF4ED]"
+                        }`}
                     >
                       <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#C59347]" : "text-[#D9BFA4]/70"}`} />
                       <span>{tab.label}</span>
@@ -510,9 +509,8 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                             key={i}
                             type="button"
                             onClick={() => handleLensSelect(ref.img, ref.title, ref.sil, ref.fab)}
-                            className={`flex items-center gap-2 p-1.5 bg-[#FFFBF7] border rounded-[2px] text-left transition-all cursor-pointer ${
-                              lensImage === ref.img ? "border-[#44141C] ring-1 ring-[#44141C] bg-[#F7ECE1]" : "border-[#D9BFA4]/60 hover:border-[#C59347]"
-                            }`}
+                            className={`flex items-center gap-2 p-1.5 bg-[#FFFBF7] border rounded-[2px] text-left transition-all cursor-pointer ${lensImage === ref.img ? "border-[#44141C] ring-1 ring-[#44141C] bg-[#F7ECE1]" : "border-[#D9BFA4]/60 hover:border-[#C59347]"
+                              }`}
                           >
                             <img src={asset(ref.img)} alt={ref.title} className="w-8 h-8 rounded-[1px] object-cover" />
                             <span className="text-[10px] font-sans font-medium text-[#3B1218] truncate leading-tight">
@@ -764,11 +762,10 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                 key={tab.id}
                 type="button"
                 onClick={() => setSuggestionsFilter(tab.id as any)}
-                className={`px-3 py-1 rounded-[2px] text-[10px] font-sans uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                  suggestionsFilter === tab.id
-                    ? "bg-[#3B1218] text-[#FAF4ED] border border-[#C59347] shadow-sm"
-                    : "bg-[#FAF4ED] text-[#7A6356] border border-[#D9BFA4]/60 hover:border-[#3B1218]"
-                }`}
+                className={`px-3 py-1 rounded-[2px] text-[10px] font-sans uppercase tracking-wider font-semibold transition-all cursor-pointer ${suggestionsFilter === tab.id
+                  ? "bg-[#3B1218] text-[#FAF4ED] border border-[#C59347] shadow-sm"
+                  : "bg-[#FAF4ED] text-[#7A6356] border border-[#D9BFA4]/60 hover:border-[#3B1218]"
+                  }`}
               >
                 {tab.label}
               </button>
@@ -794,7 +791,7 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
               {filteredSuggestions.map((item) => (
                 <div
                   key={item.id}
-                  className="group bg-[#FAF4ED] border border-[#E8D7C8] hover:border-[#C59347] rounded-[2px] overflow-hidden shadow-xs hover:shadow-[0_0_22px_rgba(197,147,71,0.35)] transition-all duration-500 flex flex-col justify-between relative"
+                  className="group bg-[#FAF4ED] border border-[#E8D7C8] hover:border-[#C59347] rounded-[2px] overflow-hidden shadow-xs hover:shadow-md transition-all duration-500 flex flex-col justify-between relative"
                 >
                   <div>
                     {/* Image Box */}

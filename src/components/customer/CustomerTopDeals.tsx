@@ -681,7 +681,7 @@ export const CustomerTopDeals: React.FC<CustomerTopDealsProps> = ({
 
             {/* 2. THE GRAND ORNATE GOLDEN BANNER CARD SLIDESHOW */}
             <div
-              className="relative w-full rounded-[14px] sm:rounded-[18px] overflow-hidden bg-gradient-to-r from-[#2B070E] via-[#380B13] to-[#24060B] border-[1.5px] border-[#C59347]/80 transition-all duration-500 hover:border-[#F3DCAB] hover:shadow-[0_20px_60px_rgba(15,3,6,0.8),0_0_45px_rgba(212,175,55,0.5),0_0_90px_rgba(212,175,55,0.25)] shadow-[0_20px_60px_rgba(15,3,6,0.8),0_0_35px_rgba(212,175,55,0.22)] group gold-lined-box"
+              className="relative w-full rounded-[14px] sm:rounded-[18px] overflow-hidden bg-gradient-to-r from-[#2B070E] via-[#380B13] to-[#24060B] border-[1.5px] border-[#C59347]/80 transition-all duration-500 hover:border-[#C59347] hover:shadow-[0_20px_60px_rgba(15,3,6,0.8)] shadow-[0_20px_60px_rgba(15,3,6,0.8)] group gold-lined-box"
               onMouseEnter={() => setAutoPlayPaused(true)}
               onMouseLeave={() => setAutoPlayPaused(false)}
             >
@@ -911,7 +911,7 @@ export const CustomerTopDeals: React.FC<CustomerTopDealsProps> = ({
                       ease: EASE_LUXURY
                     }}
                     onClick={() => handleInspectProduct(item)}
-                    className="group bg-[#FDF9F5] p-2 sm:p-2.5 border-[1.5px] border-[#C59347]/65 flex flex-col cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:border-[#F2D8A7] hover:shadow-[0_0_24px_rgba(212,175,55,0.48),0_0_48px_rgba(212,175,55,0.22),0_18px_36px_rgba(69,20,28,0.18)] gold-lined-card"
+                    className="group bg-[#FDF9F5] p-2 sm:p-2.5 border-[1.5px] border-[#C59347]/65 flex flex-col cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C59347] hover:shadow-[0_14px_28px_-6px_rgba(69,20,28,0.14)] gold-lined-card"
                   >
                     {/* Photograph Container */}
                     <div className="relative aspect-[4/4.35] w-full overflow-hidden bg-[#EFE6DC]">
@@ -1030,7 +1030,7 @@ export const CustomerTopDeals: React.FC<CustomerTopDealsProps> = ({
             ========================================================================= */}
         <section className="relative w-full py-12 bg-transparent border-t border-[#EAE0D5]/60">
           <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
-            <div className="relative border-[1.5px] border-[#C59347]/75 bg-[#FDF9F5] p-8 sm:p-10 rounded-[2px] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-500 hover:border-[#F2D8A7] hover:shadow-[0_0_30px_rgba(212,175,55,0.48),0_0_60px_rgba(212,175,55,0.22)] gold-lined-box">
+            <div className="relative border-[1.5px] border-[#C59347]/75 bg-[#FDF9F5] p-8 sm:p-10 rounded-[2px] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-500 hover:border-[#C59347] hover:shadow-md gold-lined-box">
               {/* Golden line accent */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C59347] to-transparent" />
 

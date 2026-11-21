@@ -1,27 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Prata&display=swap');
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Nevrada';
-  src: url('/fonts/AL_Nevrada_PersonalUseOnly.otf') format('opentype'),
-       url('/fonts/AL_Nevrada_PersonalUseOnly.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'AL Nevrada';
-  src: url('/fonts/AL_Nevrada_PersonalUseOnly.otf') format('opentype'),
-       url('/fonts/AL_Nevrada_PersonalUseOnly.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'AL_Nevrada_PersonalUseOnly';
-  src: url('/fonts/AL_Nevrada_PersonalUseOnly.otf') format('opentype'),
-       url('/fonts/AL_Nevrada_PersonalUseOnly.ttf') format('truetype');
+  font-family: 'Cintarini';
+  src: url('/fonts/Cintarini.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -81,17 +63,22 @@
   --color-on-error: #ffffff;
   --color-on-error-container: #93000a;
 
-  --font-headline-lg: "Nevrada", "AL Nevrada", "Playfair Display", serif;
-  --font-headline-md: "Nevrada", "AL Nevrada", "Playfair Display", serif;
-  --font-headline-sm: "Nevrada", "AL Nevrada", "Playfair Display", serif;
-  --font-display-xl: "Nevrada", "AL Nevrada", "Playfair Display", serif;
-  --font-title-lg: "Nevrada", "AL Nevrada", "Playfair Display", serif;
-  --font-body-lg: "Nevrada", "Plus Jakarta Sans", sans-serif;
-  --font-body-md: "Nevrada", "Plus Jakarta Sans", sans-serif;
-  --font-body-sm: "Nevrada", "Plus Jakarta Sans", sans-serif;
-  --font-label-lg: "Nevrada", "Plus Jakarta Sans", sans-serif;
-  --font-label-md: "Nevrada", "Plus Jakarta Sans", sans-serif;
-  --font-label-sm: "Nevrada", "Plus Jakarta Sans", sans-serif;
+  --font-headline-lg: "Prata", serif;
+  --font-headline-md: "Prata", serif;
+  --font-headline-sm: "Prata", serif;
+  --font-display-xl: "Prata", serif;
+  --font-title-lg: "Prata", serif;
+  --font-serif: "Prata", serif;
+  --font-editorial: "Prata", serif;
+  --font-cintarini: "Cintarini", cursive, serif;
+  --font-prata: "Prata", Georgia, serif;
+  --font-body-lg: "Outfit", sans-serif;
+  --font-body-md: "Outfit", sans-serif;
+  --font-body-sm: "Outfit", sans-serif;
+  --font-label-lg: "Outfit", sans-serif;
+  --font-label-md: "Outfit", sans-serif;
+  --font-label-sm: "Outfit", sans-serif;
+  --font-sans: "Outfit", sans-serif;
 
   --spacing-margin: 4rem;
   --spacing-space-2xl: 6rem;
@@ -105,10 +92,22 @@
 
 @layer base {
   :root {
-    /* Nevrada Typography Engine */
-    --font-nevrada: 'Nevrada', 'AL Nevrada', 'AL_Nevrada_PersonalUseOnly', serif;
-    --font-cormorant: 'Nevrada', 'AL Nevrada', 'AL_Nevrada_PersonalUseOnly', serif;
-    --font-playfair: 'Nevrada', 'AL Nevrada', 'AL_Nevrada_PersonalUseOnly', serif;
+    /* Primary Typography Engine:
+       - Header: Cintarini Font
+       - Title: Prata Font
+       - Common / Regular Text: Outfit Font
+    */
+    --font-cintarini: var(--font-cintarini), 'Cintarini', cursive, serif;
+    --font-prata: var(--font-prata), 'Prata', Georgia, serif;
+    --font-outfit: var(--font-outfit), 'Outfit', sans-serif;
+
+    /* Aliases: Headings and Titles map to Prata, body maps to Outfit */
+    --font-nevrada: var(--font-prata), 'Prata', Georgia, serif;
+    --font-cormorant: var(--font-prata), 'Prata', Georgia, serif;
+    --font-playfair: var(--font-prata), 'Prata', Georgia, serif;
+    --font-serif: var(--font-prata), 'Prata', Georgia, serif;
+    --font-jakarta: var(--font-outfit), 'Outfit', sans-serif;
+    --font-inter: var(--font-outfit), 'Outfit', sans-serif;
 
     /* Header Offset for ScrollFrameBackground */
     --header-offset: 80px;
@@ -165,42 +164,80 @@
   }
 
   body {
-    background-color: #FAF4ED;
-    background-image: url('/images/champagne-silk-bg.webp'), url('/images/atelier-silk-bg.png');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-color: #FAF7F2;
     color: var(--on-surface);
-    font-family: var(--font-nevrada), "Nevrada", "AL Nevrada", var(--font-inter), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-outfit), "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
   }
 }
 
-/* Luxury Editorial & Headings Typography with Nevrada */
-h1, h2, h3, h4, h5, h6,
-.font-editorial,
+/* Strict Typography System:
+   - Header: Cintarini Font
+   - Title: Prata Font
+   - Common / Regular Text: Outfit Font
+*/
+.font-cintarini,
+.header-cintarini,
+[style*="--font-cintarini"] {
+  font-family: var(--font-cintarini), "Cintarini", cursive, Georgia, serif !important;
+}
+
+.font-prata,
+.title-prata,
+[style*="--font-prata"] {
+  font-family: var(--font-prata), "Prata", Georgia, serif !important;
+}
+
+.font-outfit,
+.text-outfit,
+[style*="--font-outfit"] {
+  font-family: var(--font-outfit), "Outfit", -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Titles and Headings: Use PRATA font by default */
+h1:not(.font-cintarini):not([style*="--font-cintarini"]),
+h2:not(.font-cintarini):not([style*="--font-cintarini"]),
+h3:not(.font-cintarini):not([style*="--font-cintarini"]),
+h4:not(.font-cintarini):not([style*="--font-cintarini"]),
+h5:not(.font-cintarini):not([style*="--font-cintarini"]),
+h6:not(.font-cintarini):not([style*="--font-cintarini"]),
+.font-prata,
+.title-prata,
 .font-serif,
-.brand-font,
+.font-editorial,
+[class*="font-headline"],
+[class*="font-title"],
+[style*="--font-nevrada"],
 [style*="--font-cormorant"],
-[style*="Playfair Display"] {
-  font-family: var(--font-nevrada), "Nevrada", "AL Nevrada", 'AL_Nevrada_PersonalUseOnly', serif !important;
+[style*="--font-playfair"] {
+  font-family: var(--font-prata), "Prata", Georgia, serif !important;
 }
 
-.font-editorial {
-  font-family: var(--font-nevrada), "Nevrada", "AL Nevrada", 'AL_Nevrada_PersonalUseOnly', serif !important;
-  letter-spacing: -0.015em;
-}
-
+/* Normal Regular Texts with Outfit */
 .font-sans-clean,
 .font-sans,
+.font-jakarta,
+.font-inter,
+.font-outfit,
+p:not(.font-cintarini):not([style*="--font-cintarini"]):not(.font-prata):not([style*="--font-prata"]),
+span:not(.material-symbols-outlined):not([class*="material-symbols"]):not(h1 *):not(h2 *):not(h3 *):not(h4 *):not(h5 *):not(h6 *):not(.font-editorial *):not(.font-serif *):not(.brand-font *):not(.font-cintarini):not([style*="--font-cintarini"]):not(.font-prata):not([style*="--font-prata"]):not([style*="--font-nevrada"]):not([style*="--font-cormorant"]),
+label,
+button:not(.font-cintarini):not([style*="--font-cintarini"]):not(.font-prata):not([style*="--font-prata"]),
 input,
 textarea,
 select {
-  font-family: var(--font-inter), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-outfit), "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
   letter-spacing: -0.01em;
+}
+
+/* Strict safeguard for Material Symbols icons */
+.material-symbols-outlined,
+span.material-symbols-outlined,
+i.material-symbols-outlined,
+[class*="material-symbols"] {
+  font-family: 'Material Symbols Outlined' !important;
 }
 
 /* Subtle luxury card styling with tactile Champagne & Rose Gold hairlines */
@@ -220,8 +257,8 @@ select {
 
 .luxury-card:hover,
 .luxury-card-hover:hover {
-  border-color: #F2D8A7;
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.45), 0 0 48px rgba(212, 175, 55, 0.22), 0 16px 36px rgba(84, 35, 51, 0.12);
+  border-color: #D5C2C5;
+  box-shadow: 0 12px 28px -6px rgba(69, 20, 28, 0.1), 0 4px 10px -2px rgba(69, 20, 28, 0.05);
 }
 
 /* Universal Golden Lining & Outer Golden Glow Utilities */
@@ -231,8 +268,8 @@ select {
 }
 
 .gold-lined-card:hover {
-  border-color: #F2D8A7 !important;
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.48), 0 0 48px rgba(212, 175, 55, 0.22), 0 18px 36px rgba(69, 20, 28, 0.18) !important;
+  border-color: #C59347 !important;
+  box-shadow: 0 14px 28px -6px rgba(69, 20, 28, 0.14), 0 4px 10px -2px rgba(69, 20, 28, 0.06) !important;
 }
 
 .gold-lined-box {
@@ -241,8 +278,8 @@ select {
 }
 
 .gold-lined-box:hover {
-  border-color: #F3DCAB !important;
-  box-shadow: 0 0 32px rgba(212, 175, 55, 0.48), 0 0 65px rgba(212, 175, 55, 0.24), 0 22px 48px rgba(45, 10, 18, 0.28) !important;
+  border-color: #C59347 !important;
+  box-shadow: 0 18px 36px -8px rgba(45, 10, 18, 0.22) !important;
 }
 
 /* Rich Gold Accents */

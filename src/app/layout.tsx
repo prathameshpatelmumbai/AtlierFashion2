@@ -1,51 +1,28 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Cormorant_Garamond, Playfair_Display, Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Prata, Outfit } from "next/font/google";
 import "./globals.css";
 
-const nevrada = localFont({
-  src: [
-    {
-      path: "./fonts/AL_Nevrada_PersonalUseOnly.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/AL_Nevrada_PersonalUseOnly.ttf",
-      weight: "400",
-      style: "normal",
-    },
-  ],
-  variable: "--font-nevrada",
+const cintarini = localFont({
+  src: "./fonts/Cintarini.ttf",
+  variable: "--font-cintarini",
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const prata = Prata({
+  variable: "--font-prata",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400"],
   display: "swap",
+  fallback: ["serif"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
-});
-
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
+  fallback: ["sans-serif"],
 });
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/AtlierFashion2" : "");
@@ -64,29 +41,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${nevrada.variable} ${cormorant.variable} ${playfair.variable} ${jakarta.variable} ${inter.variable} h-full`}>
+    <html lang="en" className={`${cintarini.variable} ${prata.variable} ${outfit.variable} h-full`}>
       <head>
         <link rel="icon" type="image/svg+xml" href={`${basePath}/images/altier-logo.svg`} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Prata&display=swap"
+        />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
       </head>
-      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#FAF4ED] text-[#231820] antialiased relative">
-        {/* Luxury Draped Silk Atelier Background with Chroma Keyed Silk Canopy */}
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#FAF7F2] text-[#231820] antialiased relative">
+        {/* Page Content */}
         <div 
-          className="fixed inset-0 pointer-events-none z-0"
-          style={{
-            backgroundImage: `url('${basePath}/images/champagne-silk-bg.webp')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            backgroundRepeat: "no-repeat",
-            backgroundAttachment: "fixed",
-          }}
-          aria-hidden="true"
-        />
-
-        {/* Page Content positioned above the background */}
-        <div 
-          className="min-h-full flex flex-col flex-1"
-          style={{ position: "relative", zIndex: 1, backgroundColor: "transparent" }}
+          className="min-h-full flex flex-col flex-1 relative z-0"
         >
           {children}
         </div>

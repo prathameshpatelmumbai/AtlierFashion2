@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStudio } from "@/context/StudioContext";
 import { ListedProduct } from "@/types/studio";
 
@@ -59,6 +59,13 @@ export function StudioShell() {
     toastMessage,
     showToast
   } = useStudio();
+
+  // Scroll window to top whenever customerSection or view changes (e.g., navigating to Catalog)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, [customerSection, selectedProductId, activeSection, activeStudioTab]);
 
   // Customer Modals State
   const [buyNowProduct, setBuyNowProduct] = useState<ListedProduct | null>(null);
