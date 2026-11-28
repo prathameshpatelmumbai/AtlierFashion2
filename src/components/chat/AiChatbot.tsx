@@ -48,8 +48,8 @@ export const AiChatbot: React.FC = () => {
       id: "welcome-1",
       role: "assistant",
       content: portalMode === "designer"
-        ? `### Welcome to Atelier Studio Copilot\n\nI am your curatorial intelligence assistant, grounded in **ALTIER's master knowledge base**. Ask me about:\n\n* **Cataloging & Listing**: 5-stage dossier requirements, image specifications\n* **Paid Promotions**: Boost tiers (Salon, Curator, Grand) & ad metrics\n* **Custom Orders**: Reviewing specs, fitting dates & transmitting quotes\n* **Vault Archiving**: 72-hour draft autosaves and sales ledger exports`
-        : `### Welcome to ALTIER Haute Concierge\n\nI am **AURA**, your private haute salon concierge. I can assist you with:\n\n* **Top Designers**: Discover the best bridal, menswear, and contemporary couturiers\n* **Trending Designs**: Real-time runway spotlights & bestselling creations\n* **Bespoke Commissions**: How to submit measurements and request alterations\n* **Escrow Guarantee**: How our 50% escrow protection keeps your purchase safe`,
+        ? `### Welcome to STYTELL Studio Copilot\n\nI am your curatorial intelligence assistant, grounded in **STYTELL's master knowledge base**. Ask me about:\n\n* **Cataloging & Listing**: 5-stage dossier requirements, image specifications\n* **Paid Promotions**: Boost tiers (Salon, Curator, Grand) & ad metrics\n* **Custom Orders**: Reviewing specs, fitting dates & transmitting quotes\n* **Vault Archiving**: 72-hour draft autosaves and sales ledger exports`
+        : `### Welcome to STYTELL Haute Concierge\n\nI am **AURA**, your private haute salon concierge. I can assist you with:\n\n* **Top Designers**: Discover the best bridal, menswear, and contemporary couturiers\n* **Trending Designs**: Real-time runway spotlights & bestselling creations\n* **Bespoke Commissions**: How to submit measurements and request alterations\n* **Escrow Guarantee**: How our 50% escrow protection keeps your purchase safe`,
       suggestedQuestions: portalMode === "designer"
         ? [
             "How do I list a new couture piece in Studio?",
@@ -125,7 +125,7 @@ export const AiChatbot: React.FC = () => {
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,
         role: "assistant",
-        content: data.reply || "I am at your service at ALTIER Maison Privée.",
+        content: data.reply || "I am at your service at STYTELL.",
         sources: data.sources || [],
         suggestedQuestions: data.suggestedQuestions || [],
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })

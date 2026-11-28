@@ -312,7 +312,7 @@ export const CustomerOrders: React.FC = () => {
                       <div className="flex items-center justify-between pt-2">
                         <div className="text-xs text-[#8F8178] flex items-center gap-1.5">
                           <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                          <span>Delivered successfully. 7-day exchange window is open.</span>
+                          <span>Delivered successfully. 3-day exchange window is open.</span>
                         </div>
                         <button
                           onClick={() => setReturnModalOrder(order)}

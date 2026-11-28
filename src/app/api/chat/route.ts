@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         const { GoogleGenAI } = await import("@google/genai");
         const ai = new GoogleGenAI({ apiKey });
 
-        const systemPrompt = `You are AURA, the official luxury AI Salon Concierge & Studio Copilot for "ALTIER MAISON PRIVÉE", a high-end luxury fashion marketplace.
+        const systemPrompt = `You are AURA, the official luxury AI Salon Concierge & Studio Copilot for "STYTELL", a high-end luxury fashion marketplace.
 Your persona: Highly knowledgeable, poised, refined, polite, authoritative yet warm, similar to a head curator at a Parisian or Mayfair haute couture salon.
 Current Portal Mode: ${portalMode === "designer" ? "Designer Studio (assist with listing, inventory, drafts, promotions, bespoke quotes)" : "Customer Boutique (assist with browsing, recommendations, bespoke commissioning, fittings, escrow)"}.
 
@@ -76,7 +76,7 @@ INSTRUCTIONS:
           }
         });
 
-        const replyText = response.text || "I am at your service at ALTIER Maison Privée.";
+        const replyText = response.text || "I am at your service at STYTELL.";
 
         return wrapWithSecurityHeaders(
           NextResponse.json({

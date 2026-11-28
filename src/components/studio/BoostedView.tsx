@@ -13,6 +13,7 @@ import {
   CreditCard,
   ShieldCheck,
   ChevronDown,
+  Palette,
   X
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -99,6 +100,15 @@ export const BoostedView: React.FC = () => {
               <span className="bg-[#542333] text-[#F6DFC4] text-[11px] font-bold px-2 py-0.5 rounded-full">
                 {boostCampaigns.length}
               </span>
+            </button>
+
+            {/* Tab 5: Pantone & Color Wheel */}
+            <button 
+              onClick={() => setActiveStudioTab("pantone")}
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
+            >
+              <Palette className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Pantone & Color Wheel</span>
             </button>
           </div>
 

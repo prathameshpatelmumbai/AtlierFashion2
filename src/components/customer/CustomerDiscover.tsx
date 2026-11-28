@@ -26,6 +26,7 @@ import HeroModelSlideshow from "./HeroModelSlideshow";
 import HeroTextSlideshow from "./HeroTextSlideshow";
 import SignatureCollectionsCluster from "./SignatureCollectionsCluster";
 import DesignerLogosMarquee from "./DesignerLogosMarquee";
+import { AddToBagButton } from "./AddToBagButton";
 
 const BASE_PATH =
   process.env.NEXT_PUBLIC_BASE_PATH ??
@@ -326,14 +327,14 @@ const LOOKBOOK_PLATES = [
 ];
 
 const WOMENS_CATEGORY_TILES = [
-  { name: "Jackets & Blazers", image: "/images/categories/women/women-blazer.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Trousers & Pants", image: "/images/categories/women/women-pants.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Knitwear & Sweaters", image: "/images/categories/women/women-sweater.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Kurtas & Tunics", image: "/images/categories/women/women-kurta.png", filter: "Contemporary Indo-Western" },
-  { name: "Couture Gowns", image: "/images/categories/women/women-gown.png", filter: "Couture & Gowns" },
-  { name: "Pleated Skirts", image: "/images/categories/women/women-skirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "T-Shirts & Tops", image: "/images/categories/women/women-tshirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Shirts & Blouses", image: "/images/categories/women/women-shirt.png", filter: "Luxury Prêt & Coordinates" },
+  { name: "Jackets & Blazers", image: "/images/categories/women/women-blazer.png", filter: "Jackets & Blazers" },
+  { name: "Trousers & Pants", image: "/images/categories/women/women-pants.png", filter: "Trousers & Pants" },
+  { name: "Knitwear & Sweaters", image: "/images/categories/women/women-sweater.png", filter: "Knitwear & Sweaters" },
+  { name: "Kurtas & Tunics", image: "/images/categories/women/women-kurta.png", filter: "Kurtas & Tunics" },
+  { name: "Couture Gowns", image: "/images/categories/women/women-gown.png", filter: "Couture Gowns" },
+  { name: "Pleated Skirts", image: "/images/categories/women/women-skirt.png", filter: "Pleated Skirts" },
+  { name: "T-Shirts & Tops", image: "/images/categories/women/women-tshirt.png", filter: "T-Shirts & Tops" },
+  { name: "Shirts & Blouses", image: "/images/categories/women/women-shirt.png", filter: "Shirts & Blouses" },
   { name: "Sarees & Drapes", image: "/images/categories/women/women-saree.png", filter: "Sarees & Drapes" },
   { name: "Lehengas & Sets", image: "/images/categories/women/women-lehenga.png", filter: "Lehengas & Sets" }
 ];
@@ -341,29 +342,29 @@ const WOMENS_CATEGORY_TILES = [
 const CATEGORY_TILES = WOMENS_CATEGORY_TILES;
 
 const MENS_CATEGORY_TILES = [
-  { name: "T-Shirts", image: "/images/categories/men/men-tshirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Sweatshirts", image: "/images/categories/men/men-sweatshirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Polo T-Shirts", image: "/images/categories/men/men-polo-tshirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Shirts", image: "/images/categories/men/men-shirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Hoodies", image: "/images/categories/men/men-hoodie.png", filter: "Contemporary Indo-Western" },
-  { name: "Jackets", image: "/images/categories/men/men-jacket.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Blazers", image: "/images/categories/men/men-blazer.png", filter: "Royal Sherwanis & Bandhgalas" },
-  { name: "Kurtas", image: "/images/categories/men/men-kurta.png", filter: "Contemporary Indo-Western" },
-  { name: "Sherwanis", image: "/images/categories/men/men-sherwani.png", filter: "Royal Sherwanis & Bandhgalas" },
-  { name: "Jeans & Pants", image: "/images/categories/men/men-jeans-pants.png", filter: "Luxury Prêt & Coordinates" }
+  { name: "T-Shirts", image: "/images/categories/men/men-tshirt.png", filter: "T-Shirts" },
+  { name: "Sweatshirts", image: "/images/categories/men/men-sweatshirt.png", filter: "Sweatshirts" },
+  { name: "Polo T-Shirts", image: "/images/categories/men/men-polo-tshirt.png", filter: "Polo T-Shirts" },
+  { name: "Shirts", image: "/images/categories/men/men-shirt.png", filter: "Shirts" },
+  { name: "Hoodies", image: "/images/categories/men/men-hoodie.png", filter: "Hoodies" },
+  { name: "Jackets", image: "/images/categories/men/men-jacket.png", filter: "Jackets" },
+  { name: "Blazers", image: "/images/categories/men/men-blazer.png", filter: "Blazers" },
+  { name: "Kurtas", image: "/images/categories/men/men-kurta.png", filter: "Kurtas" },
+  { name: "Sherwanis", image: "/images/categories/men/men-sherwani.png", filter: "Sherwanis" },
+  { name: "Jeans & Pants", image: "/images/categories/men/men-jeans-pants.png", filter: "Jeans & Pants" }
 ];
 
 const KIDS_CATEGORY_TILES = [
-  { name: "T-Shirts", image: "/images/categories/kids/kids-tshirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Shirts", image: "/images/categories/kids/kids-shirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Kurtas & Sets", image: "/images/categories/kids/kids-kurta.png", filter: "Contemporary Indo-Western" },
-  { name: "Jackets", image: "/images/categories/kids/kids-jacket.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Jeans & Pants", image: "/images/categories/kids/kids-pants.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Sweatshirts", image: "/images/categories/kids/kids-sweatshirt.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Hoodies", image: "/images/categories/kids/kids-hoodie.png", filter: "Contemporary Indo-Western" },
-  { name: "Polo T-Shirts", image: "/images/categories/kids/kids-polo.png", filter: "Luxury Prêt & Coordinates" },
-  { name: "Blazers & Suits", image: "/images/categories/kids/kids-blazer.png", filter: "Royal Sherwanis & Bandhgalas" },
-  { name: "Sherwanis", image: "/images/categories/kids/kids-sherwani.png", filter: "Royal Sherwanis & Bandhgalas" }
+  { name: "T-Shirts", image: "/images/categories/kids/kids-tshirt.png", filter: "T-Shirts" },
+  { name: "Shirts", image: "/images/categories/kids/kids-shirt.png", filter: "Shirts" },
+  { name: "Kurtas & Sets", image: "/images/categories/kids/kids-kurta.png", filter: "Kurtas & Sets" },
+  { name: "Jackets", image: "/images/categories/kids/kids-jacket.png", filter: "Jackets" },
+  { name: "Jeans & Pants", image: "/images/categories/kids/kids-pants.png", filter: "Jeans & Pants" },
+  { name: "Sweatshirts", image: "/images/categories/kids/kids-sweatshirt.png", filter: "Sweatshirts" },
+  { name: "Hoodies", image: "/images/categories/kids/kids-hoodie.png", filter: "Hoodies" },
+  { name: "Polo T-Shirts", image: "/images/categories/kids/kids-polo.png", filter: "Polo T-Shirts" },
+  { name: "Blazers & Suits", image: "/images/categories/kids/kids-blazer.png", filter: "Blazers & Suits" },
+  { name: "Sherwanis", image: "/images/categories/kids/kids-sherwani.png", filter: "Sherwanis" }
 ];
 
 const KIDS_NEW_ARRIVALS: SalonShowcaseItem[] = [
@@ -649,13 +650,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
           {/* Subtle hover quick-inspect sheen for cards without footer bar */}
           {!options.showFooterBar && (
             <div className="absolute inset-x-2 bottom-2 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-[opacity,transform] duration-300 flex justify-between items-center bg-[#FDF9F5]/95 backdrop-blur-sm border border-[#E6D9CD] px-2.5 py-1.5">
-              <button
-                type="button"
-                onClick={(e) => handleAddToBag(e, item)}
-                className="text-[8px] tracking-[0.16em] uppercase text-[#4B1A22] font-semibold flex items-center gap-1 hover:text-[#2B0C11] cursor-pointer"
-              >
-                <Plus className="w-2.5 h-2.5" /> Add to Bag
-              </button>
+              <AddToBagButton product={item} variant="sheen" />
               <ArrowRight className="w-3 h-3 text-[#4B1A22]" />
             </div>
           )}
@@ -735,16 +730,7 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
         {/* Bottom (+) ADD TO CART -> Footer Bar */}
         {options.showFooterBar && (
           <div className="mt-2.5 pt-2 border-t border-[#ECE2D6] flex items-center justify-between px-0.5">
-            <button
-              type="button"
-              onClick={(e) => handleAddToBag(e, item)}
-              className="inline-flex items-center gap-1.5 text-[8.5px] tracking-[0.16em] uppercase font-sans font-medium text-[#3B171D] hover:text-[#6B1F2B] transition-colors cursor-pointer"
-            >
-              <span className="w-3.5 h-3.5 rounded-full border border-[#3B171D]/45 flex items-center justify-center">
-                <Plus className="w-2 h-2" strokeWidth={2.2} />
-              </span>
-              ADD TO CART
-            </button>
+            <AddToBagButton product={item} variant="footer-bar" />
             <ArrowRight
               className="w-3 h-3 text-[#3B171D]/70 group-hover:translate-x-1 transition-transform"
               strokeWidth={1.6}
@@ -774,26 +760,22 @@ export const CustomerDiscover: React.FC<CustomerDiscoverProps> = ({
             className="fixed inset-0 z-[70] bg-[#3E1017] flex flex-col items-center justify-center cursor-pointer"
           >
             <motion.div
-              initial={{ opacity: 0, y: 12, letterSpacing: "0.45em" }}
-              animate={{ opacity: 1, y: 0, letterSpacing: "0.28em" }}
+              initial={{ opacity: 0, y: 12, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.65, ease: EASE_LUXURY }}
-              className="text-center px-6"
+              className="text-center px-6 flex flex-col items-center"
             >
-              <p className="text-[10px] tracking-[0.36em] uppercase text-[#DFC294] italic mb-2">
-                ATELIER
-              </p>
-              <h1
-                className="text-2xl sm:text-4xl text-[#FAF3EB] uppercase tracking-[0.26em] font-normal font-prata"
-                style={{ fontFamily: "var(--font-prata), 'Prata', Georgia, serif" }}
-              >
-                MAISON PRIVÉE
-              </h1>
+              <img
+                src={asset("/images/stytell-logo.png")}
+                alt="STYTELL"
+                className="h-28 sm:h-40 w-auto object-contain"
+              />
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.75, ease: EASE_LUXURY }}
-                className="h-px w-48 mx-auto mt-4 bg-gradient-to-r from-transparent via-[#E5C99B] to-transparent"
+                className="h-px w-48 mx-auto mt-5 bg-gradient-to-r from-transparent via-[#E5C99B] to-transparent"
               />
             </motion.div>
           </motion.div>

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useStudio } from "@/context/StudioContext";
+import { StytellLogo } from "@/components/common/AltierLogo";
 
 interface VipProfile {
   name: string;
@@ -174,20 +175,9 @@ export const CustomerLogin: React.FC = () => {
       {/* Top Haute Couture Navigation Bar */}
       <header className="relative z-20 w-full border-b border-[#C59347]/20 bg-[#2E0B16]/80 backdrop-blur-md">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-3.5 flex items-center justify-between">
-          {/* Brand Wordmark */}
-          <div className="flex flex-col items-start leading-none">
-            <span
-              className="text-[9px] tracking-[0.34em] text-[#D9BFA4] uppercase font-light"
-              style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-            >
-              ATELIER
-            </span>
-            <span
-              className="text-[17px] sm:text-[19px] tracking-[0.2em] text-[#FAF4ED] font-normal uppercase mt-0.5"
-              style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-            >
-              MAISON PRIVÉE
-            </span>
+          {/* Brand Logo */}
+          <div className="flex items-center">
+            <StytellLogo height={36} variant="horizontal" theme="dark" />
           </div>
 
           {/* Center Privileged Access Indicator */}
@@ -234,7 +224,7 @@ export const CustomerLogin: React.FC = () => {
                   className="text-3xl sm:text-4xl text-[#FAF4ED] font-normal tracking-wide"
                   style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
                 >
-                  Welcome to Atelier Maison Privée
+                  Welcome to STYTELL
                 </h1>
                 <p className="text-xs text-[#EEDFD5]/70 max-w-lg leading-relaxed">
                   Authenticate your customer pass to access exclusive couture collections, your bespoke orders, and the Uvibe Neural Synthesis Studio.
@@ -342,7 +332,7 @@ export const CustomerLogin: React.FC = () => {
                       >
                         <p className="font-semibold text-[#C59347]">Private Concierge Verification</p>
                         <p className="text-[10px] text-[#FAF4ED]/80">
-                          For security, customer vault keys are issued by Maison Privée Concierge. You can authenticate immediately using any of the One-Click VIP Customer passes below.
+                          For security, customer vault keys are issued by STYTELL Concierge. You can authenticate immediately using any of the One-Click VIP Customer passes below.
                         </p>
                       </motion.div>
                     )}
@@ -543,7 +533,7 @@ export const CustomerLogin: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C59347]" />
-              <span>Maison Privée Vault Encryption • 256-Bit SSL Client Authentication</span>
+              <span>STYTELL Vault Encryption • 256-Bit SSL Client Authentication</span>
             </div>
             <span className="text-[#C59347]/40">•</span>
             <button
@@ -555,7 +545,7 @@ export const CustomerLogin: React.FC = () => {
             </button>
           </div>
           <div>
-            <span>© 2026 ATELIER MAISON PRIVÉE • PARIS • NEW DELHI • MILAN</span>
+            <span>© 2026 STYTELL • PARIS • NEW DELHI • MILAN</span>
           </div>
         </div>
       </footer>

@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useStudio } from "@/context/StudioContext";
 import { ListedProduct } from "@/types/studio";
+import { CATALOG_PRODUCTS, CatalogProduct } from "@/data/catalogProducts";
 import { 
   Filter, 
   ChevronDown, 
@@ -22,11 +23,23 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import { AddToBagButton } from "./AddToBagButton";
 
 interface CustomerCatalogProps {
   onOpenBuyNow: (product: ListedProduct) => void;
   onOpenCustomRequest: (product?: ListedProduct) => void;
 }
+
+export const SIGNATURE_COLLECTIONS_LIST = [
+  "Limited Editions",
+  "Handcrafted",
+  "Inspired Arts",
+  "Made to Order",
+  "Unveiled",
+  "Organic Collections"
+] as const;
+
+export type SignatureCollectionName = typeof SIGNATURE_COLLECTIONS_LIST[number];
 
 export const GENDER_LOOP = [
   { key: "men" as const, label: "Men", fullLabel: "Men's Salon" },
@@ -43,6 +56,8 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
     setActiveGender,
     activeCategoryFilter, 
     setActiveCategoryFilter,
+    activeCollectionFilter,
+    setActiveCollectionFilter,
     catalogLayout,
     setCatalogLayout,
     setSelectedProductId,
@@ -51,6 +66,9 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
   } = useStudio();
 
   // Active filter state - completely deselected by default
+  const [selectedCollections, setSelectedCollections] = useState<string[]>(
+    activeCollectionFilter ? [activeCollectionFilter] : []
+  );
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     activeCategoryFilter ? [activeCategoryFilter] : []
   );
@@ -61,8 +79,9 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
   const [priceRange, setPriceRange] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("popular");
 
-  // Accordion state - all collapsed/closed by default
+  // Accordion state - collection open if active, others collapsed
   const [openSections, setOpenSections] = useState({
+    collection: !!activeCollectionFilter,
     category: false,
     price: false,
     size: false,
@@ -77,6 +96,19 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   }, []);
+
+  // Sync collection filter if navigated from signature collection card
+  useEffect(() => {
+    if (activeCollectionFilter) {
+      setSelectedCollections([activeCollectionFilter]);
+      setOpenSections((prev) => ({ ...prev, collection: true }));
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
+    } else {
+      setSelectedCollections([]);
+    }
+  }, [activeCollectionFilter]);
 
   // Sync category filter if navigated with an active filter
   useEffect(() => {
@@ -123,6 +155,8 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
   };
 
   const clearAllFilters = () => {
+    setSelectedCollections([]);
+    setActiveCollectionFilter(null);
     setSelectedCategories([]);
     setSelectedFabrics([]);
     setSelectedSizes([]);
@@ -133,49 +167,127 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
     showToast("Filters reset to all archival works");
   };
 
+const normalizeCategory = (str: string) =>
+  str.toLowerCase().replace(/[&,]/g, " ").replace(/\s+/g, " ").trim();
+
+function matchesWord(text: string, term: string): boolean {
+  if (!text || !term) return false;
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b${escaped}\\b`, "i").test(text);
+}
+
+const CATEGORY_SYNONYMS: Record<string, string[]> = {
+  // Men & Shared
+  "t shirts": ["t-shirts", "t-shirt", "tshirts", "tshirt", "t shirts", "t shirt", "tee", "tees"],
+  "sweatshirts": ["sweatshirts", "sweatshirt", "fleece sweatshirt"],
+  "polo t shirts": ["polo t-shirts", "polo t-shirt", "polo", "polos", "polo shirt", "polo shirts", "polo t shirts"],
+  "shirts": ["shirts", "shirt", "poplin", "linen shirt", "formal shirt", "business shirt", "blouse", "blouses"],
+  "hoodies": ["hoodies", "hoodie", "fleece hoodie"],
+  "jackets": ["jackets", "jacket", "bomber", "peacoat", "overcoat", "trench", "jackets coats", "outerwear"],
+  "jackets coats": ["jackets", "jacket", "coat", "coats", "peacoat", "overcoat", "trench", "jackets coats"],
+  "blazers": ["blazers", "blazer", "blazers suits", "suits tailoring", "dinner jacket"],
+  "blazers suits": ["blazers suits", "blazers", "blazer", "suit", "suits", "suits tailoring"],
+  "suits tailoring": ["suits tailoring", "blazers suits", "blazers", "blazer", "suit", "suits"],
+  "kurtas": ["kurtas", "kurta", "kurtas tunics", "kurtas sets", "tunic kurta"],
+  "kurtas sets": ["kurtas sets", "kurtas", "kurta", "kurtas tunics", "tunic kurta"],
+  "kurtas tunics": ["kurtas tunics", "kurtas", "kurta", "kurtas sets", "tunic kurta"],
+  "sherwanis": ["sherwanis", "sherwani", "royal sherwanis bandhgalas", "bandhgala", "bandhgalas", "achkan"],
+  "royal sherwanis bandhgalas": ["royal sherwanis bandhgalas", "sherwanis", "sherwani", "bandhgala", "bandhgalas"],
+  "jeans pants": ["jeans pants", "jeans", "pants", "trousers", "bottoms trousers", "trousers pants", "denim", "joggers", "chinos"],
+  "bottoms trousers": ["bottoms trousers", "jeans pants", "trousers pants", "pants", "trousers", "jeans", "denim", "joggers", "chinos"],
+
+  // Women
+  "jackets blazers": ["jackets blazers", "blazers", "jackets", "blazer", "jacket", "crepe blazer"],
+  "trousers pants": ["trousers pants", "jeans pants", "bottoms trousers", "pants", "trousers", "palazzo"],
+  "knitwear sweaters": ["knitwear sweaters", "sweaters", "knitwear", "sweatshirts", "sweater", "cardigan"],
+  "couture gowns": ["couture gowns", "couture & gowns", "gowns", "gown", "ballgown", "evening gown"],
+  "couture & gowns": ["couture gowns", "couture & gowns", "gowns", "gown", "ballgown", "evening gown"],
+  "pleated skirts": ["pleated skirts", "skirts", "skirt"],
+  "t shirts tops": ["t shirts tops", "t-shirts", "t-shirt", "t shirts", "t shirt", "tee", "tees", "top", "tops"],
+  "shirts blouses": ["shirts blouses", "shirts", "shirt", "blouse", "blouses"],
+  "sarees drapes": ["sarees drapes", "sarees", "saree", "drapes", "drape", "sari"],
+  "lehengas sets": ["lehengas sets", "lehengas", "lehenga", "bridal lehengas", "ghagra"]
+};
+
+function matchCategory(selectedCat: string, product: CatalogProduct): boolean {
+  const normSelected = normalizeCategory(selectedCat);
+  const prodCat = normalizeCategory(product.category || "");
+  const prodSub = normalizeCategory(product.subcategory || "");
+  const prodTitle = normalizeCategory(product.title || "");
+  const prodTags = (product.tags || []).map((t) => normalizeCategory(t));
+
+  // Direct exact match
+  if (prodCat === normSelected || prodSub === normSelected) return true;
+
+  // Check synonyms of selected category
+  const synonyms = CATEGORY_SYNONYMS[normSelected] || [normSelected];
+  for (const syn of synonyms) {
+    const normSyn = normalizeCategory(syn);
+    if (prodCat === normSyn || prodSub === normSyn) return true;
+    if (prodTags.some((t) => t === normSyn || matchesWord(t, normSyn))) return true;
+    if (matchesWord(prodTitle, normSyn)) return true;
+  }
+
+  // Reverse check: does prodCat synonyms match selected?
+  const prodCatSynonyms = CATEGORY_SYNONYMS[prodCat] || [];
+  for (const syn of prodCatSynonyms) {
+    const normSyn = normalizeCategory(syn);
+    if (normSyn === normSelected) return true;
+  }
+
+  return false;
+}
+
   // Dynamic categories per department
   const availableCategories = useMemo(() => {
     if (activeGender === "women") {
       return [
-        "Couture & Gowns",
-        "Lehengas & Sets",
         "Sarees & Drapes",
-        "Contemporary Indo-Western",
-        "Jackets & Coats",
-        "Luxury Prêt & Coordinates"
+        "Lehengas & Sets",
+        "Couture Gowns",
+        "Kurtas & Tunics",
+        "T-Shirts & Tops",
+        "Shirts & Blouses",
+        "Jackets & Blazers",
+        "Trousers & Pants",
+        "Pleated Skirts",
+        "Knitwear & Sweaters"
       ];
     }
     if (activeGender === "kids") {
       return [
-        "Contemporary Indo-Western",
-        "Royal Sherwanis & Bandhgalas",
-        "Suits & Tailoring",
-        "Knitwear & Sweaters",
-        "Jackets & Coats",
-        "Casual & Formal Shirts",
-        "Bottoms & Trousers"
+        "Kurtas & Sets",
+        "Sherwanis",
+        "Blazers & Suits",
+        "Jackets",
+        "Shirts",
+        "T-Shirts",
+        "Hoodies",
+        "Sweatshirts",
+        "Polo T-Shirts",
+        "Jeans & Pants"
       ];
     }
     return [
-      "Jackets & Coats",
-      "Suits & Tailoring",
-      "Casual & Formal Shirts",
-      "Knitwear & Sweaters",
-      "Bottoms & Trousers",
-      "Denim",
-      "Leather Goods & Bags"
+      "T-Shirts",
+      "Polo T-Shirts",
+      "Shirts",
+      "Sweatshirts",
+      "Hoodies",
+      "Jackets",
+      "Blazers",
+      "Kurtas",
+      "Sherwanis",
+      "Jeans & Pants"
     ];
   }, [activeGender]);
 
-  // Dynamic sizes per department
+  // Dynamic sizes per department (Strict XS, S, M, L, XL, XXL)
   const availableSizes = useMemo(() => {
     if (activeGender === "kids") {
       return ["Age 2-3", "Age 4-5", "Age 6-7", "Age 8-9", "Age 10-11", "Age 12-14"];
     }
-    if (activeGender === "women") {
-      return ["Size XS", "Size S", "Size M", "Size L", "Size XL", "Free Size"];
-    }
-    return ["Size S", "Size M", "Size L", "Size XL", "46 EU", "48 EU", "50 EU", "52 EU"];
+    return ["XS", "S", "M", "L", "XL", "XXL"];
   }, [activeGender]);
 
   // Dynamic designers per department
@@ -209,517 +321,7 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
   }, [activeGender]);
 
   // Curated Archival Catalog Products for Men, Women & Kids (36 pieces total)
-  const catalogProducts = useMemo(() => [
-    // ================= MEN'S SALON (12 pieces) =================
-    {
-      id: "prod-1",
-      title: "Double-Breasted Cashmere Peacoat",
-      designer: "Valentin Laurent",
-      isPro: true,
-      badge: "LIMITED EDITION",
-      category: "Jackets & Coats",
-      fabric: "Pure Cashmere",
-      price: 62000,
-      originalPrice: 84000,
-      image: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["46 EU", "48 EU", "50 EU", "52 EU"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-2",
-      title: "Structured Wool Overcoat",
-      designer: "Atelier Bellini",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Jackets & Coats",
-      fabric: "Wool",
-      price: 58000,
-      originalPrice: 76000,
-      image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["48 EU", "50 EU", "52 EU"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-3",
-      title: "Bespoke Tailored Velvet Blazer",
-      designer: "Elena Rostova",
-      isPro: true,
-      badge: "MADE TO ORDER",
-      category: "Suits & Tailoring",
-      fabric: "Velvet",
-      price: 52500,
-      originalPrice: 69000,
-      image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-4",
-      title: "Sculptural Silk Trench",
-      designer: "Julian Vance",
-      isPro: false,
-      badge: "HANDCRAFTED",
-      category: "Jackets & Coats",
-      fabric: "Mulberry Silk",
-      price: 74000,
-      originalPrice: 95000,
-      image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size M", "Size L"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-5",
-      title: "Italian Melton Wool Overcoat",
-      designer: "Manuel Costello",
-      isPro: true,
-      badge: "ORGANIC COLLECTION",
-      category: "Jackets & Coats",
-      fabric: "Wool",
-      price: 59000,
-      originalPrice: 75000,
-      image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["48 EU", "50 EU"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-6",
-      title: "Hand-Spun Alpaca Blend Robe Coat",
-      designer: "Aurelien Moreau",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Knitwear & Sweaters",
-      fabric: "Alpaca",
-      price: 86000,
-      originalPrice: 110000,
-      image: "https://images.unsplash.com/photo-1550246140-5119ae4790b8?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size M", "Size L", "Size XL"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-7",
-      title: "Seamless Merino Knit Trench",
-      designer: "Sean & Jane",
-      isPro: true,
-      badge: "ORGANIC COLLECTION",
-      category: "Knitwear & Sweaters",
-      fabric: "Wool",
-      price: 48000,
-      originalPrice: 62000,
-      image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size S", "Size M"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-8",
-      title: "Pleated Trousers in Virgin Wool",
-      designer: "Lucia Ferrando",
-      isPro: true,
-      badge: "MADE TO ORDER",
-      category: "Bottoms & Trousers",
-      fabric: "Wool",
-      price: 34000,
-      originalPrice: 44000,
-      image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["30", "32", "34", "36"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-9",
-      title: "Oversized Silk-Cashmere Coat",
-      designer: "Lucia Ferrando",
-      isPro: true,
-      badge: "LIMITED EDITION",
-      category: "Jackets & Coats",
-      fabric: "Pure Cashmere",
-      price: 68000,
-      originalPrice: 89000,
-      image: "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size M", "Size L"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-10",
-      title: "Double-Faced Wool Peacoat",
-      designer: "Atelier Bellini",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Jackets & Coats",
-      fabric: "Wool",
-      price: 56000,
-      originalPrice: 72000,
-      image: "https://images.unsplash.com/photo-1520975954732-35dd22299614?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["48 EU", "50 EU", "52 EU"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-11",
-      title: "Bespoke Velvet Dinner Jacket",
-      designer: "Valentin Laurent",
-      isPro: true,
-      badge: "MADE TO ORDER",
-      category: "Suits & Tailoring",
-      fabric: "Velvet",
-      price: 64000,
-      originalPrice: 82000,
-      image: "https://images.unsplash.com/photo-1555069519-127aadedf1ee?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "men" as const
-    },
-    {
-      id: "prod-12",
-      title: "Archival Gabardine Coat",
-      designer: "Aurelien Moreau",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Jackets & Coats",
-      fabric: "Wool",
-      price: 72000,
-      originalPrice: 94000,
-      image: "https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?q=80&w=1000&auto=format&fit=crop",
-      sizes: ["Size M", "Size L"],
-      gender: "men" as const
-    },
-
-    // ================= WOMEN'S COUTURE (12 pieces) =================
-    {
-      id: "prod-w-1",
-      title: "Blush Zardozi Bridal Lehenga",
-      designer: "Sabyasachi Heritage Guild",
-      isPro: true,
-      badge: "ICONIC ARCHIVE",
-      category: "Lehengas & Sets",
-      fabric: "Mulberry Silk",
-      price: 345000,
-      originalPrice: 395000,
-      image: "/images/salon/bestseller-1.jpg",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-2",
-      title: "Crimson Crystal Silk Gown",
-      designer: "Rohit Balaji Couture",
-      isPro: true,
-      badge: "RUNWAY RELEASE",
-      category: "Couture & Gowns",
-      fabric: "Mulberry Silk",
-      price: 210000,
-      originalPrice: 255000,
-      image: "/images/salon/arrival-4.jpg",
-      sizes: ["Size S", "Size M"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-3",
-      title: "Sapphire Gala Velvet Ballgown",
-      designer: "Maison Mariana Voss",
-      isPro: true,
-      badge: "VAULT EXCLUSIVE",
-      category: "Couture & Gowns",
-      fabric: "Velvet",
-      price: 280000,
-      originalPrice: 340000,
-      image: "/images/salon/sapphire-gala-gown.jpg",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-4",
-      title: "Silk Lehenga with Hand-Woven Dupatta",
-      designer: "Atelier Tarunima",
-      isPro: true,
-      badge: "BESPOKE LIMITED",
-      category: "Lehengas & Sets",
-      fabric: "Mulberry Silk",
-      price: 112000,
-      originalPrice: 145000,
-      image: "/images/salon/arrival-2.jpg",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-5",
-      title: "Champagne Embroidered Couture Gown",
-      designer: "Adarsh Couture Privée",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Couture & Gowns",
-      fabric: "Mulberry Silk",
-      price: 152000,
-      originalPrice: 185000,
-      image: "/images/salon/trending-2.jpg",
-      sizes: ["Size XS", "Size S", "Size M"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-6",
-      title: "Wine Velvet Silk Midi Dress",
-      designer: "Atelier K. Soni",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Contemporary Indo-Western",
-      fabric: "Velvet",
-      price: 135000,
-      originalPrice: 165000,
-      image: "/images/salon/trending-4.jpg",
-      sizes: ["Size S", "Size M"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-7",
-      title: "Parisian Sculpted Silk Corsetry Gown",
-      designer: "Valentin Laurent",
-      isPro: true,
-      badge: "MASTER ARCHIVE",
-      category: "Couture & Gowns",
-      fabric: "Mulberry Silk",
-      price: 240000,
-      originalPrice: 295000,
-      image: "/images/salon/sig-parisian.jpg",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-8",
-      title: "Architectural Velvet & Silk Gown",
-      designer: "Elena Rostova",
-      isPro: true,
-      badge: "MADE TO ORDER",
-      category: "Couture & Gowns",
-      fabric: "Velvet",
-      price: 195000,
-      originalPrice: 235000,
-      image: "/images/salon/sig-geometric.jpg",
-      sizes: ["Size S", "Size M"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-9",
-      title: "Emerald Brocade Royal Kalidar Gown",
-      designer: "Adarsh Couture Privée",
-      isPro: true,
-      badge: "ROYAL HERITAGE",
-      category: "Contemporary Indo-Western",
-      fabric: "Mulberry Silk",
-      price: 185000,
-      originalPrice: 220000,
-      image: "/images/salon/deals/slide_woman_emerald.png",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-10",
-      title: "Bespoke Gold Tissue Banarasi Saree",
-      designer: "Sabyasachi Heritage Guild",
-      isPro: true,
-      badge: "ANCESTRAL WEAVES",
-      category: "Sarees & Drapes",
-      fabric: "Mulberry Silk",
-      price: 165000,
-      originalPrice: 210000,
-      image: "/images/salon/bestseller-3.jpg",
-      sizes: ["Free Size"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-11",
-      title: "Sculptural Silk Organza Cape Dress",
-      designer: "Julian Vance",
-      isPro: false,
-      badge: "LIMITED EDITION",
-      category: "Contemporary Indo-Western",
-      fabric: "Mulberry Silk",
-      price: 148000,
-      originalPrice: 180000,
-      image: "/images/salon/sig-numbered.jpg",
-      sizes: ["Size S", "Size M"],
-      gender: "women" as const
-    },
-    {
-      id: "prod-w-12",
-      title: "Heirloom Crimson Velvet Bridal Ensemble",
-      designer: "Rohit Balaji Couture",
-      isPro: true,
-      badge: "BESPOKE COMMISSION",
-      category: "Lehengas & Sets",
-      fabric: "Velvet",
-      price: 310000,
-      originalPrice: 360000,
-      image: "/images/salon/deals/slide_woman_wine.png",
-      sizes: ["Size S", "Size M", "Size L"],
-      gender: "women" as const
-    },
-
-    // ================= KIDS' ARCHIVAL (12 pieces) =================
-    {
-      id: "prod-k-1",
-      title: "Mustard Zardozi Silk Short Kurta",
-      designer: "Maison Privée Junior",
-      isPro: true,
-      badge: "HERITAGE COUTURE",
-      category: "Contemporary Indo-Western",
-      fabric: "Mulberry Silk",
-      price: 18500,
-      originalPrice: 24000,
-      image: "/images/categories/kids/kids-kurta.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-2",
-      title: "Ivory Silk Miniature Sherwani",
-      designer: "Sabyasachi Heritage Kids",
-      isPro: true,
-      badge: "ROYAL ARCHIVAL",
-      category: "Royal Sherwanis & Bandhgalas",
-      fabric: "Mulberry Silk",
-      price: 38000,
-      originalPrice: 48000,
-      image: "/images/categories/kids/kids-sherwani.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9", "Age 10-11"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-3",
-      title: "Midnight Navy Crest Suit Blazer",
-      designer: "Maison Privée Junior",
-      isPro: true,
-      badge: "TAILORED LUXE",
-      category: "Suits & Tailoring",
-      fabric: "Wool",
-      price: 22000,
-      originalPrice: 28000,
-      image: "/images/categories/kids/kids-blazer.png",
-      sizes: ["Age 6-7", "Age 8-9", "Age 10-11"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-4",
-      title: "Camel Brushed Fleece Hoodie",
-      designer: "Atelier Petit",
-      isPro: true,
-      badge: "WINTER CASHMERE",
-      category: "Knitwear & Sweaters",
-      fabric: "Pure Cashmere",
-      price: 11500,
-      originalPrice: 15000,
-      image: "/images/categories/kids/kids-hoodie.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-5",
-      title: "Indigo Denim Bomber Jacket",
-      designer: "Maison Privée Junior",
-      isPro: true,
-      badge: "ATELIER DENIM",
-      category: "Jackets & Coats",
-      fabric: "Organic Cotton",
-      price: 14800,
-      originalPrice: 19500,
-      image: "/images/categories/kids/kids-jacket.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9", "Age 10-11"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-6",
-      title: "Sage Green Pure Linen Shirt",
-      designer: "Atelier Petit",
-      isPro: true,
-      badge: "RESORT COLLECTION",
-      category: "Casual & Formal Shirts",
-      fabric: "Organic Cotton",
-      price: 9200,
-      originalPrice: 12500,
-      image: "/images/categories/kids/kids-shirt.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-7",
-      title: "Sky Blue Star Luxury Cotton Tee",
-      designer: "Maison Privée Junior",
-      isPro: true,
-      badge: "GOLD EMBLEM",
-      category: "Casual & Formal Shirts",
-      fabric: "Organic Cotton",
-      price: 5500,
-      originalPrice: 7500,
-      image: "/images/categories/kids/kids-tshirt.png",
-      sizes: ["Age 2-3", "Age 4-5", "Age 6-7"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-8",
-      title: "Beige Chino Drawstring Joggers",
-      designer: "Atelier Petit",
-      isPro: false,
-      badge: "BESPOKE TAILORED",
-      category: "Bottoms & Trousers",
-      fabric: "Organic Cotton",
-      price: 8500,
-      originalPrice: 11000,
-      image: "/images/categories/kids/kids-pants.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-9",
-      title: "Royal Emerald Velvet Bandhgala",
-      designer: "Sabyasachi Heritage Kids",
-      isPro: true,
-      badge: "LIMITED EDITION",
-      category: "Royal Sherwanis & Bandhgalas",
-      fabric: "Velvet",
-      price: 32000,
-      originalPrice: 42000,
-      image: "/images/categories/kids/kids-sherwani.png",
-      sizes: ["Age 6-7", "Age 8-9", "Age 10-11"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-10",
-      title: "Cashmere Knit Cardigan in Dusty Rose",
-      designer: "Atelier Petit",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Knitwear & Sweaters",
-      fabric: "Pure Cashmere",
-      price: 16000,
-      originalPrice: 21000,
-      image: "/images/categories/kids/kids-hoodie.png",
-      sizes: ["Age 4-5", "Age 6-7"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-11",
-      title: "Gold Thread Jacquard Party Blazer",
-      designer: "Maison Privée Junior",
-      isPro: true,
-      badge: "HANDCRAFTED",
-      category: "Suits & Tailoring",
-      fabric: "Mulberry Silk",
-      price: 26000,
-      originalPrice: 34000,
-      image: "/images/categories/kids/kids-blazer.png",
-      sizes: ["Age 6-7", "Age 8-9", "Age 10-11"],
-      gender: "kids" as const
-    },
-    {
-      id: "prod-k-12",
-      title: "Miniature Brocade Kalidar Kurta",
-      designer: "Prathamesh Atelier",
-      isPro: true,
-      badge: "ROYAL ARCHIVE",
-      category: "Contemporary Indo-Western",
-      fabric: "Mulberry Silk",
-      price: 21000,
-      originalPrice: 27000,
-      image: "/images/categories/kids/kids-kurta.png",
-      sizes: ["Age 4-5", "Age 6-7", "Age 8-9"],
-      gender: "kids" as const
-    }
-  ], []);
+  const catalogProducts: CatalogProduct[] = CATALOG_PRODUCTS;
 
   // Filtered pieces based on active gender, categories, fabrics, sizes, designers, and price
   const filteredProducts = useMemo(() => {
@@ -730,9 +332,26 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
           return false;
         }
 
+        // Collections filter (Signature Collection Disciplines)
+        if (selectedCollections.length > 0) {
+          const itemCol = (item.collection || "").toLowerCase().trim();
+          const matches = selectedCollections.some((sel) => {
+            const s = sel.toLowerCase().trim();
+            if (itemCol === s) return true;
+            if ((s === "unveiled" || s === "upcycled") && (itemCol === "unveiled" || itemCol === "upcycled")) return true;
+            return false;
+          });
+          if (!matches) {
+            return false;
+          }
+        }
+
         // Category filter
-        if (selectedCategories.length > 0 && !selectedCategories.includes(item.category)) {
-          return false;
+        if (selectedCategories.length > 0) {
+          const matchesCategory = selectedCategories.some((cat) => matchCategory(cat, item));
+          if (!matchesCategory) {
+            return false;
+          }
         }
 
         // Fabric filter
@@ -775,6 +394,7 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
   }, [
     catalogProducts,
     activeGender,
+    selectedCollections,
     selectedCategories,
     selectedFabrics,
     selectedSizes,
@@ -784,148 +404,184 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
   ]);
 
   return (
-    <div className="space-y-8 pb-20 max-w-[1520px] mx-auto">
-      {/* Header & Breadcrumb Strip (Photo 2) */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E8D2B7] pb-5">
-        <div>
-          <div className="text-[11px] uppercase tracking-[0.2em] text-[#8F8178] font-mono mb-1">
-            HAUTE CURATED REPOSITORY • {activeGender.toUpperCase()}&apos;S SALON
-          </div>
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-0.5">
-            <h1 className="font-serif text-3xl sm:text-4xl text-[#231820]">
-              {activeGender === "men"
-                ? "Men's Clothing"
-                : activeGender === "women"
-                ? "Women's Couture"
-                : "Kids' Archival"}
-              <span className="text-sm font-sans font-normal text-[#8F8178] ml-3 tracking-normal">
-                ({activeGender === "kids" ? "842" : activeGender === "women" ? "1,420" : "1,248"} PIECES)
-              </span>
-            </h1>
-          </div>
-        </div>
+    <div className="w-full">
+      {/* Top Header & Breadcrumb Strip: Kept in Original Warm Off-White (#FAF7F2) */}
+      <div className="w-full bg-[#FAF7F2] pt-6 sm:pt-8 pb-5 border-b border-[#E8D2B7]">
+        <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header & Breadcrumb Strip (Photo 2) */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-[#8F8178] font-mono mb-1">
+                HAUTE CURATED REPOSITORY • {activeGender.toUpperCase()}&apos;S SALON
+              </div>
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-0.5">
+                <h1 className="font-serif text-3xl sm:text-4xl text-[#231820]">
+                  {activeGender === "men"
+                    ? "Men's Clothing"
+                    : activeGender === "women"
+                    ? "Women's Couture"
+                    : "Kids' Archival"}
+                  <span className="text-sm font-sans font-normal text-[#8F8178] ml-3 tracking-normal">
+                    ({activeGender === "kids" ? "842" : activeGender === "women" ? "1,420" : "1,248"} PIECES)
+                  </span>
+                </h1>
+              </div>
+            </div>
 
-        {/* Layout Toggle & Sort */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 p-1 bg-[#FAF7F2] rounded-xl border border-[#E8D2B7]">
-            <button
-              onClick={() => setCatalogLayout("grid")}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                catalogLayout === "grid"
-                  ? "bg-[#3A0E1E] text-white shadow-2xs"
-                  : "text-[#8F8178] hover:text-[#231820]"
-              }`}
-              title="Standard Grid"
-            >
-              <Grid className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setCatalogLayout("dense")}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                catalogLayout === "dense"
-                  ? "bg-[#3A0E1E] text-white shadow-2xs"
-                  : "text-[#8F8178] hover:text-[#231820]"
-              }`}
-              title="Editorial 2-Column"
-            >
-              <Columns className="w-4 h-4" />
-            </button>
-          </div>
+            {/* Layout Toggle & Sort */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1 p-1 bg-white rounded-xl border border-[#E8D2B7]">
+                <button
+                  onClick={() => setCatalogLayout("grid")}
+                  className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                    catalogLayout === "grid"
+                      ? "bg-[#3A0E1E] text-white shadow-2xs"
+                      : "text-[#8F8178] hover:text-[#231820]"
+                  }`}
+                  title="Standard Grid"
+                >
+                  <Grid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setCatalogLayout("dense")}
+                  className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                    catalogLayout === "dense"
+                      ? "bg-[#3A0E1E] text-white shadow-2xs"
+                      : "text-[#8F8178] hover:text-[#231820]"
+                  }`}
+                  title="Editorial 2-Column"
+                >
+                  <Columns className="w-4 h-4" />
+                </button>
+              </div>
 
-          <div className="flex items-center gap-2 text-xs text-[#6B5A52]">
-            <span className="font-medium">SORT BY:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-white border border-[#E8D2B7] rounded-lg px-3 py-1.5 text-xs text-[#231820] font-medium focus:outline-none focus:border-[#D4AF37] cursor-pointer"
-            >
-              <option value="popular">POPULAR ▾</option>
-              <option value="price-low">PRICE: LOW TO HIGH</option>
-              <option value="price-high">PRICE: HIGH TO LOW</option>
-              <option value="newest">LATEST ADDITIONS</option>
-              <option value="archival">ARCHIVAL VINTAGE</option>
-            </select>
+              <div className="flex items-center gap-2 text-xs text-[#6B5A52]">
+                <span className="font-medium">SORT BY:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-white border border-[#E8D2B7] rounded-lg px-3 py-1.5 text-xs text-[#231820] font-medium focus:outline-none focus:border-[#D4AF37] cursor-pointer"
+                >
+                  <option value="popular">POPULAR ▾</option>
+                  <option value="price-low">PRICE: LOW TO HIGH</option>
+                  <option value="price-high">PRICE: HIGH TO LOW</option>
+                  <option value="newest">LATEST ADDITIONS</option>
+                  <option value="archival">ARCHIVAL VINTAGE</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Active Filter Chips Bar (Photo 2) */}
-      <div className="flex flex-wrap items-center gap-2">
-        {selectedCategories.map((cat) => (
-          <span
-            key={cat}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
-          >
-            {cat}
-            <button
-              onClick={() => setSelectedCategories(selectedCategories.filter((c) => c !== cat))}
-              className="hover:text-rose-600 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </span>
-        ))}
+      {/* Starting from where the user cropped: Clean Pure White (#FFFFFF) */}
+      <div className="w-full bg-white pt-6 pb-20">
+        <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          {/* Active Filter Chips Bar (Photo 2) */}
+          {(selectedCollections.length > 0 ||
+            selectedCategories.length > 0 ||
+            selectedFabrics.length > 0 ||
+            selectedSizes.length > 0 ||
+            selectedDesigners.length > 0) && (
+            <div className="flex flex-wrap items-center gap-2">
+              {selectedCollections.map((col) => (
+                <span
+                  key={col}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3A0E1E] text-[#F6DFC4] border border-[#D4AF37]/60 text-xs font-serif uppercase tracking-wider shadow-xs"
+                >
+                  <Sparkles className="w-3 h-3 text-[#D4AF37]" />
+                  <span>{col}</span>
+                  <button
+                    onClick={() => {
+                      const next = selectedCollections.filter((c) => c !== col);
+                      setSelectedCollections(next);
+                      if (next.length === 0) setActiveCollectionFilter(null);
+                    }}
+                    className="hover:text-rose-300 transition-colors cursor-pointer"
+                    title="Remove filter"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
 
-        {selectedFabrics.map((fab) => (
-          <span
-            key={fab}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
-          >
-            {fab}
-            <button
-              onClick={() => setSelectedFabrics(selectedFabrics.filter((f) => f !== fab))}
-              className="hover:text-rose-600 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </span>
-        ))}
+              {selectedCategories.map((cat) => (
+                <span
+                  key={cat}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
+                >
+                  {cat}
+                  <button
+                    onClick={() => {
+                      const updated = selectedCategories.filter((c) => c !== cat);
+                      setSelectedCategories(updated);
+                      if (updated.length === 0) {
+                        setActiveCategoryFilter(null);
+                      }
+                    }}
+                    className="hover:text-rose-600 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
 
-        {selectedSizes.map((sz) => (
-          <span
-            key={sz}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
-          >
-            {sz}
-            <button
-              onClick={() => setSelectedSizes(selectedSizes.filter((s) => s !== sz))}
-              className="hover:text-rose-600 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </span>
-        ))}
+              {selectedFabrics.map((fab) => (
+                <span
+                  key={fab}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
+                >
+                  {fab}
+                  <button
+                    onClick={() => setSelectedFabrics(selectedFabrics.filter((f) => f !== fab))}
+                    className="hover:text-rose-600 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
 
-        {selectedDesigners.map((des) => (
-          <span
-            key={des}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
-          >
-            {des}
-            <button
-              onClick={() => setSelectedDesigners(selectedDesigners.filter((d) => d !== des))}
-              className="hover:text-rose-600 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </span>
-        ))}
+              {selectedSizes.map((sz) => (
+                <span
+                  key={sz}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
+                >
+                  {sz}
+                  <button
+                    onClick={() => setSelectedSizes(selectedSizes.filter((s) => s !== sz))}
+                    className="hover:text-rose-600 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
 
-        {(selectedCategories.length > 0 ||
-          selectedFabrics.length > 0 ||
-          selectedSizes.length > 0 ||
-          selectedDesigners.length > 0) && (
-          <button
-            onClick={clearAllFilters}
-            className="text-[11px] font-mono text-[#8F8178] hover:text-[#542333] underline ml-2 uppercase tracking-wider cursor-pointer"
-          >
-            CLEAR ALL
-          </button>
-        )}
-      </div>
+              {selectedDesigners.map((des) => (
+                <span
+                  key={des}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF0F4] border border-[#E8D2B7] text-[#542333] text-xs font-serif uppercase tracking-wider"
+                >
+                  {des}
+                  <button
+                    onClick={() => setSelectedDesigners(selectedDesigners.filter((d) => d !== des))}
+                    className="hover:text-rose-600 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
 
-      {/* Main Catalog View: Sidebar + Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <button
+                onClick={clearAllFilters}
+                className="text-[11px] font-mono text-[#8F8178] hover:text-[#542333] underline ml-2 uppercase tracking-wider cursor-pointer"
+              >
+                CLEAR ALL
+              </button>
+            </div>
+          )}
+
+          {/* Main Catalog View: Sidebar + Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Filter Sidebar (3 Cols) (Photo 2) */}
         <aside className="lg:col-span-3 bg-white rounded-2xl border border-[#E8D2B7] p-5 shadow-sm space-y-5">
           <div className="flex items-center justify-between pb-3 border-b border-[#E8D2B7]">
@@ -966,6 +622,52 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
                 );
               })}
             </div>
+          </div>
+
+          {/* Accordion: COLLECTIONS (Signature Collection 6 Disciplines) */}
+          <div className="border-b border-[#E8D2B7]/60 pb-4">
+            <button
+              onClick={() => toggleSection("collection")}
+              className="w-full flex items-center justify-between text-xs font-serif uppercase tracking-wider font-semibold text-[#231820] py-1 cursor-pointer"
+            >
+              <span className="flex items-center gap-1.5">
+                <span>Collections</span>
+                {selectedCollections.length > 0 && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059]" />
+                )}
+              </span>
+              {openSections.collection ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+            {openSections.collection && (
+              <div className="mt-2.5 space-y-1.5 text-xs text-[#6B5A52]">
+                {SIGNATURE_COLLECTIONS_LIST.map((col) => {
+                  const isChecked = selectedCollections.includes(col);
+                  return (
+                    <label key={col} className="flex items-center gap-2.5 cursor-pointer hover:text-[#3A0E1E] transition-colors py-0.5">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => {
+                          const updated = isChecked
+                            ? selectedCollections.filter((c) => c !== col)
+                            : [...selectedCollections, col];
+                          setSelectedCollections(updated);
+                          if (updated.length === 0) {
+                            setActiveCollectionFilter(null);
+                          } else {
+                            setActiveCollectionFilter(updated[0]);
+                          }
+                        }}
+                        className="rounded border-[#E8D2B7] text-[#3A0E1E] focus:ring-[#D4AF37]"
+                      />
+                      <span className={isChecked ? "font-semibold text-[#3A0E1E]" : ""}>
+                        {col}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Accordion: CATEGORY */}
@@ -1197,9 +899,12 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
               >
                 <div>
                   {/* Photo with hover zoom */}
-                  <div className="relative aspect-3/4 overflow-hidden bg-[#FAF7F2]">
+                  <div
+                    onClick={() => setSelectedProductId(product.id)}
+                    className="relative aspect-3/4 overflow-hidden bg-[#FAF7F2] cursor-pointer"
+                  >
                     <img
-                      src={product.image}
+                      src={product.images?.[0] || product.image}
                       alt={product.title}
                       className="w-full h-full object-cover object-top group-hover:scale-106 transition-transform duration-700 ease-out"
                     />
@@ -1216,8 +921,8 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
 
                     {/* Badge */}
                     <div className="absolute bottom-3 left-3">
-                      <span className="px-2 py-0.5 rounded-sm bg-black/75 text-white/95 text-[9px] uppercase font-mono tracking-wider backdrop-blur-xs">
-                        {product.badge}
+                      <span className="px-2 py-0.5 rounded-xs bg-[#3A0E1E]/90 text-[#F6DFC4] text-[9px] uppercase font-mono tracking-wider backdrop-blur-xs border border-[#D4AF37]/40 shadow-xs">
+                        {product.collection || product.badge}
                       </span>
                     </div>
 
@@ -1261,12 +966,38 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
                     {/* Designer Attribution */}
                     <div className="flex items-center gap-1.5 text-[11px] text-[#8F8178]">
                       <span>By: {product.designer}</span>
-                      {product.isPro && (
-                        <span className="px-1 py-0.2 rounded-xs bg-[#F6DFC4] text-[#3A0E1E] text-[9px] font-bold font-mono">
+                      {product.isPro ? (
+                        <span
+                          className="inline-flex items-center justify-center px-1.5 py-[1.5px] rounded-[3px] text-[7.5px] font-bold tracking-[0.14em] uppercase font-sans text-[#2B1403] border border-[#C99726]/60 shadow-[0_1px_2px_rgba(180,126,16,0.2)] shrink-0 select-none"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #FDF0CD 0%, #E5B842 50%, #B88114 100%)",
+                          }}
+                          title="Pro Atelier Couturier"
+                        >
                           PRO
                         </span>
+                      ) : (
+                        <span
+                          className="inline-flex items-center shrink-0"
+                          title="Verified Atelier Heritage Guild"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="w-3.5 h-3.5 drop-shadow-[0_1px_2px_rgba(29,155,240,0.28)]"
+                            fill="none"
+                          >
+                            <path
+                              d="M22.5 12.5c0-1.58-.8-2.95-2-3.77.54-1.51.16-3.28-.97-4.41s-2.9-1.51-4.41-.97C14.3 2.15 12.93 1.35 11.35 1.35s-2.95.8-3.77 2c-1.51-.54-3.28-.16-4.41.97s-1.51 2.9-.97 4.41c-1.2.82-2 2.19-2 3.77s.8 2.95 2 3.77c-.54 1.51-.16 3.28.97 4.41s2.9 1.51 4.41.97c.82 1.2 2.19 2 3.77 2s2.95-.8 3.77-2c1.51.54 3.28.16 4.41-.97s1.51-2.9.97-4.41c1.2-.82 2-2.19 2-3.77z"
+                              fill="#1D9BF0"
+                            />
+                            <path
+                              d="M10.2 16.2l-3.6-3.6 1.4-1.4 2.2 2.2 5.6-5.6 1.4 1.4-7 7z"
+                              fill="#FFFFFF"
+                            />
+                          </svg>
+                        </span>
                       )}
-                      <CheckCircle2 className="w-3 h-3 text-[#C5A059]" />
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-[#E8D2B7]/50">
@@ -1282,15 +1013,9 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
                   </div>
                 </div>
 
-                {/* Footer Commission Action */}
+                {/* Footer Add to Cart Action */}
                 <div className="p-4 pt-0">
-                  <button
-                    onClick={() => onOpenCustomRequest(product as any)}
-                    className="w-full py-1.5 rounded-lg bg-[#FFF0F4] hover:bg-[#FFE4EC] text-[#542333] text-[10px] font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 border border-[#E8D2B7] cursor-pointer"
-                  >
-                    <Scissors className="w-3 h-3 text-[#D4AF37]" />
-                    <span>Commission Bespoke</span>
-                  </button>
+                  <AddToBagButton product={product} variant="catalog-footer" />
                 </div>
               </motion.div>
             ))}
@@ -1333,5 +1058,7 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
         </main>
       </div>
     </div>
+  </div>
+</div>
   );
 };

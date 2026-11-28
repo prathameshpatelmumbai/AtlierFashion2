@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useStudio } from "@/context/StudioContext";
 import { Bell, ShoppingCart, Search, User, LogOut, Sparkles } from "lucide-react";
+import { StytellLogo } from "@/components/common/AltierLogo";
 
 export const CustomerHeader: React.FC = () => {
   const {
@@ -11,17 +12,15 @@ export const CustomerHeader: React.FC = () => {
     customerSearchQuery,
     setCustomerSearchQuery,
     setCustomerNotificationsOpen,
-    setPortalMode,
     requestStudioAccess,
     setSelectedProductId,
     cartCount,
     setCartOpen,
     customerProfile,
-    logoutCustomer,
-    showToast
+    logoutCustomer
   } = useStudio();
 
-  const [activeTopNavItem, setActiveTopNavItem] = useState<string>("home");
+  const [, setActiveTopNavItem] = useState<string>("home");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +34,7 @@ export const CustomerHeader: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleNavClick = (section: any, navId: string = "home") => {
+  const handleNavClick = (section: typeof customerSection, navId: string = "home") => {
     setActiveTopNavItem(navId);
     setSelectedProductId(null);
     setCustomerSection(section);
@@ -79,29 +78,23 @@ export const CustomerHeader: React.FC = () => {
       }}
     >
       <div className="h-[58px] max-w-[1240px] mx-auto px-5 sm:px-8 flex items-center justify-between gap-4">
-        {/* Left Brand Wordmark: ATELIER / MAISON PRIVÉE */}
-        <button
-          type="button"
-          onClick={() => handleNavClick("discover", "home")}
-          className="flex flex-col items-start leading-none cursor-pointer group shrink-0 text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E8D2B7]"
-          title="Atelier Maison Privée"
-        >
-          <span
-            className="text-[8px] tracking-[0.28em] text-[#D9BFA4] uppercase italic font-normal"
-            style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
+        {/* Left Brand Logo: STYTELL Luxury Horizontal Lockup with proper breathing room */}
+        <div className="flex items-center gap-5 sm:gap-6 shrink-0">
+          <button
+            type="button"
+            onClick={() => handleNavClick("discover", "home")}
+            className="flex items-center cursor-pointer group shrink-0 text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E8D2B7]"
+            title="STYTELL Maison Privée"
           >
-            ATELIER
-          </span>
-          <span
-            className="text-[14px] sm:text-[15px] tracking-[0.16em] text-[#FAF4ED] font-normal uppercase mt-0.5"
-            style={{ fontFamily: "var(--font-nevrada), 'Nevrada', var(--font-cormorant), 'Playfair Display', serif" }}
-          >
-            MAISON PRIVÉE
-          </span>
-        </button>
+            <StytellLogo height={34} variant="horizontal" theme="dark" />
+          </button>
+
+          {/* Luxury Editorial Hairline Divider for confident visual hierarchy */}
+          <div className="hidden lg:block h-4 w-px bg-[#E8D2B7]/25" aria-hidden="true" />
+        </div>
 
         {/* Navigation Links: HOME, TOP DEALS, CUSTOM ORDERS, UVIBE */}
-        <nav className="hidden lg:flex items-center gap-6 h-full ml-2">
+        <nav className="hidden lg:flex items-center gap-7 h-full">
           {navItems.map((item) => {
             const isActive =
               (item.id === "home" && customerSection === "discover") ||
@@ -234,6 +227,19 @@ export const CustomerHeader: React.FC = () => {
           </button>
         </div>
       </div>
+      <nav aria-label="Mobile storefront navigation" className="lg:hidden flex items-center justify-around gap-2 px-3 border-t border-[#E8D2B7]/15">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={item.onClick}
+            aria-current={(item.id === "home" ? customerSection === "discover" : customerSection === item.id) ? "page" : undefined}
+            className="min-h-11 px-2 text-[9px] uppercase tracking-wider text-[#EEDFD5]/80 aria-[current=page]:text-[#F2D8A7] aria-[current=page]:border-b aria-[current=page]:border-[#C5A059]"
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
     </header>
   );
 };

@@ -20,10 +20,12 @@ import {
   CreditCard,
   Plus,
   Flame,
+  Palette,
   CheckCircle2,
   AlertCircle
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AtelierPantoneColorWheel } from "@/components/studio/AtelierPantoneColorWheel";
 
 const CATEGORIES: Category[] = [
   "Couture & Gowns",
@@ -183,6 +185,13 @@ export const ListNewProductForm: React.FC = () => {
             >
               <Flame className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>Boosted for Promotion (4)</span>
+            </button>
+            <button
+              onClick={() => setActiveStudioTab("pantone")}
+              className="py-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#837376] hover:text-[#3A0E1E] transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+            >
+              <Palette className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Pantone & Color Wheel</span>
             </button>
           </nav>
         </div>
@@ -530,6 +539,15 @@ export const ListNewProductForm: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Chromatic Colorways & Pantone Registry */}
+            <div className="pt-2 border-t border-[#E8D2B7]/60">
+              <AtelierPantoneColorWheel
+                onPaletteChange={(palette) => {
+                  showToast(`Garment colorways synchronized (${palette.length} shades)`);
+                }}
+              />
+            </div>
           </div>
         )}
 
@@ -554,13 +572,14 @@ export const ListNewProductForm: React.FC = () => {
                 <label className="text-xs uppercase tracking-wider font-bold text-[#3A0E1E]">
                   Standard Sizes & Custom Options *
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
                   {[
                     { id: "XS", sub: "UK 6 / US 2" },
                     { id: "S", sub: "UK 8 / US 4" },
                     { id: "M", sub: "UK 10 / US 6" },
                     { id: "L", sub: "UK 12 / US 8" },
                     { id: "XL", sub: "UK 14 / US 10" },
+                    { id: "XXL", sub: "UK 16 / US 12" },
                     { id: "Custom", sub: "Made-to-Measure" },
                   ].map((sz) => {
                     const isSelected = formData.standardSizes.includes(sz.id);

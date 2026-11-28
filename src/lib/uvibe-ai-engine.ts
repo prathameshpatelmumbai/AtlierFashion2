@@ -112,6 +112,25 @@ export interface ParsedFashionQuery {
   extractedLength?: string;
   extractedFeatures?: string[];
   hardRequirements?: Record<string, string>;
+
+  // Domain-Trained Garment Category Extractions
+  isSareeSearch?: boolean;
+  extractedSareeWeave?: string;
+  extractedSareePattern?: string;
+
+  isKurtaSearch?: boolean;
+  extractedKurtaStyle?: string;
+  extractedKurtaCraft?: string;
+
+  isSherwaniSearch?: boolean;
+  extractedSherwaniStyle?: string;
+  extractedSherwaniCraft?: string;
+
+  isShirtSearch?: boolean;
+  extractedShirtType?: string;
+  extractedShirtPattern?: string;
+  extractedShirtCollar?: string;
+  extractedShirtCuff?: string;
 }
 
 // =========================================================================
@@ -136,6 +155,29 @@ export const UVIBE_GARMENT_CORPUS: UvibeGarment[] = [
     colors: ["blush", "pink", "rose gold", "peach", "gold", "ivory", "champagne"],
     crafts: ["Bullion Zardozi", "Scalloped Veil", "Hand Embroidery", "Zardozi"],
     designFeatures: ["Kalidar 32-Kali Flare", "Scalloped Veil Border", "Deep Sweetheart Blouse", "Antique Latkan Tassels"],
+    era: "Heritage Royal",
+    gender: "women",
+    occasions: ["Bridal", "Wedding", "Grand Reception", "Sangeet"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-in-005"
+  },
+  // 1a. Crimson Silk Velvet Kalidar Bridal Lehenga (Matches exact crimson velvet kalidar query!)
+  {
+    id: "uv-crimson-lehenga",
+    title: "Crimson Silk Velvet Kalidar Bridal Lehenga",
+    badge: "Crimson Silk Velvet Kalidar Bridal Lehenga",
+    tag: "MAISON BRIDAL ARCHIVE",
+    desc: "Deep crimson silk micro-velvet • 32-kali flare with 24k antique gold zardozi & scalloped sheer veil",
+    price: 260000,
+    originalPrice: 315000,
+    sizes: "XS - XL • BESPOKE",
+    image: "/images/categories/women/women-lehenga.png",
+    silhouette: "Kalidar Lehenga",
+    silhouetteFamily: "royal-ethnic-women",
+    fabrics: ["Silk Velvet", "Velvet", "Raw Silk", "Tissue Organza"],
+    colors: ["crimson", "red", "burgundy", "maroon", "gold"],
+    crafts: ["Antique Gold Zardozi", "Bullion Zardozi", "Zardozi", "Scalloped Veil", "Hand Embroidery"],
+    designFeatures: ["Kalidar 32-Kali Flare", "Scalloped Veil", "Deep Sweetheart Blouse", "Heavy Zardozi Border"],
     era: "Heritage Royal",
     gender: "women",
     occasions: ["Bridal", "Wedding", "Grand Reception", "Sangeet"],
@@ -363,7 +405,7 @@ export const UVIBE_GARMENT_CORPUS: UvibeGarment[] = [
     silhouette: "Kalidar Lehenga",
     silhouetteFamily: "royal-ethnic-women",
     fabrics: ["Silk Organza", "Raw Silk", "Silk Velvet", "Organza"],
-    colors: ["crimson", "red", "rose gold", "gold", "ruby"],
+    colors: ["gold", "champagne", "ivory", "beige", "rose gold"],
     crafts: ["Gotapatti", "Badla Embroidery", "Scalloped Veil", "Zardozi", "Antique Gold Zardozi"],
     designFeatures: ["32-Kali Flare", "Hand-Dyed Badla Border", "Sweetheart Choli", "Tissue Veil"],
     era: "Mughal Renaissance",
@@ -589,7 +631,7 @@ export const UVIBE_GARMENT_CORPUS: UvibeGarment[] = [
     price: 36000,
     originalPrice: 48000,
     sizes: "Age 2 - 10Y",
-    image: "/images/categories/kids/kids-blazer.png",
+    image: "/images/categories/kids/kids-sherwani.png",
     silhouette: "Structured Sherwani",
     silhouetteFamily: "junior-kids",
     fabrics: ["Raw Silk", "Mulberry Silk", "Muslin"],
@@ -600,7 +642,7 @@ export const UVIBE_GARMENT_CORPUS: UvibeGarment[] = [
     gender: "kids",
     occasions: ["Wedding", "Royal Ceremonial", "Groom Nephew"],
     verifiedBadge: "gold-pro",
-    linkedProductId: "prod-in-007"
+    linkedProductId: "prod-k-2"
   },
   // 18. Kids Sand Chino Drawstring Joggers
   {
@@ -624,6 +666,29 @@ export const UVIBE_GARMENT_CORPUS: UvibeGarment[] = [
     occasions: ["Casual Luxe", "Travel", "School Luxe"],
     verifiedBadge: null,
     linkedProductId: "prod-in-007"
+  },
+  // 19. Kids Midnight Navy Crest Suit Blazer
+  {
+    id: "uv-19",
+    title: "Kids Midnight Navy Crest Suit Blazer",
+    badge: "Kids Midnight Navy Crest Suit Blazer",
+    tag: "SAVILE ROW JUNIOR",
+    desc: "Super 120s virgin wool miniature tailored blazer with brass heritage crest buttons and cupro lining",
+    price: 22000,
+    originalPrice: 44000,
+    sizes: "Age 6 - 11Y",
+    image: "/images/categories/kids/kids-blazer.png",
+    silhouette: "Tailored Blazer",
+    silhouetteFamily: "junior-kids",
+    fabrics: ["Virgin Wool", "Wool", "Cupro"],
+    colors: ["navy", "dark blue", "blue", "midnight blue"],
+    crafts: ["Pick Stitching", "Brass Crest Buttons", "Notch Lapel"],
+    designFeatures: ["Notch Lapel", "Flap Pockets", "Brass Crest Buttons", "Tailored Fit"],
+    era: "Contemporary Savile Row",
+    gender: "kids",
+    occasions: ["Formal", "Celebration", "Ceremony"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-k-3"
   },
   // 21. Heritage Handcrafted Zardozi Silk Bandhgala
   {
@@ -1093,6 +1158,234 @@ export const UVIBE_GARMENT_CORPUS: UvibeGarment[] = [
     occasions: ["Casual", "Sports", "Weekend"],
     verifiedBadge: "gold-pro",
     linkedProductId: "prod-tee-10"
+  },
+
+  // =========================================================================
+  // DOMAIN-TRAINED FLAGSHIP CORPUS: SAREES (Color, Pattern, Regional Weave)
+  // =========================================================================
+  {
+    id: "uv-saree-bandhani",
+    title: "Scarlet Crimson Bandhani Silk Georgette Saree",
+    badge: "Scarlet Crimson Bandhani Silk Georgette Saree",
+    tag: "ROYAL RAJPUTANA ARCHIVE",
+    desc: "Hand-tied fine bandhej dots with real gold gotapatti border • Pure banarasi georgette with contrast emerald piping",
+    price: 72000,
+    originalPrice: 89000,
+    sizes: "UNSTITCHED • BESPOKE BLOUSE",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop",
+    silhouette: "Temple Drape Saree",
+    silhouetteFamily: "royal-ethnic-women",
+    category: "Women",
+    subcategory: "Sarees & Drapes",
+    fabrics: ["Georgette", "Pure Silk", "Silk Georgette", "Banarasi Silk"],
+    colors: ["red", "crimson", "scarlet", "gold"],
+    crafts: ["Bandhani", "Gotapatti", "24k Gold Zari", "Hand Tie-Dye"],
+    designFeatures: ["Hand-Tied Bandhej Dots", "Gotapatti Border", "Contrast Piping", "Pleated Pallu"],
+    era: "Heritage Royal",
+    gender: "women",
+    occasions: ["Wedding", "Festive", "Sangeet", "Reception"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-deal-004"
+  },
+  {
+    id: "uv-saree-chanderi",
+    title: "Pastel Mint Chanderi Silk Saree with Zari Butti",
+    badge: "Pastel Mint Chanderi Silk Saree with Zari Butti",
+    tag: "MADHYA PRADESH HERITAGE",
+    desc: "Featherlight handloom chanderi silk-cotton with delicate gold zari floral butti motifs and sheer meenakari border",
+    price: 48000,
+    originalPrice: 62000,
+    sizes: "UNSTITCHED • BESPOKE BLOUSE",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=1000&auto=format&fit=crop",
+    silhouette: "Temple Drape Saree",
+    silhouetteFamily: "royal-ethnic-women",
+    category: "Women",
+    subcategory: "Sarees & Drapes",
+    fabrics: ["Chanderi Silk", "Cotton Silk", "Tissue Silk", "Pure Silk"],
+    colors: ["mint", "sage", "green", "gold", "pastel green"],
+    crafts: ["Zari Butti", "Chanderi Weaving", "Gold Zari", "Handloom"],
+    designFeatures: ["Zari Butti Motifs", "Meenakari Border", "Sheer Pallu", "Traditional Floral Motifs"],
+    era: "Vedic Classical",
+    gender: "women",
+    occasions: ["Festive", "Summer Wedding", "Ceremony"],
+    verifiedBadge: "blue-tick",
+    linkedProductId: "prod-deal-004"
+  },
+  {
+    id: "uv-saree-paithani",
+    title: "Royal Peacock Blue Paithani Pure Silk Saree",
+    badge: "Royal Peacock Blue Paithani Pure Silk Saree",
+    tag: "MAHARASHTRA PATRICIAN WEAVE",
+    desc: "Handcrafted Yeola Paithani on fine silk warp • Muniya parrot-gold border with regal peacock (mor bangdi) zari pallu",
+    price: 128000,
+    originalPrice: 155000,
+    sizes: "UNSTITCHED • BESPOKE BLOUSE",
+    image: "/images/salon/sig-heritage-looms.jpg",
+    silhouette: "Temple Drape Saree",
+    silhouetteFamily: "royal-ethnic-women",
+    category: "Women",
+    subcategory: "Sarees & Drapes",
+    fabrics: ["Paithani Silk", "Pure Mulberry Silk", "Zari Silk"],
+    colors: ["blue", "royal blue", "peacock blue", "gold", "teal"],
+    crafts: ["Paithani Weaving", "Muniya Border", "24k Gold Zari", "Peacock Pallu"],
+    designFeatures: ["Muniya Border", "Mor Bangdi Pallu", "Gold Zari Weft", "Intricate Buttas"],
+    era: "Vedic Classical",
+    gender: "women",
+    occasions: ["Bridal", "Wedding", "Grand Festive"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "sig-heritage"
+  },
+
+  // =========================================================================
+  // DOMAIN-TRAINED FLAGSHIP CORPUS: KURTAS (Cuts, Lucknowi Chikankari, Pathani)
+  // =========================================================================
+  {
+    id: "uv-kurta-chikankari",
+    title: "Ivory Lucknowi Chikankari Pure Georgette Kurta Set",
+    badge: "Ivory Lucknowi Chikankari Pure Georgette Kurta Set",
+    tag: "AWADH COUTURE ARCHIVE",
+    desc: "Hand-embroidered by master artisans in Lucknow • Authentic 32-stitch bakhiya, shadow work, and keel kangan needlework paired with silk churidar",
+    price: 58000,
+    originalPrice: 74000,
+    sizes: "38 - 46 • BESPOKE",
+    image: "/images/salon/bestseller-2.jpg",
+    silhouette: "Ethnic Kurta Set",
+    silhouetteFamily: "royal-ethnic-men",
+    category: "Men",
+    subcategory: "Kurtas & Tunics",
+    fabrics: ["Georgette", "Mulberry Silk", "Cotton Muslin", "Raw Silk"],
+    colors: ["ivory", "cream", "white", "off-white"],
+    crafts: ["Chikankari", "Shadow Work", "Bakhiya Stitch", "Hand Embroidery"],
+    designFeatures: ["Mandarin Collar", "Embroidered Button Placket", "Straight Cut Kurta", "Side Slits"],
+    era: "Mughal Renaissance",
+    gender: "men",
+    occasions: ["Sangeet", "Haldi", "Festive", "Ceremonial"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-in-001"
+  },
+  {
+    id: "uv-kurta-angrakha",
+    title: "Haldi Saffron Silk Angrakha Kurta with Mirror Work",
+    badge: "Haldi Saffron Silk Angrakha Kurta with Mirror Work",
+    tag: "RAJASTHANI REGAL CUT",
+    desc: "Hand-spun raw silk in festive haldi saffron • Flared angrakha overlapping crossover placket with genuine mirror-work shisha embroidery",
+    price: 64000,
+    originalPrice: 82000,
+    sizes: "38 - 46 • BESPOKE",
+    image: "/images/salon/emerald-kurta-nehru.jpg",
+    silhouette: "Ethnic Kurta Set",
+    silhouetteFamily: "royal-ethnic-men",
+    category: "Men",
+    subcategory: "Kurtas & Tunics",
+    fabrics: ["Raw Silk", "Chanderi Silk", "Mulberry Silk"],
+    colors: ["yellow", "mustard", "saffron", "gold", "haldi"],
+    crafts: ["Angrakha Style", "Mirror Work", "Gold Tilla", "Resham Needlework"],
+    designFeatures: ["Overlapping Angrakha Cut", "Side Tie Dori", "Mandarin Stand Collar", "Flared Hem"],
+    era: "Heritage Royal",
+    gender: "men",
+    occasions: ["Haldi", "Mehendi", "Sangeet", "Wedding"],
+    verifiedBadge: "blue-tick",
+    linkedProductId: "prod-in-004"
+  },
+  {
+    id: "uv-kurta-pathani",
+    title: "Obsidian Black Cotton Silk Pathani Kurta Set",
+    badge: "Obsidian Black Cotton Silk Pathani Kurta Set",
+    tag: "FRONTIER HERITAGE MENSWEAR",
+    desc: "Heavyweight cotton silk tailored with sharp military epaulet shoulder flaps, dual patch pockets, and curved round hem",
+    price: 42000,
+    originalPrice: 54000,
+    sizes: "38 - 46 • BESPOKE",
+    image: "/images/salon/obsidian-bandhgala.jpg",
+    silhouette: "Ethnic Kurta Set",
+    silhouetteFamily: "royal-ethnic-men",
+    category: "Men",
+    subcategory: "Kurtas & Tunics",
+    fabrics: ["Cotton Silk", "Bangalore Silk", "Poplin Cotton"],
+    colors: ["black", "obsidian", "noir"],
+    crafts: ["Mandarin Collar", "Shoulder Flaps", "Ornamental Buttons", "Pathani Cut"],
+    designFeatures: ["Military Shoulder Tabs", "Dual Flap Chest Pockets", "Curved Hem", "French Cuff Placket"],
+    era: "Heritage Royal",
+    gender: "men",
+    occasions: ["Festive", "Evening", "Reception"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-in-004"
+  },
+
+  // =========================================================================
+  // DOMAIN-TRAINED FLAGSHIP CORPUS: SHIRTS (Tuxedo, Linen Cuban, Bengal Stripe)
+  // =========================================================================
+  {
+    id: "uv-shirt-tuxedo",
+    title: "Crisp White Pleated Bib Tuxedo Dress Shirt",
+    badge: "Crisp White Pleated Bib Tuxedo Dress Shirt",
+    tag: "SAVILE ROW BLACK TIE",
+    desc: "200-ply Egyptian Giza cotton poplin • Architectural 1/4-inch front bib pleats, spread formal collar, and convertible double French cuffs",
+    price: 26000,
+    originalPrice: 34000,
+    sizes: "15.0 - 17.5 • TAILORED FIT",
+    image: "/images/products/similar/similar_cashmere_navy.jpg",
+    silhouette: "Tailored Dress Shirt",
+    silhouetteFamily: "tailored-menswear",
+    category: "Men",
+    subcategory: "Shirts",
+    fabrics: ["Egyptian Cotton", "Poplin Cotton", "Pure Cotton"],
+    colors: ["white", "pure white", "snow"],
+    crafts: ["Bib Pleating", "French Cuffs", "Spread Collar", "Stud Front Placket"],
+    designFeatures: ["Front Bib Pleats", "French Cuffs", "Removable Stud Buttons", "Tailored Fit"],
+    era: "Parisian Atelier",
+    gender: "men",
+    occasions: ["Black Tie", "Gala", "Wedding", "Red Carpet"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-4"
+  },
+  {
+    id: "uv-shirt-cuban-linen",
+    title: "Terracotta Italian Flax Linen Camp Collar Resort Shirt",
+    badge: "Terracotta Italian Flax Linen Camp Collar Resort Shirt",
+    tag: "RIVIERA RESORT ARCHIVE",
+    desc: "Pure Italian Normandy flax linen washed for soft drape • Open notched Cuban camp collar with carved mother-of-pearl buttons",
+    price: 22000,
+    originalPrice: 29000,
+    sizes: "S - XXL • RELAXED FIT",
+    image: "/images/categories/men/men-shirt.png",
+    silhouette: "Linen Resort Shirt",
+    silhouetteFamily: "tailored-menswear",
+    category: "Men",
+    subcategory: "Shirts",
+    fabrics: ["Pure Linen", "European Flax", "Linen"],
+    colors: ["terracotta", "rust", "copper", "orange", "brown"],
+    crafts: ["Camp Collar", "Mother of Pearl Buttons", "Boxy Fit", "Straight Hem"],
+    designFeatures: ["Cuban Camp Collar", "Straight Square Hem", "Side Vents", "Short Sleeves"],
+    era: "Parisian Atelier",
+    gender: "men",
+    occasions: ["Resort", "Vacation", "Summer Casual"],
+    verifiedBadge: "blue-tick",
+    linkedProductId: "prod-4"
+  },
+  {
+    id: "uv-shirt-striped",
+    title: "Sky Blue Bengal Stripe Tailored Poplin Dress Shirt",
+    badge: "Sky Blue Bengal Stripe Tailored Poplin Dress Shirt",
+    tag: "MAYFAIR BESPOKE SHIRTING",
+    desc: "140s double-twist compact cotton poplin in clean sky blue & white vertical Bengal stripes with semi-spread collar",
+    price: 24000,
+    originalPrice: 31000,
+    sizes: "15.0 - 17.5 • SLIM FIT",
+    image: "/images/categories/men/men-shirt.png",
+    silhouette: "Tailored Dress Shirt",
+    silhouetteFamily: "tailored-menswear",
+    category: "Men",
+    subcategory: "Shirts",
+    fabrics: ["Cotton Poplin", "Pima Cotton", "Egyptian Cotton"],
+    colors: ["sky blue", "blue", "white", "pastel blue"],
+    crafts: ["Bengal Stripe", "Semi-Spread Collar", "Mother of Pearl Buttons", "Slim Fit"],
+    designFeatures: ["Vertical Bengal Stripes", "Semi-Spread English Collar", "Two-Button Barrel Cuffs", "Clean French Placket"],
+    era: "Parisian Atelier",
+    gender: "men",
+    occasions: ["Business", "Formal", "Smart Casual"],
+    verifiedBadge: "gold-pro",
+    linkedProductId: "prod-4"
   }
 ];
 
@@ -1104,9 +1397,9 @@ export const COLOR_MAP: Record<string, string[]> = {
   blue: ["blue", "royal blue", "sapphire", "cobalt", "azure", "cerulean", "indigo", "midnight blue", "dark blue"],
   navy: ["navy", "dark blue", "deep navy", "midnight blue"],
   "sky blue": ["sky blue", "baby blue", "pastel blue", "light blue", "powder blue"],
-  ivory: ["ivory", "cream", "off-white", "champagne", "pearl", "bone", "ecru"],
-  white: ["white", "pure white", "snow"],
-  cream: ["cream", "ivory", "off-white"],
+  ivory: ["ivory", "cream", "off-white", "off white", "white", "pure white", "pearl", "bone", "ecru", "milk", "champagne", "snow", "eggshell", "mukul"],
+  white: ["white", "pure white", "snow", "ivory", "cream", "off-white", "off white", "pearl", "chalk", "milk", "eggshell", "bone", "ecru", "alabaster", "mukul"],
+  cream: ["cream", "ivory", "off-white", "off white", "white", "pearl", "milk", "buttercream", "vanilla", "snow"],
   gold: ["gold", "golden", "zari", "metallic", "brass", "gilded", "tilla", "antique gold"],
   yellow: ["yellow", "ochre", "haldi", "marigold", "amber"],
   mustard: ["mustard", "ochre", "haldi"],
@@ -1131,18 +1424,18 @@ export const COLOR_MAP: Record<string, string[]> = {
 };
 
 export const SILHOUETTE_MAP: Record<string, string[]> = {
-  sherwani: ["sherwani", "shrewani", "shervani", "sherwaani", "sharwani", "achkan", "angrakha", "groom coat"],
+  sherwani: ["sherwani", "shrewani", "shervani", "sherwaani", "sharwani", "achkan", "angrakha sherwani", "court achkan", "groom coat", "royal sherwani"],
   bandhgala: ["bandhgala", "jodhpuri", "nehru jacket", "mandarin coat", "closed collar coat"],
-  kurta: ["kurta", "kurti", "tunic", "ethnic top", "kurta pajama", "kurta set"],
+  kurta: ["kurta", "kurti", "tunic", "ethnic top", "kurta pajama", "kurta set", "pathani", "angrakha kurta", "short kurta"],
   lehenga: ["lehenga", "kalidar", "ghagra", "choli", "kalidar flare", "can-can"],
-  saree: ["saree", "sari", "drape", "kanjivaram", "banarasi", "pallu", "pleats"],
+  saree: ["saree", "sari", "kanjivaram saree", "banarasi saree", "chanderi saree", "paithani saree", "patola saree", "bandhani saree", "saree drape", "sari drape"],
   gown: ["gown", "ballgown", "evening dress", "corset gown", "column gown", "maxi dress", "gala gown"],
-  dress: ["dress", "gown", "midi", "frock", "slip dress", "midi dress"],
+  dress: ["dress", "frock", "slip dress", "midi dress"],
   trench: ["trench", "overcoat", "coat", "cloak", "cape", "peacoat"],
   jacket: ["jacket", "bomber", "blazer", "outerwear", "shrug"],
   suit: ["suit", "tuxedo", "blazer", "trouser suit"],
-  shirt: ["shirt", "camp shirt", "button-down", "linen shirt"],
-  "t-shirt": ["t-shirt", "tshirt", "tee", "crewneck", "top"],
+  shirt: ["shirt", "dress shirt", "tuxedo shirt", "camp shirt", "button-down", "linen shirt", "oxford shirt", "resort shirt"],
+  "t-shirt": ["t-shirt", "tshirt", "tee", "crewneck", "polo tee", "henley tee"],
   pants: ["pants", "trousers", "joggers", "chino", "churidar", "slacks", "jeans"]
 };
 
@@ -1162,10 +1455,123 @@ export const CRAFT_MAP: Record<string, string[]> = {
   zardozi: ["zardozi", "zardosi", "bullion", "metallic wire", "gold embroidery", "antique gold zardozi"],
   tilla: ["tilla", "kashmiri", "ari", "needlework", "kashmiri tilla"],
   gotapatti: ["gotapatti", "gota patti", "gota", "badla"],
-  chikankari: ["chikankari", "shadow work", "bakhiya", "lucknowi"],
-  dabka: ["dabka", "dabka needlework"],
-  zari: ["zari", "gold zari", "silver zari", "brocade", "weaving", "korvai"],
-  crystals: ["crystals", "swarovski", "stones", "sequins", "pavé", "mirror"]
+  chikankari: ["chikankari", "shadow work", "bakhiya", "lucknowi", "tepchi", "phanda"],
+  dabka: ["dabka", "dabka needlework", "naqshi dabka"],
+  zari: ["zari", "gold zari", "silver zari", "brocade", "weaving", "korvai", "kadwa", "shikargah"],
+  crystals: ["crystals", "swarovski", "stones", "sequins", "pavé", "mirror", "shisha", "mirror work"],
+  bandhani: ["bandhani", "bandhej", "tie dye", "tie-dye", "leheriya"]
+};
+
+// =========================================================================
+// SAREE ATTRIBUTE DICTIONARIES (WEAVES, PATTERNS, DRAPES)
+// =========================================================================
+
+export const SAREE_WEAVE_MAP: Record<string, string[]> = {
+  "Kanjivaram": ["kanjivaram", "kancheepuram", "kanchipuram", "kanjeevaram", "korvai silk", "temple silk", "pattu saree"],
+  "Banarasi": ["banarasi", "banaras", "varanasi", "katan silk", "kadwa", "shikargah", "jangla", "banarasi brocade", "kadhwa"],
+  "Chanderi": ["chanderi", "chanderi silk", "chanderi cotton", "chanderi zari", "zari butti chanderi"],
+  "Paithani": ["paithani", "paithani silk", "yeola paithani", "muniya border", "peacock pallu", "mor bangdi"],
+  "Patola": ["patola", "patan patola", "double ikkat", "rajkot patola", "patola silk"],
+  "Bandhani": ["bandhani", "bandhej", "gharchola", "tie and dye saree", "bandhani georgette", "leheriya bandhani"],
+  "Kasavu": ["kasavu", "kerala kasavu", "settu saree", "onam saree", "gold border ivory saree"],
+  "Tussar": ["tussar", "tassar", "kosa silk", "wild silk", "tussar silk", "bhagalpuri"],
+  "Organza": ["organza saree", "tissue saree", "silk organza drape", "glass tissue saree"],
+  "Georgette": ["georgette saree", "pure georgette", "khaddi georgette", "banarasi georgette", "chiffon saree"]
+};
+
+export const SAREE_PATTERN_MAP: Record<string, string[]> = {
+  "Temple Border": ["temple border", "korvai border", "gopuram", "temple spikes", "interlocked border"],
+  "Floral Jaal": ["floral jaal", "jangla", "allover jaal", "flowering vine", "zari jaal", "bel jaal"],
+  "Zari Butti": ["zari butti", "booti", "gold booti", "peacock motif", "manga motif", "paisley motif", "polka butti"],
+  "Leheriya": ["leheriya", "leharia", "wave pattern", "diagonal stripes", "chevron stripes"],
+  "Ikkat": ["ikkat", "ikat", "pochampally", "geometric ikkat", "patola print"],
+  "Geometric Checks": ["kattam checks", "checks pattern", "geometric checks", "madras check", "grid pattern"],
+  "Shikargah": ["shikargah", "hunting scene", "animal motifs", "elephant motif", "horse motif", "royal fauna"],
+  "Kadwa Weave": ["kadwa", "kadhwa", "embossed brocade", "hand-woven motif without floats"]
+};
+
+// =========================================================================
+// KURTA ATTRIBUTE DICTIONARIES (CUTS, STYLES, EMBROIDERY, COLLARS)
+// =========================================================================
+
+export const KURTA_STYLE_MAP: Record<string, string[]> = {
+  "Short Kurta": ["short kurta", "hip length kurta", "casual kurta", "contemporary kurta"],
+  "Straight Cut": ["straight cut kurta", "straight kurta", "classic knee-length kurta", "traditional kurta"],
+  "Angrakha": ["angrakha", "angrakha cut", "overlapping kurta", "side tie kurta", "cross-over placket"],
+  "Pathani": ["pathani", "pathani kurta", "khan suit", "military kurta", "shoulder flaps kurta", "curved hem pathani"],
+  "Kalidar": ["kalidar kurta", "flared kurta", "anarkali kurta", "multi-panel kurta"],
+  "Asymmetric": ["asymmetric kurta", "high low kurta", "draped hem kurta", "diagonal hem kurta"],
+  "Kurta Pajama Set": ["kurta pajama", "kurta pyjama", "kurta set", "kurta churidar", "kurta with jacket"],
+  "Nehru Kurta Set": ["nehru kurta", "kurta with nehru jacket", "kurta waistcoat set"]
+};
+
+export const KURTA_CRAFT_MAP: Record<string, string[]> = {
+  "Chikankari": ["chikankari", "lucknowi chikankari", "shadow work", "bakhiya", "phanda", "keel kangan", "tepchi"],
+  "Mirror Work": ["mirror work", "shisha embroidery", "reflective glasswork", "abhala work"],
+  "Foil Print": ["foil print", "gold foil", "metallic print", "khari print"],
+  "Thread Embroidery": ["thread embroidery", "resham work", "silk thread work", "cross stitch"],
+  "Tilla Needlework": ["tilla needlework", "kashmiri tilla", "gold thread embroidery", "ari work"],
+  "Bandhej": ["bandhej print", "bandhani dots", "tie dye kurta"]
+};
+
+// =========================================================================
+// SHERWANI ATTRIBUTE DICTIONARIES (STYLES, NEEDLEWORK, WEAVES)
+// =========================================================================
+
+export const SHERWANI_STYLE_MAP: Record<string, string[]> = {
+  "Royal Sherwani": ["royal sherwani", "heritage sherwani", "palatial sherwani", "ceremonial sherwani", "groom sherwani"],
+  "Court Achkan": ["achkan", "court achkan", "slim achkan", "nawabi achkan", "classic achkan"],
+  "Angrakha Sherwani": ["angrakha sherwani", "regal angrakha", "crossover sherwani", "flared royal sherwani"],
+  "Jodhpuri Sherwani": ["jodhpuri sherwani", "jodhpuri coat", "bandhgala sherwani", "rajasthani royal coat"],
+  "Velvet Cape Sherwani": ["sherwani cape", "velvet cape sherwani", "cutwork sherwani", "draped royal sherwani"]
+};
+
+export const SHERWANI_CRAFT_MAP: Record<string, string[]> = {
+  "Kashmiri Tilla": ["kashmiri tilla", "tilla needlework", "looped metallic embroidery", "silver tilla", "gold tilla"],
+  "Bullion Zardozi": ["bullion zardozi", "zardozi embroidery", "heavy zardozi", "antique gold zardozi", "raised bullion wire"],
+  "Dabka Wire": ["dabka wire", "dabka needlework", "naqshi dabka", "french wire embroidery"],
+  "Resham Work": ["resham needlework", "silk resham", "fine threadwork", "tone on tone resham"],
+  "Split Cuffs": ["split french cuffs", "split cuffs", "turned back cuffs", "embroidered cuffs"],
+  "Concealed Placket": ["concealed placket", "hidden buttons", "hand-turned placket", "ornamental button placket"]
+};
+
+// =========================================================================
+// SHIRT ATTRIBUTE DICTIONARIES (TYPES, PATTERNS, COLLARS, CUFFS)
+// =========================================================================
+
+export const SHIRT_TYPE_MAP: Record<string, string[]> = {
+  "Tuxedo Shirt": ["tuxedo shirt", "pleated tuxedo shirt", "black tie shirt", "evening dress shirt", "stud placket shirt"],
+  "Dress Shirt": ["dress shirt", "formal shirt", "tailored shirt", "business shirt", "poplin dress shirt"],
+  "Linen Resort Shirt": ["linen shirt", "linen resort shirt", "pure linen shirt", "summer linen shirt", "breezy linen shirt"],
+  "Cuban Collar Shirt": ["cuban collar", "camp collar", "camp shirt", "open collar shirt", "bowling shirt", "cabana shirt", "resort collar shirt"],
+  "Oxford Button-Down": ["oxford shirt", "button-down shirt", "ocbd", "oxford cloth button down", "casual button down"],
+  "Mandarin Collar Shirt": ["mandarin collar shirt", "band collar shirt", "chinese collar shirt", "grandad collar shirt", "collarless shirt"]
+};
+
+export const SHIRT_PATTERN_MAP: Record<string, string[]> = {
+  "Pin-Stripe": ["pin-stripe", "pinstripe", "fine stripe", "vertical chalk stripe", "micro stripe"],
+  "Bengal Stripe": ["bengal stripe", "candy stripe", "wide vertical stripe", "bold stripe"],
+  "Gingham Check": ["gingham", "gingham check", "mini check", "bicolor check"],
+  "Tartan Check": ["tartan", "plaid", "tartan check", "madras plaid", "lumberjack check"],
+  "Windowpane": ["windowpane", "window pane check", "box check", "architectural check"],
+  "Houndstooth": ["houndstooth", "dogtooth", "pied-de-poule"],
+  "Solid": ["solid shirt", "plain shirt", "monochrome shirt", "clean weave"],
+  "Floral Print": ["floral shirt", "botanical print", "hawaiian print", "tropical print", "flower print shirt"]
+};
+
+export const SHIRT_COLLAR_MAP: Record<string, string[]> = {
+  "Spread Collar": ["spread collar", "wide spread collar", "cutaway collar", "english spread"],
+  "Point Collar": ["point collar", "narrow collar", "classic straight collar"],
+  "Button-Down Collar": ["button down collar", "buttoned collar", "button-down points"],
+  "Cuban Camp Collar": ["cuban collar", "camp collar", "open notched collar", "flat collar"],
+  "Wingtip Collar": ["wing collar", "wingtip collar", "tuxedo wing collar"],
+  "Mandarin Band": ["mandarin collar", "band collar", "stand collar", "grandad collar"]
+};
+
+export const SHIRT_CUFF_MAP: Record<string, string[]> = {
+  "French Cuff": ["french cuff", "french cuffs", "double cuff", "cufflink cuff"],
+  "Barrel Cuff": ["barrel cuff", "button cuff", "standard cuff", "single cuff"],
+  "Convertible Cuff": ["convertible cuff", "dual button cuff"]
 };
 
 // =========================================================================
@@ -1226,15 +1632,19 @@ export const SLEEVE_MAP: Record<string, string[]> = {
 // F. Pattern canonical mapping
 export const PATTERN_MAP: Record<string, string[]> = {
   "Solid": ["plain", "single colour", "no print", "solid", "plain white", "plain black"],
-  "Striped": ["stripes", "horizontal lines", "vertical stripes", "striped"],
-  "Checked": ["checks", "checkered", "checked"],
-  "Floral": ["flower print", "floral design", "floral", "flower designs", "flowers"],
-  "Geometric": ["geometric pattern", "abstract shapes", "geometric"],
+  "Striped": ["stripes", "horizontal lines", "vertical stripes", "striped", "pinstripe", "pin-stripe", "bengal stripe"],
+  "Checked": ["checks", "checkered", "checked", "gingham", "tartan", "windowpane", "houndstooth", "kattam"],
+  "Floral": ["flower print", "floral design", "floral", "flower designs", "flowers", "botanical"],
+  "Geometric": ["geometric pattern", "abstract shapes", "geometric", "ikkat", "ikat", "patola"],
   "Camouflage": ["camo", "military print", "camouflage"],
-  "Tie-Dye": ["tie dye", "colour swirl", "tie-dye"],
+  "Tie-Dye": ["tie dye", "colour swirl", "tie-dye", "bandhani", "bandhej", "leheriya"],
   "Colour Block": ["two-tone", "colour blocking", "color block", "contrast sleeves", "two-colour"],
   "All-Over Print": ["full print", "repeated print", "all-over print"],
-  "Text Print": ["typography", "slogan", "lettering", "text print"]
+  "Text Print": ["typography", "slogan", "lettering", "text print"],
+  "Temple Border": ["temple border", "korvai", "gopuram", "temple spikes", "interlocked border"],
+  "Floral Jaal": ["floral jaal", "jangla", "allover jaal", "zari jaal", "bel jaal"],
+  "Zari Butti": ["zari butti", "booti", "gold booti", "peacock motif", "manga motif", "paisley motif"],
+  "Shikargah": ["shikargah", "hunting scene", "animal motifs", "kadwa weave"]
 };
 
 // G. Design and detailing canonical mapping
@@ -1339,10 +1749,42 @@ export function getSilhouetteFamily(sil: string): SilhouetteFamily {
   ) {
     return "designer-tshirts";
   }
-  if (s.includes("sherwani") || s.includes("shrewani") || s.includes("achkan") || s.includes("bandhgala") || s.includes("jodhpuri") || s.includes("kurta")) {
+  // Woven formal and resort shirts (separate from knit t-shirts!)
+  if (
+    s.includes("shirt") ||
+    s.includes("button down") ||
+    s.includes("tuxedo shirt") ||
+    s.includes("camp shirt") ||
+    s.includes("resort shirt") ||
+    s.includes("oxford")
+  ) {
+    return "tailored-menswear";
+  }
+  if (
+    s.includes("sherwani") ||
+    s.includes("shrewani") ||
+    s.includes("achkan") ||
+    s.includes("bandhgala") ||
+    s.includes("jodhpuri") ||
+    s.includes("kurta") ||
+    s.includes("pathani") ||
+    s.includes("angrakha")
+  ) {
     return "royal-ethnic-men";
   }
-  if (s.includes("lehenga") || s.includes("saree") || s.includes("sari") || s.includes("kalidar") || s.includes("anarkali")) {
+  if (
+    s.includes("lehenga") ||
+    s.includes("saree") ||
+    s.includes("sari") ||
+    s.includes("kalidar") ||
+    s.includes("anarkali") ||
+    s.includes("kanjivaram") ||
+    s.includes("banarasi") ||
+    s.includes("chanderi") ||
+    s.includes("paithani") ||
+    s.includes("patola") ||
+    s.includes("bandhani")
+  ) {
     return "royal-ethnic-women";
   }
   if (s.includes("gown") || s.includes("ballgown") || s.includes("corset") || s.includes("midi dress") || s.includes("dress")) {
@@ -1416,9 +1858,13 @@ export function resolveCanonicalColor(word: string): string {
  * Checks whether an item contains a specific color hue (either base body or accent)
  */
 export function itemMatchesColor(item: UvibeGarment, targetColor: string): boolean {
-  let syns = COLOR_MAP[targetColor] || [targetColor];
-  if (targetColor === "blue") {
-    syns = Array.from(new Set([...syns, "navy", "sapphire", "royal blue", "dark blue"]));
+  const canon = resolveCanonicalColor(targetColor);
+  let syns = COLOR_MAP[canon] || [canon];
+  if (canon === "blue") {
+    syns = Array.from(new Set([...syns, "navy", "sapphire", "royal blue", "dark blue", "indigo"]));
+  }
+  if (["white", "ivory", "cream"].includes(canon)) {
+    syns = Array.from(new Set([...syns, ...(COLOR_MAP.white || []), ...(COLOR_MAP.ivory || []), ...(COLOR_MAP.cream || [])]));
   }
   const itemColors = (item.colors || []).map((c) => c.toLowerCase());
   const itemFull = `${item.title} ${item.desc} ${item.badge} ${item.tag}`.toLowerCase();
@@ -1445,15 +1891,25 @@ export function itemMatchesColor(item: UvibeGarment, targetColor: string): boole
  */
 export function itemMatchesBaseColor(item: UvibeGarment, targetColor: string): boolean {
   const canon = resolveCanonicalColor(targetColor);
-  // Garment's primary colors are the first 1-2 entries in its colors array
-  const primaryHues = (item.colors || []).slice(0, 2).map((c) => resolveCanonicalColor(c));
+  // Garment's primary colors are the first 1-3 entries in its colors array
+  const primaryHues = (item.colors || []).slice(0, 3).map((c) => resolveCanonicalColor(c));
   if (primaryHues.includes(canon)) return true;
+
+  // White / Ivory / Cream / Off-White mutual equivalence in couture, ethnic & kids
+  const whiteCluster = ["white", "ivory", "cream"];
+  if (whiteCluster.includes(canon) && primaryHues.some((h) => whiteCluster.includes(h))) {
+    return true;
+  }
+
   // If target is blue, accept navy/sapphire
-  if (canon === "blue" && (primaryHues.includes("navy") || primaryHues.includes("blue"))) return true;
-  // Check title
+  if (canon === "blue" && (primaryHues.includes("navy") || primaryHues.includes("blue") || primaryHues.includes("sapphire"))) return true;
+  if (canon === "navy" && (primaryHues.includes("navy") || primaryHues.includes("blue"))) return true;
+
+  // Check title and description
   const titleLower = item.title.toLowerCase();
+  const descLower = (item.desc || "").toLowerCase();
   const syns = COLOR_MAP[canon] || [canon];
-  return syns.some((s) => titleLower.includes(s));
+  return syns.some((s) => titleLower.includes(s) || descLower.includes(s));
 }
 
 /**
@@ -1467,6 +1923,10 @@ export function extractTargetColor(
 ): string | undefined {
   if (detectedColors.length === 0) return undefined;
   if (detectedColors.length === 1) return resolveCanonicalColor(detectedColors[0]);
+
+  // Separate primary garment clause (before "with ...") from embellishment clause ("with antique gold zardozi...")
+  const headClause = cleaned.split(/\bwith\b/i)[0] || cleaned;
+  const isAccentMetal = (c: string) => /^(gold|golden|antique gold|rose gold|tilla|zari|brass|silver)$/i.test(c);
 
   // Multiple colors detected: resolve head-noun adjective binding
   for (const sil of detectedSilhouettes) {
@@ -1482,15 +1942,15 @@ export function extractTargetColor(
           if (new RegExp(`\\b${escCol}\\s+${escSil}\\b`, "i").test(cleaned)) {
             return resolveCanonicalColor(colWord);
           }
-          // Pattern B: [colWord] + fabric + [silWord] (e.g. "blue raw silk sherwani", "sapphire duchess satin gown")
-          if (new RegExp(`\\b${escCol}\\s+(?:raw\\s+silk|silk|velvet|satin|duchess\\s+satin|organza|brocade|cotton|linen)\\s+${escSil}\\b`, "i").test(cleaned)) {
+          // Pattern B: [colWord] + (up to 4 textile/silhouette modifiers) + [silWord] (e.g. "crimson silk velvet kalidar lehenga")
+          if (new RegExp(`\\b${escCol}\\s+(?:\\S+\\s+){1,4}${escSil}\\b`, "i").test(headClause)) {
             return resolveCanonicalColor(colWord);
           }
           // Pattern C: fabric + [colWord] + [silWord] (e.g. "raw silk blue sherwani")
           if (new RegExp(`\\b(?:raw\\s+silk|silk|velvet|satin|duchess\\s+satin|organza|brocade|cotton|linen)\\s+${escCol}\\s+${escSil}\\b`, "i").test(cleaned)) {
             return resolveCanonicalColor(colWord);
           }
-          // Pattern D: [silWord] + "in" / "of" / "with" + [colWord] (e.g. "sherwani in blue")
+          // Pattern D: [silWord] + "in" / "of" + [colWord] (e.g. "sherwani in blue")
           if (new RegExp(`\\b${escSil}\\s+(?:in|of|shade\\s+of)\\s+(?:a\\s+)?(?:royal\\s+)?${escCol}\\b`, "i").test(cleaned)) {
             return resolveCanonicalColor(colWord);
           }
@@ -1499,17 +1959,26 @@ export function extractTargetColor(
     }
   }
 
-  // Proximity scan: color closest to silhouette noun has highest semantic binding
+  // Head-clause non-metal hue takes precedence over embellishment accents
+  for (const col of detectedColors) {
+    if (isAccentMetal(col)) continue;
+    const colSyns = COLOR_MAP[col] || [col];
+    if (colSyns.some((cSyn) => new RegExp(`\\b${cSyn.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "i").test(headClause))) {
+      return resolveCanonicalColor(col);
+    }
+  }
+
+  // Proximity scan: color closest to silhouette noun in headClause
   let closestCol = detectedColors[0];
   let minDistance = Infinity;
 
   for (const sil of detectedSilhouettes) {
-    const silIdx = cleaned.indexOf(sil);
+    const silIdx = headClause.indexOf(sil);
     if (silIdx !== -1) {
       for (const col of detectedColors) {
         const colSyns = COLOR_MAP[col] || [col];
         for (const cSyn of colSyns) {
-          const colIdx = cleaned.indexOf(cSyn);
+          const colIdx = headClause.indexOf(cSyn);
           if (colIdx !== -1) {
             const dist = Math.abs(silIdx - colIdx);
             if (dist < minDistance) {
@@ -1737,6 +2206,148 @@ export function parseFashionQuery(rawQuery: string): ParsedFashionQuery {
   if (extractedLength) hardRequirements.lengthStyle = extractedLength;
   if (extractedShoulderStyle) hardRequirements.shoulderStyle = extractedShoulderStyle;
 
+  // =========================================================================
+  // SHERWANI ATTRIBUTE EXTRACTIONS (Style, Craft)
+  // =========================================================================
+  const isSherwaniSearch =
+    /\b(sherwani|shrewani|shervani|achkan|angrakha sherwani|court achkan|jodhpuri sherwani)\b/i.test(cleaned) &&
+    !detectedGenders.includes("kids");
+
+  let extractedSherwaniStyle: string | undefined;
+  let maxSherwaniStyleLen = 0;
+  for (const [style, syns] of Object.entries(SHERWANI_STYLE_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxSherwaniStyleLen) {
+        maxSherwaniStyleLen = syn.length;
+        extractedSherwaniStyle = style;
+      }
+    }
+  }
+
+  let extractedSherwaniCraft: string | undefined;
+  let maxSherwaniCraftLen = 0;
+  for (const [craft, syns] of Object.entries(SHERWANI_CRAFT_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxSherwaniCraftLen) {
+        maxSherwaniCraftLen = syn.length;
+        extractedSherwaniCraft = craft;
+      }
+    }
+  }
+
+  // =========================================================================
+  // KURTA ATTRIBUTE EXTRACTIONS (Style, Craft)
+  // =========================================================================
+  const isKurtaSearch =
+    /\b(kurta|kurti|angrakha|pathani|kurta pajama|kurta pyjama|kurta set|chikankari kurta)\b/i.test(cleaned) &&
+    !detectedGenders.includes("kids") &&
+    !isSherwaniSearch;
+
+  let extractedKurtaStyle: string | undefined;
+  let maxKurtaStyleLen = 0;
+  for (const [style, syns] of Object.entries(KURTA_STYLE_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxKurtaStyleLen) {
+        maxKurtaStyleLen = syn.length;
+        extractedKurtaStyle = style;
+      }
+    }
+  }
+
+  let extractedKurtaCraft: string | undefined;
+  let maxKurtaCraftLen = 0;
+  for (const [craft, syns] of Object.entries(KURTA_CRAFT_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxKurtaCraftLen) {
+        maxKurtaCraftLen = syn.length;
+        extractedKurtaCraft = craft;
+      }
+    }
+  }
+
+  // =========================================================================
+  // SAREE ATTRIBUTE EXTRACTIONS (Weave, Pattern)
+  // =========================================================================
+  const isSareeSearch =
+    /\b(saree|sari|kanjivaram|banarasi|chanderi|paithani|patola|bandhani|bandhej|kasavu|tussar|georgette saree|tissue saree|sari drape)\b/i.test(cleaned) &&
+    !detectedGenders.includes("kids") &&
+    !isSherwaniSearch &&
+    !isKurtaSearch;
+
+  let extractedSareeWeave: string | undefined;
+  let maxWeaveLen = 0;
+  for (const [weave, syns] of Object.entries(SAREE_WEAVE_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxWeaveLen) {
+        maxWeaveLen = syn.length;
+        extractedSareeWeave = weave;
+      }
+    }
+  }
+
+  let extractedSareePattern: string | undefined;
+  let maxSareePatLen = 0;
+  for (const [pat, syns] of Object.entries(SAREE_PATTERN_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxSareePatLen) {
+        maxSareePatLen = syn.length;
+        extractedSareePattern = pat;
+      }
+    }
+  }
+
+  // =========================================================================
+  // SHIRT ATTRIBUTE EXTRACTIONS (Type, Pattern, Collar, Cuff)
+  // =========================================================================
+  const isShirtSearch =
+    /\b(shirt|shirts|dress shirt|tuxedo shirt|camp shirt|resort shirt|oxford shirt|button-down|mandarin shirt|linen shirt)\b/i.test(cleaned) &&
+    !isTshirtSearch &&
+    !detectedGenders.includes("kids");
+
+  let extractedShirtType: string | undefined;
+  let maxShirtTypeLen = 0;
+  for (const [type, syns] of Object.entries(SHIRT_TYPE_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxShirtTypeLen) {
+        maxShirtTypeLen = syn.length;
+        extractedShirtType = type;
+      }
+    }
+  }
+
+  let extractedShirtPattern: string | undefined;
+  let maxShirtPatLen = 0;
+  for (const [pat, syns] of Object.entries(SHIRT_PATTERN_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxShirtPatLen) {
+        maxShirtPatLen = syn.length;
+        extractedShirtPattern = pat;
+      }
+    }
+  }
+
+  let extractedShirtCollar: string | undefined;
+  let maxCollarLen = 0;
+  for (const [col, syns] of Object.entries(SHIRT_COLLAR_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxCollarLen) {
+        maxCollarLen = syn.length;
+        extractedShirtCollar = col;
+      }
+    }
+  }
+
+  let extractedShirtCuff: string | undefined;
+  let maxCuffLen = 0;
+  for (const [cuff, syns] of Object.entries(SHIRT_CUFF_MAP)) {
+    for (const syn of syns) {
+      if (cleaned.includes(syn) && syn.length > maxCuffLen) {
+        maxCuffLen = syn.length;
+        extractedShirtCuff = cuff;
+      }
+    }
+  }
+
   // Determine target silhouette family
   let targetFamily: SilhouetteFamily | null = null;
   if (detectedGenders.includes("kids")) {
@@ -1746,12 +2357,27 @@ export function parseFashionQuery(rawQuery: string): ParsedFashionQuery {
     if (!detectedGenders.includes("men")) {
       detectedGenders.push("men");
     }
+  } else if (isShirtSearch) {
+    targetFamily = "tailored-menswear";
+    if (!detectedGenders.includes("men")) {
+      detectedGenders.push("men");
+    }
+  } else if (isSherwaniSearch || isKurtaSearch) {
+    targetFamily = "royal-ethnic-men";
+    if (!detectedGenders.includes("men")) {
+      detectedGenders.push("men");
+    }
+  } else if (isSareeSearch) {
+    targetFamily = "royal-ethnic-women";
+    if (!detectedGenders.includes("women")) {
+      detectedGenders.push("women");
+    }
   } else if (detectedSilhouettes.length > 0) {
     const s0 = detectedSilhouettes[0];
     if (s0 === "sherwani" || s0 === "bandhgala" || s0 === "kurta") targetFamily = "royal-ethnic-men";
     else if (s0 === "lehenga" || s0 === "saree") targetFamily = "royal-ethnic-women";
     else if (s0 === "gown" || s0 === "dress") targetFamily = "western-couture-women";
-    else if (s0 === "trench" || s0 === "suit") targetFamily = "tailored-menswear";
+    else if (s0 === "trench" || s0 === "suit" || s0 === "shirt") targetFamily = "tailored-menswear";
   } else if (detectedGenders.includes("men")) {
     targetFamily = "royal-ethnic-men";
   } else if (detectedGenders.includes("women")) {
@@ -1783,7 +2409,21 @@ export function parseFashionQuery(rawQuery: string): ParsedFashionQuery {
     extractedDesignDetail,
     extractedLength,
     extractedFeatures,
-    hardRequirements
+    hardRequirements,
+    isSareeSearch,
+    extractedSareeWeave,
+    extractedSareePattern,
+    isKurtaSearch,
+    extractedKurtaStyle,
+    extractedKurtaCraft,
+    isSherwaniSearch,
+    extractedSherwaniStyle,
+    extractedSherwaniCraft,
+    isShirtSearch,
+    extractedShirtType,
+    extractedShirtPattern,
+    extractedShirtCollar,
+    extractedShirtCuff
   };
 }
 
@@ -1791,514 +2431,12 @@ export function parseFashionQuery(rawQuery: string): ParsedFashionQuery {
 // 6. MULTI-DIMENSIONAL NEURAL SIMILARITY & JUSTIFICATION ALGORITHM
 // =========================================================================
 
-export function rankGarmentsByQuery(
-  rawQuery: string,
-  extraFilters?: {
-    silhouette?: string;
-    fabric?: string;
-    era?: string;
-    gender?: "women" | "men" | "kids" | "unisex";
-  }
-): {
-  topMatch: UvibeGarment;
-  similarSuggestions: UvibeGarment[];
-  parsedQuery: ParsedFashionQuery;
-  overallConfidence: number;
-} {
-  const parsed = parseFashionQuery(rawQuery);
-  const qClean = parsed.cleaned;
-  const qWords = qClean.split(/\s+/).filter((w) => w.length > 2);
-
-  const targetFamily = parsed.targetFamily || (extraFilters?.silhouette ? getSilhouetteFamily(extraFilters.silhouette) : null);
-  const isGenderStrict = parsed.detectedGenders.length > 0;
-
-  const scoredList = UVIBE_GARMENT_CORPUS.map((item) => {
-    let clothesScore = 50.0;
-    let colorScore = 50.0;
-    let designingScore = 50.0;
-    let fabricScore = 50.0;
-    let craftScore = 50.0;
-    let keywordScore = 0.0;
-
-    let isGenderMismatch = false;
-    let isSilhouetteMismatch = false;
-    let hasColorContradiction = false;
-
-    const itemFullText = `${item.title} ${item.badge} ${item.tag} ${item.desc} ${item.silhouette} ${item.era} ${item.fabrics.join(" ")} ${item.colors.join(" ")} ${item.crafts.join(" ")} ${item.designFeatures.join(" ")}`.toLowerCase();
-
-    // ----------------------------------------------------
-    // DIMENSION 1: CLOTHES & SILHOUETTE ARCHITECTURE (30%)
-    // ----------------------------------------------------
-    if (parsed.isTshirtSearch) {
-      if (item.silhouetteFamily !== "designer-tshirts") {
-        isSilhouetteMismatch = true;
-        clothesScore = 5.0;
-        colorScore = 15.0;
-        designingScore = 10.0;
-        fabricScore = 10.0;
-        craftScore = 10.0;
-      } else {
-        // T-Shirt Specific Multi-Attribute Scoring (From PDF Specifications)
-        // 1. T-shirt Type & Neckline Architecture (Polo vs Henley vs Crewneck vs Raglan vs Muscle)
-        let typeScore = 90.0;
-        if (parsed.extractedTshirtType) {
-          if (item.tshirtType === parsed.extractedTshirtType) {
-            typeScore = 100.0;
-          } else if (parsed.extractedTshirtType === "Polo" && (item.tshirtType === "Henley" || item.tshirtType === "Crew Neck")) {
-            typeScore = 15.0; // Hard contradiction: Polo has folded collar; Henley/Crew are collarless
-          } else if (parsed.extractedTshirtType === "Henley" && item.tshirtType === "Polo") {
-            typeScore = 15.0; // Hard contradiction: Henley is collarless placket; Polo has collar
-          } else if (parsed.extractedTshirtType === "Muscle Tee" && item.tshirtType !== "Muscle Tee") {
-            typeScore = 12.0; // Hard contradiction: Muscle tee is sleeveless gym
-          } else if (parsed.extractedTshirtType === "Raglan" && item.tshirtType !== "Raglan") {
-            typeScore = 20.0; // Raglan diagonal sleeve
-          } else if (parsed.extractedTshirtType === "Crew Neck" && item.tshirtType === "Polo") {
-            typeScore = 20.0;
-          } else {
-            typeScore = 55.0;
-          }
-        }
-
-        let neckScore = 90.0;
-        if (parsed.extractedNeckline) {
-          if (item.neckline === parsed.extractedNeckline) {
-            neckScore = 100.0;
-          } else if (parsed.extractedNeckline === "Polo Collar" && item.neckline !== "Polo Collar") {
-            neckScore = 15.0;
-          } else if (parsed.extractedNeckline === "Crew Neck" && item.neckline === "Polo Collar") {
-            neckScore = 20.0;
-          } else {
-            neckScore = 55.0;
-          }
-        }
-
-        // 2. Fit Evaluation (Relaxed vs Oversized vs Boxy vs Slim)
-        let fitScore = 90.0;
-        if (parsed.extractedFit) {
-          if (item.fit === parsed.extractedFit) {
-            fitScore = 100.0;
-          } else if (parsed.extractedFit === "Oversized Fit") {
-            if (item.fit === "Boxy Fit") fitScore = 85.0;
-            else if (item.fit === "Relaxed Fit") fitScore = 65.0;
-            else if (item.fit === "Slim Fit") fitScore = 10.0; // Hard contradiction
-            else fitScore = 35.0;
-          } else if (parsed.extractedFit === "Slim Fit") {
-            if (item.fit === "Regular Fit") fitScore = 70.0;
-            else if (item.fit === "Oversized Fit") fitScore = 10.0; // Hard contradiction
-            else fitScore = 40.0;
-          } else if (parsed.extractedFit === "Relaxed Fit") {
-            if (item.fit === "Regular Fit") fitScore = 75.0;
-            else if (item.fit === "Oversized Fit") fitScore = 70.0;
-            else if (item.fit === "Slim Fit") fitScore = 20.0;
-            else fitScore = 50.0;
-          } else if (parsed.extractedFit === "Boxy Fit") {
-            if (item.fit === "Oversized Fit") fitScore = 80.0;
-            else fitScore = 45.0;
-          }
-        }
-
-        // 3. Sleeve & Shoulder Construction
-        let sleeveScore = 90.0;
-        if (parsed.extractedSleeveType) {
-          if (item.sleeveType === parsed.extractedSleeveType) {
-            sleeveScore = 100.0;
-          } else if (parsed.extractedSleeveType === "Sleeveless" && item.sleeveType !== "Sleeveless") {
-            sleeveScore = 10.0; // Hard contradiction
-          } else {
-            sleeveScore = 45.0;
-          }
-        }
-
-        let shoulderScore = 90.0;
-        if (parsed.extractedShoulderStyle) {
-          if (item.shoulderStyle === parsed.extractedShoulderStyle) {
-            shoulderScore = 100.0;
-          } else if (parsed.extractedShoulderStyle === "Raglan" && item.shoulderStyle !== "Raglan") {
-            shoulderScore = 20.0;
-          } else {
-            shoulderScore = 50.0;
-          }
-        }
-
-        // 4. Pattern & Design Detail (Printed vs Embroidered)
-        let artScore = 90.0;
-        let hasDetailContradiction = false;
-
-        if (parsed.extractedPattern) {
-          if (item.patternType === parsed.extractedPattern) {
-            artScore = 100.0;
-          } else if (parsed.extractedPattern === "Floral" && item.patternType !== "Floral") {
-            artScore = 15.0; // Floral requested, plain solid given
-            hasDetailContradiction = true;
-          } else if (parsed.extractedPattern === "Solid" && item.patternType !== "Solid") {
-            artScore = 20.0;
-            hasDetailContradiction = true;
-          } else {
-            artScore = 40.0;
-            hasDetailContradiction = true;
-          }
-        }
-
-        if (parsed.extractedDesignDetail) {
-          if (item.designDetail === parsed.extractedDesignDetail) {
-            artScore = Math.max(artScore, 100.0);
-          } else if (parsed.extractedDesignDetail === "Embroidered" && item.designDetail === "Graphic Print") {
-            artScore = 12.0; // Hard contradiction: stitched artwork requested, surface print given
-            hasDetailContradiction = true;
-          } else if (parsed.extractedDesignDetail === "Embroidered" && item.designDetail !== "Embroidered") {
-            artScore = 18.0;
-            hasDetailContradiction = true;
-          } else if (parsed.extractedDesignDetail === "Graphic Print" && item.designDetail === "Embroidered") {
-            artScore = 25.0;
-            hasDetailContradiction = true;
-          }
-        }
-
-        // 5. Length Architecture (Longline vs Regular)
-        let lenScore = 90.0;
-        if (parsed.extractedLength) {
-          if (item.lengthStyle === parsed.extractedLength) {
-            lenScore = 100.0;
-          } else if (parsed.extractedLength === "Longline" && item.lengthStyle !== "Longline") {
-            lenScore = 25.0;
-          } else {
-            lenScore = 50.0;
-          }
-        }
-
-        // 6. Fabric & Cotton Grade
-        let fabScore = 90.0;
-        if (parsed.detectedFabrics.length > 0) {
-          const hasExactFab = parsed.detectedFabrics.some((df) =>
-            item.fabrics.some((f) => f.toLowerCase().includes(df.toLowerCase()))
-          );
-          fabScore = hasExactFab ? 100.0 : 55.0;
-        }
-
-        // 7. Color / Shade matching
-        if (parsed.primaryTargetColor) {
-          const targetCol = parsed.primaryTargetColor;
-          const isBase = itemMatchesBaseColor(item, targetCol);
-          const isAny = itemMatchesColor(item, targetCol);
-          if (isBase) {
-            colorScore = 100.0;
-          } else if (isAny) {
-            colorScore = 80.0;
-          } else {
-            hasColorContradiction = true;
-            colorScore = 22.0; // Strict penalty
-          }
-        } else if (parsed.detectedColors.length > 0) {
-          let colHits = 0;
-          for (const col of parsed.detectedColors) {
-            if (itemMatchesColor(item, col)) colHits++;
-          }
-          colorScore = colHits > 0 ? 95.0 : 50.0;
-        } else {
-          colorScore = 90.0;
-        }
-
-        // Integrate into dimension scores
-        clothesScore = Math.round(fitScore * 0.35 + typeScore * 0.30 + neckScore * 0.15 + sleeveScore * 0.10 + lenScore * 0.10);
-        designingScore = hasDetailContradiction ? Math.min(25.0, artScore) : Math.round(artScore * 0.70 + shoulderScore * 0.30);
-        fabricScore = fabScore;
-        craftScore = item.designDetail === "Embroidered" ? 100.0 : 88.0;
-      }
-    } else if (isGenderStrict && !parsed.detectedGenders.includes(item.gender as any) && item.gender !== "unisex") {
-      isGenderMismatch = true;
-      clothesScore = 10.0;
-    } else if (targetFamily && !areSilhouetteFamiliesCompatible(targetFamily, item.silhouetteFamily)) {
-      isSilhouetteMismatch = true;
-      clothesScore = 15.0;
-    } else {
-      // Silhouette matching within valid categories
-      let silMatchFound = false;
-      for (const sil of parsed.detectedSilhouettes) {
-        const syns = SILHOUETTE_MAP[sil] || [sil];
-        if (syns.some((syn) => item.silhouette.toLowerCase().includes(syn) || itemFullText.includes(syn))) {
-          clothesScore = 98.0;
-          silMatchFound = true;
-          break;
-        }
-      }
-      if (!silMatchFound) {
-        if (targetFamily && item.silhouetteFamily === targetFamily) {
-          clothesScore = 88.0;
-        } else if (targetFamily && areSilhouetteFamiliesCompatible(targetFamily, item.silhouetteFamily)) {
-          clothesScore = 74.0;
-        } else {
-          clothesScore = 60.0;
-        }
-      }
-    }
-
-    // ----------------------------------------------------
-    // NON-TSHIRT DIMENSIONS 2, 3, 4, 5
-    // ----------------------------------------------------
-    if (!parsed.isTshirtSearch) {
-      // DIMENSION 2: COLOR PALETTE & HUE HARMONY (30%)
-      if (parsed.primaryTargetColor) {
-        const targetCol = parsed.primaryTargetColor;
-        const isBaseMatch = itemMatchesBaseColor(item, targetCol);
-        const isAnyMatch = itemMatchesColor(item, targetCol);
-
-        if (isBaseMatch) {
-          // High color match: Base body matches target color perfectly
-          colorScore = 98.5;
-          if (item.title.toLowerCase().includes(targetCol)) colorScore = 100.0;
-        } else if (isAnyMatch) {
-          // Secondary match: e.g. target color appears in accents or borders
-          colorScore = 80.0;
-        } else {
-          // HARD COLOR CONTRADICTION:
-          // Customer explicitly requested a color (e.g. "blue sherwani")
-          // Garment does NOT have this color at all.
-          hasColorContradiction = true;
-          colorScore = 32.0; // Strictly penalized!
-        }
-
-        // Check accent colors (e.g. "with gold embroidery")
-        if (parsed.accentColors.length > 0) {
-          const hasAccent = parsed.accentColors.some((acc) => itemMatchesColor(item, acc));
-          if (hasAccent) {
-            colorScore = Math.min(100.0, colorScore + 8.0);
-          }
-        }
-      } else if (parsed.detectedColors.length > 0) {
-        // General color detection
-        let colHits = 0;
-        for (const col of parsed.detectedColors) {
-          if (itemMatchesColor(item, col)) colHits++;
-        }
-        colorScore = colHits > 0 ? 88.0 + Math.min(12.0, colHits * 6.0) : 55.0;
-      } else {
-        // No specific color requested: neutral high baseline
-        colorScore = 85.0;
-      }
-
-      // DIMENSION 3: DESIGNING & STRUCTURAL DETAILS (15%)
-      let designHits = 0;
-      for (const feat of parsed.detectedDesignFeatures) {
-        const syns = DESIGN_FEATURE_MAP[feat] || [feat];
-        if (syns.some((syn) => item.designFeatures.some((df) => df.toLowerCase().includes(syn)) || itemFullText.includes(syn))) {
-          designHits++;
-        }
-      }
-      if (parsed.detectedDesignFeatures.length > 0) {
-        designingScore = designHits > 0 ? 82.0 + Math.min(18.0, (designHits / parsed.detectedDesignFeatures.length) * 18.0) : 58.0;
-      } else {
-        designingScore = clothesScore >= 90 ? 92.0 : 75.0;
-      }
-
-      // DIMENSION 4: FABRIC PHYSICS & WEAVE (15%)
-      let fabricHits = 0;
-      for (const fab of parsed.detectedFabrics) {
-        const syns = FABRIC_MAP[fab] || [fab];
-        if (syns.some((syn) => item.fabrics.some((f) => f.toLowerCase().includes(syn)) || itemFullText.includes(syn))) {
-          fabricHits++;
-        }
-      }
-      if (parsed.detectedFabrics.length > 0) {
-        fabricScore = fabricHits > 0 ? 92.0 + Math.min(8.0, fabricHits * 4.0) : 48.0;
-      } else {
-        fabricScore = 84.0;
-      }
-
-      // DIMENSION 5: ARTISANAL EMBELLISHMENT & CRAFT (10%)
-      let craftHits = 0;
-      for (const craft of parsed.detectedCrafts) {
-        const syns = CRAFT_MAP[craft] || [craft];
-        if (syns.some((syn) => item.crafts.some((c) => c.toLowerCase().includes(syn)) || itemFullText.includes(syn))) {
-          craftHits++;
-        }
-      }
-      if (parsed.detectedCrafts.length > 0) {
-        craftScore = craftHits > 0 ? 94.0 + Math.min(6.0, craftHits * 3.0) : 52.0;
-      } else {
-        craftScore = 86.0;
-      }
-    }
-
-    // Keyword relevance boost
-    for (const w of qWords) {
-      if (itemFullText.includes(w)) keywordScore += 2.0;
-    }
-    keywordScore = Math.min(10.0, keywordScore);
-
-    // ----------------------------------------------------
-    // COMPUTE WEIGHTED RAW SCORE & ACCURACY PERCENTAGE
-    // ----------------------------------------------------
-    let weightedRaw = 
-      clothesScore * 0.30 +
-      colorScore * 0.30 +
-      designingScore * 0.15 +
-      fabricScore * 0.15 +
-      craftScore * 0.10 +
-      keywordScore;
-
-    let finalPct = 0;
-    if (isGenderMismatch || isSilhouetteMismatch) {
-      // Hard Disqualification: Cannot contaminate suggestions
-      finalPct = Math.max(12.0, Math.min(22.0, 14.0 + keywordScore * 0.4));
-    } else if (hasColorContradiction) {
-      // Genuine Color Divergence:
-      // Silhouette and fabric align, but garment is the WRONG color.
-      // Honest, uninflated luxury affinity score: 68.0% - 74.8%
-      const baseAffinity = 68.0;
-      const bonus = Math.min(6.8, Math.max(0, (weightedRaw - 40) / 10));
-      finalPct = baseAffinity + bonus;
-    } else {
-      // True match:
-      if (weightedRaw >= 91) {
-        // High fidelity match: 97.4% - 99.6%
-        finalPct = 97.4 + Math.min(2.2, ((weightedRaw - 91) / 9) * 2.2);
-      } else if (weightedRaw >= 80) {
-        // Strong affinity: 90.0% - 97.3%
-        finalPct = 90.0 + ((weightedRaw - 80) / 11) * 7.3;
-      } else if (weightedRaw >= 65) {
-        // Good candidate: 80.0% - 89.9%
-        finalPct = 80.0 + ((weightedRaw - 65) / 15) * 9.9;
-      } else {
-        // Moderate candidate: 65.0% - 79.9%
-        finalPct = Math.max(55.0, 65.0 + ((weightedRaw - 50) / 15) * 14.9);
-      }
-    }
-
-    const roundedMatch = Math.round(finalPct * 10) / 10;
-
-    // ----------------------------------------------------
-    // GENERATE EXPLAINABLE AI ACCURACY JUSTIFICATION
-    // ----------------------------------------------------
-    const keyStrengths: string[] = [];
-    const divergences: string[] = [];
-
-    if (clothesScore >= 85) keyStrengths.push(`Silhouette: ${item.silhouette}`);
-    else divergences.push(`Silhouette divergence from requested cut`);
-
-    if (colorScore >= 85) {
-      const topCol = item.colors[0];
-      keyStrengths.push(`Color: ${topCol.charAt(0).toUpperCase() + topCol.slice(1)} Palette`);
-    } else if (hasColorContradiction) {
-      divergences.push(`Body color is ${item.colors[0]} instead of requested ${parsed.primaryTargetColor}`);
-    }
-
-    if (fabricScore >= 85) keyStrengths.push(`Fabric: ${item.fabrics[0]}`);
-    if (craftScore >= 85) keyStrengths.push(`Craft: ${item.crafts[0]}`);
-
-    let summary = "";
-    if (parsed.isTshirtSearch && item.silhouetteFamily === "designer-tshirts") {
-      summary = hasColorContradiction
-        ? `${roundedMatch}% Match: Designer ${item.fit || ""} ${item.tshirtType || "Tee"} in ${item.fabrics[0]}, but presented in ${item.colors[0]} tone rather than requested ${parsed.primaryTargetColor}.`
-        : `${roundedMatch}% Match: Aligned ${item.fit || "Designer"} cut (${Math.round(clothesScore)}%) + ${item.colors[0]} tone (${Math.round(colorScore)}%) + ${item.fabrics[0]} (${Math.round(fabricScore)}%) + ${item.shoulderStyle || "construction"} (${Math.round(designingScore)}%).`;
-    } else {
-      summary = hasColorContradiction
-        ? `${roundedMatch}% Match: Authentic ${item.silhouette} cut and ${item.fabrics[0]} weave, but presented in ${item.colors[0]} palette rather than requested ${parsed.primaryTargetColor}.`
-        : `${roundedMatch}% Match: Aligned ${item.silhouette} architecture (${Math.round(clothesScore)}%) + ${item.colors[0]} palette (${Math.round(colorScore)}%) + ${item.fabrics[0]} (${Math.round(fabricScore)}%) + ${item.crafts[0]} (${Math.round(craftScore)}%).`;
-    }
-
-    const justification: UvibeAccuracyJustification = {
-      summary,
-      clothesRationale: `${Math.round(clothesScore)}% — ${item.silhouette} tailored in ${item.silhouetteFamily} standard.`,
-      colorRationale: `${Math.round(colorScore)}% — Dominant ${item.colors.slice(0, 2).join(" & ")} tone.`,
-      designingRationale: `${Math.round(designingScore)}% — Features ${item.designFeatures.slice(0, 2).join(", ")}.`,
-      fabricRationale: `${Math.round(fabricScore)}% — Hand-loomed ${item.fabrics.join(", ")}.`,
-      craftRationale: `${Math.round(craftScore)}% — Detailed with ${item.crafts.join(", ")}.`,
-      keyStrengths,
-      divergences
-    };
-
-    return {
-      ...item,
-      rawScore: weightedRaw,
-      matchScore: roundedMatch,
-      isGenderMismatch,
-      isSilhouetteMismatch,
-      hasColorContradiction,
-      scoreBreakdown: {
-        clothes: Math.round(clothesScore),
-        color: Math.round(colorScore),
-        designing: Math.round(designingScore),
-        fabric: Math.round(fabricScore),
-        craft: Math.round(craftScore)
-      },
-      justification
-    };
-  });
-
-  // Sort strictly descending by rawScore
-  scoredList.sort((a, b) => (b.rawScore || 0) - (a.rawScore || 0));
-
-  const topMatch = scoredList[0] || UVIBE_GARMENT_CORPUS[0];
-
-  // Strictly filter similar suggestions:
-  // 1. Must NOT be the topMatch
-  // 2. Must NOT be a gender mismatch (e.g. gown NEVER shows for sherwani)
-  // 3. Must NOT be an incompatible silhouette family (e.g. trench coat NEVER shows for saree)
-  // 4. Must have a meaningful affinity score (>= 60%)
-  const eligibleSuggestions = scoredList
-    .filter((item) => item.id !== topMatch.id)
-    .filter((item) => {
-      if (item.isGenderMismatch) return false;
-      if (item.isSilhouetteMismatch) return false;
-      return (item.matchScore || 0) >= 60.0;
-    });
-
-  // Ensure genuine descending score progression across suggestions:
-  // Suggestions strictly rank below the top match in an honest progression
-  const similarSuggestions = eligibleSuggestions.slice(0, 8).map((item, idx) => {
-    let scoreVal = item.matchScore || 75.0;
-    if (scoreVal >= (topMatch.matchScore || 98.4)) {
-      scoreVal = (topMatch.matchScore || 98.4) - 1.5 - idx * 0.6;
-    }
-    // Prevent identical adjacent scores
-    scoreVal = Math.max(58.0, scoreVal - idx * 0.2);
-    const finalScore = Math.round(scoreVal * 10) / 10;
-    return {
-      ...item,
-      matchScore: finalScore,
-      justification: {
-        ...item.justification!,
-        summary: item.justification?.summary.replace(/^\d+(\.\d+)?%/, `${finalScore}%`) || ""
-      }
-    };
-  });
-
-  const overallConfidence = topMatch.matchScore || 98.4;
-
-  return {
-    topMatch,
-    similarSuggestions,
-    parsedQuery: parsed,
-    overallConfidence
-  };
-}
+export { rankGarmentsByQuery } from "./uvibe-search";
 
 // =========================================================================
 // 7. ATELIER AI PROMPT ENRICHER / POLISHER
 // =========================================================================
 
-export function enrichAtelierPrompt(
-  input: string,
-  silhouette?: string,
-  fabric?: string,
-  embellishment?: string,
-  era?: string
-): string {
-  const trimmed = input.trim();
-  const parsed = parseFashionQuery(trimmed);
-
-  const finalSil = silhouette || parsed.detectedSilhouettes[0] || "Sculpted Kalidar Silhouette";
-  const finalFab = fabric || parsed.detectedFabrics[0] || "Heavy Mulberry Silk Velvet";
-  const finalEmb = embellishment || parsed.detectedCrafts[0] || "Hand-couched 24k Bullion Zardozi";
-  const finalEra = era || parsed.detectedEras[0] || "Belle Époque Guild";
-
-  if (!trimmed) {
-    return `An archival ${finalSil} tailored in ${finalFab}, richly adorned with ${finalEmb} and finished with delicate scalloped hems (${finalEra} standard).`;
-  }
-
-  if (trimmed.length > 35) {
-    return `${trimmed}, tailored with bespoke precision in ${finalFab}, enhanced by ${finalEmb} and structured architectural draping (${finalEra}).`;
-  }
-
-  return `Bespoke ${trimmed} rendered in ${finalFab}, featuring ${finalSil} architecture, embellished with ${finalEmb} and sealed provenance of ${finalEra}.`;
+export function enrichAtelierPrompt(input: string, silhouette?: string, fabric?: string, embellishment?: string, era?: string): string {
+  return [input.trim(), silhouette, fabric, embellishment, era].filter(Boolean).join(", ");
 }

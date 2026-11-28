@@ -147,7 +147,7 @@ export const MEN_GARMENT_CATEGORIES: GarmentCategory[] = [
     id: "men-ethnic",
     name: "Indian Ethnic and Traditional Wear",
     subtitle: "Royal Sherwanis, Bandhgalas & Angrakhas",
-    image: "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?q=80&w=600&auto=format&fit=crop",
+    image: "/images/salon/bestseller-2.jpg",
     subcategories: [
       "Kurtas (Short, Long, Straight, Embroidered, Printed)",
       "Kurta-Pajama Sets & Kurta-Trouser Sets",

@@ -12,6 +12,7 @@ import { ListedProductsView } from "@/components/studio/ListedProductsView";
 import { SoldProductsView } from "@/components/studio/SoldProductsView";
 import { DraftsView } from "@/components/studio/DraftsView";
 import { BoostedView } from "@/components/studio/BoostedView";
+import { AtelierPantoneStudioView } from "@/components/studio/AtelierPantoneStudioView";
 import { BoostModal } from "@/components/studio/BoostModal";
 import { CustomOrdersView } from "@/components/custom-orders/CustomOrdersView";
 import { OrdersLogisticsView } from "@/components/logistics/OrdersLogisticsView";
@@ -21,6 +22,7 @@ import { ProfileView } from "@/components/profile/ProfileView";
 // Customer Components
 import { CustomerHeader } from "@/components/customer/CustomerHeader";
 import { CustomerDiscover } from "@/components/customer/CustomerDiscover";
+import { CustomerTopDeals } from "@/components/customer/CustomerTopDeals";
 import { CustomerCatalog } from "@/components/customer/CustomerCatalog";
 import { CustomerUvibe } from "@/components/customer/CustomerUvibe";
 import { CustomerCartDrawer } from "@/components/customer/CustomerCartDrawer";
@@ -96,6 +98,8 @@ export function StudioShell() {
         return <DraftsView />;
       case "boosted":
         return <BoostedView />;
+      case "pantone":
+        return <AtelierPantoneStudioView />;
       default:
         return <ListedProductsView />;
     }
@@ -136,6 +140,13 @@ export function StudioShell() {
       case "discover":
         return (
           <CustomerDiscover
+            onOpenBuyNow={handleOpenBuyNow}
+            onOpenCustomRequest={handleOpenCustomRequest}
+          />
+        );
+      case "top-deals":
+        return (
+          <CustomerTopDeals
             onOpenBuyNow={handleOpenBuyNow}
             onOpenCustomRequest={handleOpenCustomRequest}
           />
@@ -233,9 +244,9 @@ export function StudioShell() {
 
       {/* Main Viewport */}
       <main className={`flex-1 w-full mx-auto transition-all ${
-        portalMode === "customer" && customerSection === "discover" && selectedProductId === null
+        portalMode === "customer" && (customerSection === "discover" || customerSection === "catalog" || customerSection === "top-deals") && selectedProductId === null
           ? "w-full p-0 m-0 max-w-none"
-          : portalMode === "customer" && (customerSection === "catalog" || customerSection === "uvibe" || selectedProductId !== null)
+          : portalMode === "customer" && (customerSection === "uvibe" || selectedProductId !== null)
             ? "max-w-[1520px] px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
             : "max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10"
       }`}>
@@ -330,9 +341,9 @@ export function StudioShell() {
         onOpenCookieSettings={() => setIsCookieModalOpen(true)}
       />
 
-      {/* ALTIER Maison Privée Curated Footer (Hidden on customer discover where dedicated gold foil footer renders) */}
+      {/* STYTELL Curated Footer (Hidden on customer discover where dedicated gold foil footer renders) */}
       {!(portalMode === "customer" && customerSection === "discover" && selectedProductId === null) && (
-        <footer className="w-full bg-[#3a0e1e] border-t border-[#d5c2c5]/20 py-8 text-white/90 mt-16">
+        <footer className={`w-full bg-[#3a0e1e] border-t border-[#d5c2c5]/20 py-8 text-white/90 ${customerSection === "catalog" ? "mt-0" : "mt-16"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
               <AltierLogo height={32} variant="horizontal" theme="dark" />
@@ -344,7 +355,7 @@ export function StudioShell() {
               </span>
             </div>
             <div className="text-[11px] tracking-widest uppercase text-white/50">
-              © 2025 ALTIER MAISON PRIVÉE. ALL RIGHTS RESERVED.
+              © 2026 STYTELL. ALL RIGHTS RESERVED.
             </div>
           </div>
         </footer>

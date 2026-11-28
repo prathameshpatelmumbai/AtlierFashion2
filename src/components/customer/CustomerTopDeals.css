@@ -1,0 +1,81 @@
+.top-deals-page { --wine: var(--accent-cherry-deep, #3a0e1e); --cream: #faf7f2; --gold: #c5a059; --muted: #7a625e; background: var(--cream); color: var(--wine); padding: 0 0 72px; font-family: var(--font-outfit), 'Outfit', sans-serif; }
+.top-deals-page button { cursor: pointer; }
+.top-deals-page button:focus-visible, .top-deals-page select:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+.top-deals-selection, .top-deals-concierge { max-width: 1440px; margin-inline: auto; padding-inline: 40px; }
+.top-deals-carousel { width: 100%; max-width: none; margin: 0; min-height: calc(100dvh - 59px); height: calc(100dvh - 59px); position: relative; overflow: hidden; isolation: isolate; background: #310c19; color: #faf4ed; border-bottom: 1px solid #c5a05960; box-shadow: 0 20px 50px -35px #3a0e1e80; }
+.top-deals-intro { position: absolute; top: 0; left: 0; right: 0; z-index: 10; width: 100%; padding: 22px 5% 20px; background: linear-gradient(180deg, rgba(39, 8, 19, 0.92) 0%, rgba(49, 12, 25, 0.6) 65%, rgba(49, 12, 25, 0) 100%); pointer-events: auto; }
+.top-deals-eyebrow { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; }
+.top-deals-intro > .top-deals-eyebrow { color: #d9bfa4; margin-bottom: 10px; }
+.top-deals-introRow { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+.top-deals-introRow h1 { font-size: clamp(28px, 3.2vw, 46px); line-height: 1.12; letter-spacing: -.045em; color: #faf4ed; }
+.top-deals-titleDot { color: var(--gold); }
+.top-deals-introRow > p { color: #e4d2c9; font-size: 12.5px; line-height: 1.65; text-align: right; }
+.top-deals-viewport { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; display: flex; z-index: 1; }
+.top-deals-track { display: flex; width: 100%; height: 100%; transition: transform 800ms cubic-bezier(.22, 1, .36, 1); }
+.top-deals-slide { flex: 0 0 100%; min-width: 0; height: 100%; min-height: 400px; position: relative; overflow: hidden; isolation: isolate; }
+.top-deals-campaignImage { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 75% top; filter: saturate(.88) contrast(.98); z-index: -2; }
+.top-deals-shade { position: absolute; inset: 0; background: linear-gradient(90deg, #310c19 0%, #310c19f5 25%, #310c19b3 45%, #310c1920 66%, #310c1905 100%); z-index: -1; }
+.top-deals-campaignCopy { padding: clamp(100px, 14vh, 150px) 5% 50px; max-width: 630px; height: 100%; display: flex; flex-direction: column; align-items: start; justify-content: center; }
+.top-deals-campaignCopy .top-deals-eyebrow { color: #e8d2b7; display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.top-deals-campaignCopy .top-deals-eyebrow span { width: 26px; height: 1px; background: var(--gold); }
+.top-deals-campaignCopy h2 { font-size: clamp(32px, 3.8vw, 54px); line-height: 1.22; letter-spacing: -.035em; white-space: pre-line; }
+.top-deals-description { max-width: 360px; margin-top: 20px; font-size: 14px; line-height: 1.8; color: #e4d2c9; }
+.top-deals-lightButton, .top-deals-darkButton { display: inline-flex; align-items: center; justify-content: center; gap: 28px; min-height: 48px; padding: 13px 24px; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; transition: background .2s, color .2s; }
+.top-deals-lightButton { background: #f6ecdf; color: var(--wine); margin-top: 28px; border: 1px solid #e8d2b7; }
+.top-deals-lightButton:hover { background: #e8d2b7; }
+.top-deals-darkButton { background: var(--wine); color: #faf4ed; border: 1px solid var(--wine); }
+.top-deals-darkButton:hover { background: #542333; }
+.top-deals-edition { position: absolute; right: 5%; bottom: 24px; font-size: 9px; text-transform: uppercase; letter-spacing: .2em; color: #fff5e8; text-shadow: 0 1px 6px #000; }
+.top-deals-controls { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 5%; background: linear-gradient(0deg, rgba(39, 8, 19, 0.95) 0%, rgba(39, 8, 19, 0.6) 70%, transparent 100%); }
+.top-deals-dots { display: flex; gap: 6px; }
+.top-deals-dots button { width: 35px; height: 40px; display: grid; place-items: center; }
+.top-deals-dots button span { height: 2px; width: 100%; background: #e8d2b740; transition: background .2s; }
+.top-deals-dots button .top-deals-activeDot { background: #e8d2b7; }
+.top-deals-slideCount { font-size: 12px; font-variant-numeric: tabular-nums; }
+.top-deals-slideCount span { color: #bd9c98; }
+.top-deals-arrows { display: flex; gap: 4px; }
+.top-deals-arrows button { width: 40px; height: 40px; display: grid; place-items: center; color: #e8d2b7; border: 1px solid transparent; }
+.top-deals-arrows button:hover { border-color: #e8d2b750; }
+.top-deals-selection { padding-top: 65px; scroll-margin-top: 110px; outline: none; }
+.top-deals-sectionHeading { display: flex; justify-content: space-between; gap: 28px; align-items: end; margin-bottom: 30px; }
+.top-deals-sectionHeading .top-deals-eyebrow { color: #866447; margin-bottom: 14px; }
+.top-deals-sectionHeading h2 { font-size: clamp(25px, 2.3vw, 33px); line-height: 1.4; letter-spacing: -.03em; }
+.top-deals-sectionHeading > p { color: var(--muted); font-size: 12px; padding-bottom: 5px; }
+.top-deals-toolbar { margin-top: 10px; }
+.top-deals-filters { display: contents; }
+.top-deals-sort { display: contents; }
+.top-deals-resultCount { display: none; }
+.top-deals-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 24px; row-gap: 38px; }
+.top-deals-card { min-width: 0; }
+.top-deals-productImage { position: relative; width: 100%; aspect-ratio: 3 / 4; display: block; overflow: hidden; background: #ece5dc; }
+.top-deals-productImage > img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .7s; }
+.top-deals-productImage:hover > img { transform: scale(1.035); }
+.top-deals-saving { position: absolute; top: 12px; left: 12px; padding: 6px 12px; background: #faf7f2f0; color: var(--wine); font-size: 11px; letter-spacing: .06em; font-weight: 700; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.top-deals-saving-70 { background: linear-gradient(135deg, #3A0E1E 0%, #681530 100%) !important; color: #F6DFC4 !important; border: 1px solid #D4AF37 !important; box-shadow: 0 4px 14px rgba(58, 14, 30, 0.45) !important; }
+.top-deals-saving-60 { background: #3A0E1E !important; color: #F6DFC4 !important; border: 1px solid #E8D2B7 !important; }
+.top-deals-special { position: absolute; bottom: 13px; left: 12px; background: #3a0e1ed9; color: #f6ecdf; padding: 6px 9px; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.top-deals-viewPiece { position: absolute; inset: auto 0 0; padding: 15px; background: #3a0e1ef0; color: #faf4ed; font-size: 11px; display: flex; justify-content: space-between; align-items: center; transform: translateY(100%); transition: transform .3s; }
+.top-deals-productImage:hover .top-deals-viewPiece, .top-deals-productImage:focus-visible .top-deals-viewPiece { transform: translateY(0); }
+.top-deals-productInfo { padding-top: 16px; }
+.top-deals-brand { color: #866447; text-transform: uppercase; font-size: 9px; letter-spacing: .12em; margin-bottom: 9px; line-height: 1.5; min-height: 27px; }
+.top-deals-productInfo h3 { font-size: 14px; line-height: 1.6; min-height: 45px; }
+.top-deals-productInfo h3 button { text-align: left; font: inherit; }
+.top-deals-productInfo h3 button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.top-deals-price { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-size: 15px; font-weight: 500; margin-top: 12px; }
+.top-deals-price del { font-size: 12px; color: #897572; font-weight: 400; }
+.top-deals-cardFooter { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: 1px solid #e1d5ca; margin-top: 15px; padding-top: 7px; }
+.top-deals-cardFooter > span { font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top-deals-cardFooter button { flex-shrink: 0; min-height: 40px; display: flex; align-items: center; gap: 5px; font-size: 10px; }
+.top-deals-cardFooter button:hover { color: #a5733b; }
+.top-deals-empty { padding: 70px 20px; text-align: center; }
+.top-deals-empty p { margin: 16px 0 24px; }
+.top-deals-concierge { margin-top: 72px; border: 1px solid #d5c0a8; background: linear-gradient(115deg, #f2e8dc, #fbf7f1); padding: 40px; display: flex; align-items: center; gap: 36px; }
+.top-deals-monogram { font-family: var(--font-cintarini), Georgia, serif; font-size: 100px; color: #ad8950; border-right: 1px solid #d5c0a8; padding-right: 36px; line-height: 1.2; }
+.top-deals-concierge .top-deals-eyebrow { color: #866447; margin-bottom: 16px; }
+.top-deals-concierge h2 { font-size: 28px; line-height: 1.5; letter-spacing: -.03em; }
+.top-deals-concierge h2 + p { font-size: 12px; color: var(--muted); margin-top: 16px; line-height: 1.8; }
+.top-deals-concierge > button { margin-left: auto; flex-shrink: 0; }
+@media (min-width: 1600px) { .top-deals-selection, .top-deals-concierge { padding-inline: 60px; } }
+@media (max-width: 1100px) { .top-deals-selection, .top-deals-concierge { padding-inline: 28px; } .top-deals-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 20px; } .top-deals-sectionHeading > p { display: none; } .top-deals-monogram { display: none; } .top-deals-concierge { padding: 32px; } }
+@media (max-width: 700px) { .top-deals-page { padding: 0 0 40px; } .top-deals-selection, .top-deals-concierge { padding-inline: 16px; } .top-deals-carousel { height: auto; min-height: calc(100dvh - 59px); } .top-deals-intro { padding: 18px 16px 14px; } .top-deals-intro > .top-deals-eyebrow { font-size: 8px; letter-spacing: .15em; } .top-deals-introRow { align-items: start; } .top-deals-introRow > p { font-size: 10px; max-width: 150px; } .top-deals-introRow h1 { font-size: 28px; } .top-deals-slide { min-height: 460px; height: auto; } .top-deals-campaignImage { height: 100%; object-position: 79% top; } .top-deals-shade { background: linear-gradient(0deg, #310c19 0%, #310c19 35%, #310c19ed 42%, #310c1910 70%, transparent 100%); } .top-deals-campaignCopy { padding: 0 26px 26px; justify-content: end; max-width: 100%; } .top-deals-campaignCopy .top-deals-eyebrow { font-size: 9px; margin-bottom: 16px; } .top-deals-campaignCopy h2 { font-size: 31px; } .top-deals-description { font-size: 12px; line-height: 1.7; margin-top: 12px; max-width: 290px; } .top-deals-lightButton { margin-top: 20px; min-height: 44px; font-size: 10px; } .top-deals-edition { top: 16px; right: 16px; bottom: auto; font-size: 8px; } .top-deals-controls { padding: 5px 14px; gap: 8px; } .top-deals-dots { gap: 4px; } .top-deals-dots button { width: 22px; } .top-deals-arrows { gap: 0; } .top-deals-arrows button { width: 36px; } .top-deals-selection { padding-top: 38px; } .top-deals-sectionHeading { margin-bottom: 24px; } .top-deals-sectionHeading h2 { font-size: 26px; max-width: 320px; } .top-deals-toolbar { align-items: stretch; flex-direction: column; gap: 10px; } .top-deals-filters { gap: 4px; } .top-deals-filters button { flex: 1; padding: 9px 10px; font-size: 11px; } .top-deals-sort { justify-content: space-between; border-top: 1px solid #e1d5ca; padding-top: 6px; } .top-deals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 14px; } .top-deals-saving { top: 8px; left: 8px; padding: 5px 7px; font-size: 9px; } .top-deals-special { left: 8px; bottom: 8px; font-size: 8px; } .top-deals-brand { font-size: 8px; min-height: 26px; } .top-deals-productInfo h3 { font-size: 12px; min-height: 58px; } .top-deals-price { font-size: 13px; gap: 6px; } .top-deals-price del { font-size: 10px; } .top-deals-cardFooter { flex-wrap: wrap; gap: 0; } .top-deals-cardFooter > span { width: 100%; font-size: 9px; } .top-deals-cardFooter button { font-size: 10px; } .top-deals-concierge { margin-top: 44px; padding: 28px 22px; display: block; } .top-deals-concierge h2 { font-size: 25px; } .top-deals-concierge > button { margin-top: 24px; width: 100%; gap: 16px; } }
+@media (prefers-reduced-motion: reduce) { .top-deals-track, .top-deals-productImage > img, .top-deals-viewPiece { transition: none; } }

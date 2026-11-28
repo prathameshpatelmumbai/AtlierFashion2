@@ -45,7 +45,7 @@ export const GlobalHeader: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-secondary-container shadow-[0_0_6px_rgba(255,185,164,0.8)]"></span>
             <span className="tracking-widest uppercase font-medium text-[10px] text-tertiary-fixed">
-              Atelier Maison Privée — Haute Curated Sanctuary
+              STYTELL — Haute Curated Couture Sanctuary
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -74,7 +74,7 @@ export const GlobalHeader: React.FC = () => {
           <div 
             onClick={() => handleNavClick("studio")}
             className="flex items-center gap-3 cursor-pointer group shrink-0"
-            title="ALTIER Maison Privée"
+            title="STYTELL"
           >
             <AltierLogo height={38} variant="horizontal" theme="dark" />
           </div>

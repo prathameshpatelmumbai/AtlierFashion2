@@ -28,10 +28,10 @@ const outfit = Outfit({
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/AtlierFashion2" : "");
 
 export const metadata: Metadata = {
-  title: "ALTIER MAISON PRIVÉE — Haute Couture Designer Operating System",
-  description: "The digital atelier for world-class independent fashion designers and discerning luxury customers.",
+  title: "STYTELL — Haute Couture & Bespoke Luxury Maison",
+  description: "The digital atelier for world-class independent fashion designers and discerning luxury customers at STYTELL.",
   icons: {
-    icon: `${basePath}/images/altier-logo.svg`,
+    icon: `${basePath}/images/stytell-favicon.png`,
   },
 };
 
@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cintarini.variable} ${prata.variable} ${outfit.variable} h-full`}>
       <head>
-        <link rel="icon" type="image/svg+xml" href={`${basePath}/images/altier-logo.svg`} />
+        <link rel="icon" type="image/png" href={`${basePath}/images/stytell-favicon.png`} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

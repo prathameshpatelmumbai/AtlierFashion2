@@ -77,7 +77,7 @@ export const SIGNATURE_DISCIPLINES: SignatureCardItem[] = [
     title: "Inspired Arts",
     description: "High-fashion and celebrity-inspired looks, reimagined for everyday accessibility.",
     cardImage: "/images/signature_cards/card-inspired-arts.png",
-    targetSection: "uvibe",
+    targetSection: "catalog",
     filterCategory: "Couture & Gowns",
     searchTag: "Inspired Arts",
     ctaText: "DISCOVER INSPIRED LOOKS",
@@ -158,7 +158,7 @@ const CLUSTER_POSITIONS = [
 ];
 
 export default function SignatureCollectionsCluster() {
-  const { setCustomerSection, setActiveCategoryFilter } = useStudio();
+  const { setCustomerSection, setActiveCategoryFilter, setActiveCollectionFilter } = useStudio();
   const [isHovered, setIsHovered] = useState(false);
   const [isLockedOpen, setIsLockedOpen] = useState(false);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -183,16 +183,10 @@ export default function SignatureCollectionsCluster() {
   };
 
   const handleCardClick = (card: SignatureCardItem) => {
-    if (card.targetSection === "custom-orders") {
-      setCustomerSection("custom-orders");
-    } else if (card.targetSection === "uvibe") {
-      setCustomerSection("uvibe");
-    } else {
-      if (card.filterCategory) {
-        setActiveCategoryFilter(card.filterCategory);
-      }
-      setCustomerSection("catalog");
-    }
+    // Set collection filter for the clicked card and navigate to catalog
+    setActiveCollectionFilter(card.title);
+    setActiveCategoryFilter(null);
+    setCustomerSection("catalog");
 
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });

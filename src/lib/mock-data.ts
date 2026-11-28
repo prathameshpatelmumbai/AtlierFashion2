@@ -27,7 +27,7 @@ export const INITIAL_DESIGNERS: DesignerProfile[] = [
       brandStory: "Mastering the architecture of regal Indian menswear and royal ceremonial couture. Each royal sherwani and bandhgala is tailored with hand-drawn zardozi, certified Mulberry raw silks, and antique brass filigree buttons.",
       speciality: "Royal Sherwanis, Bandhgalas & Bespoke Groom Ensembles",
       fashionCategories: ["Royal Sherwanis & Bandhgalas", "Contemporary Indo-Western Couture", "Bridal & Heritage Lehengas"],
-      coverImage: "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?q=80&w=1200&auto=format&fit=crop",
+      coverImage: "/images/salon/sig-sherwani.jpg",
       location: "Bandra West Couture District, Mumbai, MH"
     },
     businessAddress: {
@@ -163,8 +163,8 @@ export const INITIAL_LISTED_PRODUCTS: ListedProduct[] = [
     initialStock: 4,
     isOneOfOne: false,
     images: [
-      "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1621609764095-b32bbe35cf3a?q=80&w=1000&auto=format&fit=crop"
+      "/images/salon/sig-sherwani.jpg",
+      "/images/salon/bestseller-2.jpg"
     ],
     sizes: ["38R", "40R", "42R", "Custom Fit"],
     measurements: {
@@ -326,8 +326,8 @@ export const INITIAL_LISTED_PRODUCTS: ListedProduct[] = [
     initialStock: 1,
     isOneOfOne: true,
     images: [
-      "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1607522370275-f14206abe5d3?q=80&w=1000&auto=format&fit=crop"
+      "/images/categories/women/women-lehenga.png",
+      "/images/salon/bestseller-1.jpg"
     ],
     sizes: ["Bespoke 1-of-1 Fit"],
     measurements: {

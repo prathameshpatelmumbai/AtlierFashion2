@@ -54,8 +54,8 @@ interface StudioContextType {
   // Designer Navigation
   activeSection: "studio" | "custom-orders" | "orders-logistics" | "sales-insights" | "profile";
   setActiveSection: (sec: "studio" | "custom-orders" | "orders-logistics" | "sales-insights" | "profile") => void;
-  activeStudioTab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted";
-  setActiveStudioTab: (tab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted") => void;
+  activeStudioTab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted" | "pantone";
+  setActiveStudioTab: (tab: "overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted" | "pantone") => void;
 
   // Customer Navigation: Discover | Top Deals | Catalog | Uvibe | Designers | Orders | Custom Orders
   customerSection: "discover" | "top-deals" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile";
@@ -64,6 +64,8 @@ interface StudioContextType {
   setActiveGender: (gender: "men" | "women" | "kids") => void;
   activeCategoryFilter: string | null;
   setActiveCategoryFilter: (cat: string | null) => void;
+  activeCollectionFilter: string | null;
+  setActiveCollectionFilter: (col: string | null) => void;
   catalogLayout: "grid" | "dense";
   setCatalogLayout: (layout: "grid" | "dense") => void;
   selectedProductId: string | null;
@@ -77,6 +79,7 @@ interface StudioContextType {
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   addToCart: (item: { id: string; title: string; price: number; image: string; size?: string; color?: string; quantity?: number }) => void;
+  updateCartQuantity: (id: string, delta: number) => void;
   removeFromCart: (id: string) => void;
 
   // Uvibe AI Engine State
@@ -248,12 +251,13 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
 
   // Designer Navigation State
   const [activeSection, setActiveSection] = useState<"studio" | "custom-orders" | "orders-logistics" | "sales-insights" | "profile">("studio");
-  const [activeStudioTab, setActiveStudioTab] = useState<"overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted">("listed");
+  const [activeStudioTab, setActiveStudioTab] = useState<"overview" | "list-new" | "listed" | "sold" | "drafts" | "boosted" | "pantone">("listed");
 
   // Customer Navigation State
   const [customerSection, setCustomerSection] = useState<"discover" | "top-deals" | "catalog" | "uvibe" | "designers" | "orders" | "custom-orders" | "profile">("discover");
   const [activeGender, setActiveGender] = useState<"men" | "women" | "kids">("men");
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null);
+  const [activeCollectionFilter, setActiveCollectionFilter] = useState<string | null>(null);
   const [catalogLayout, setCatalogLayout] = useState<"grid" | "dense">("grid");
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedDesignerId, setSelectedDesignerId] = useState<string | null>(null);
@@ -278,8 +282,40 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
           }));
         }
       }
+
+      // Check URL search parameters for direct deep-linking (e.g. ?product=prod-1, ?portal=designer&tab=pantone)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlSection = urlParams.get("section");
+      if (urlSection) {
+        setCustomerSection(urlSection as any);
+      }
+      const urlProduct = urlParams.get("product");
+      if (urlProduct) {
+        setSelectedProductId(urlProduct);
+      }
+      const urlPortal = urlParams.get("portal");
+      if (urlPortal === "designer") {
+        setPortalModeState("designer");
+      }
+      const urlTab = urlParams.get("tab");
+      if (urlTab === "pantone") {
+        setActiveStudioTab("pantone");
+      }
     }
   }, []);
+
+  // Sync selectedProductId with URL parameter for shareable direct links
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (selectedProductId) {
+        url.searchParams.set("product", selectedProductId);
+      } else {
+        url.searchParams.delete("product");
+      }
+      window.history.replaceState({}, "", url.toString());
+    }
+  }, [selectedProductId]);
 
   const loginCustomer = (data?: { email?: string; name?: string; tier?: string }) => {
     const finalEmail = data?.email || "mariana.voss@maisonprivee.com";
@@ -347,11 +383,17 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
 
   const addToCart = (item: { id: string; title: string; price: number; image: string; size?: string; color?: string; quantity?: number }) => {
+    const delta = item.quantity !== undefined ? item.quantity : 1;
     setCartItems((prev) => {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) {
-        return prev.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity || 1) } : i));
+        const nextQty = existing.quantity + delta;
+        if (nextQty <= 0) {
+          return prev.filter((i) => i.id !== item.id);
+        }
+        return prev.map((i) => (i.id === item.id ? { ...i, quantity: nextQty } : i));
       }
+      if (delta <= 0) return prev;
       return [
         ...prev,
         {
@@ -361,11 +403,28 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
           image: item.image,
           size: item.size || "Standard",
           color: item.color || "Atelier Classic",
-          quantity: item.quantity || 1
+          quantity: delta
         }
       ];
     });
-    showToast(`Added "${item.title}" to your Atelier Private Bag`);
+    if (delta > 0) {
+      showToast(`Added "${item.title}" to your Atelier Private Bag`);
+    } else {
+      showToast(`Updated "${item.title}" in your bag`);
+    }
+  };
+
+  const updateCartQuantity = (id: string, delta: number) => {
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.id === id);
+      if (!existing) return prev;
+      const nextQty = existing.quantity + delta;
+      if (nextQty <= 0) {
+        showToast(`Removed "${existing.title}" from your bag`);
+        return prev.filter((i) => i.id !== id);
+      }
+      return prev.map((i) => (i.id === id ? { ...i, quantity: nextQty } : i));
+    });
   };
 
   const removeFromCart = (id: string) => {
@@ -822,10 +881,10 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
 
   // Designer sends a quotation
   const sendQuotation = (orderId: string, quote: QuotationData) => {
-    const quoteWithDate: QuotationData = { 
-      ...quote, 
+    const quoteWithDate: QuotationData = {
+      ...quote,
       sentDate: new Date().toLocaleDateString("en-GB"),
-      status: "Pending Customer Review" 
+      status: "Pending Customer Review"
     };
 
     setCustomOrders((prev) =>
@@ -1080,17 +1139,17 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
       prev.map((o) =>
         o.id === orderId
           ? {
-              ...o,
-              lifecycleStatus: "CUSTOMER_DECLINED",
-              orderHistory: [
-                ...o.orderHistory,
-                {
-                  stage: "Request Cancelled",
-                  timestamp: new Date().toLocaleString(),
-                  note: reason || "Custom commission request was cancelled by designer."
-                }
-              ]
-            }
+            ...o,
+            lifecycleStatus: "CUSTOMER_DECLINED",
+            orderHistory: [
+              ...o.orderHistory,
+              {
+                stage: "Request Cancelled",
+                timestamp: new Date().toLocaleString(),
+                note: reason || "Custom commission request was cancelled by designer."
+              }
+            ]
+          }
           : o
       )
     );
@@ -1216,8 +1275,8 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
             t.stage === "PICKED_UP_DISPATCHED"
               ? { ...t, completed: true, timestamp: `${schedule.pickupDate} (${schedule.pickupTimeSlot})` }
               : t.stage === "IN_TRANSIT"
-              ? { ...t, completed: true, timestamp: "In Transit with Courier" }
-              : t
+                ? { ...t, completed: true, timestamp: "In Transit with Courier" }
+                : t
           )
         };
       })
@@ -1339,6 +1398,8 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
         setActiveGender,
         activeCategoryFilter,
         setActiveCategoryFilter,
+        activeCollectionFilter,
+        setActiveCollectionFilter,
         catalogLayout,
         setCatalogLayout,
         selectedProductId,
@@ -1350,6 +1411,7 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
         cartOpen,
         setCartOpen,
         addToCart,
+        updateCartQuantity,
         removeFromCart,
         uvibePrompt,
         setUvibePrompt,

@@ -24,7 +24,7 @@ export const HERO_TEXT_SLIDES: HeroTextSlideItem[] = [
   {
     id: "slide-1",
     badge: "ARCHIVAL VAULT RELEASE • 01",
-    header: "Atelier Maison Privée",
+    header: "STYTELL",
     title: "Where Art Meets Attire.",
     description:
       "A collective of exceptional designers, distinctive creations and timeless expressions of personal style.",

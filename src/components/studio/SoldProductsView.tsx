@@ -14,6 +14,7 @@ import {
   FolderLock,
   ChevronDown,
   ArrowUpDown,
+  Palette,
   FileText
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -108,6 +109,15 @@ export const SoldProductsView: React.FC = () => {
               <span className="bg-[#FFB9A4]/50 text-[#7A4737] text-[11px] font-bold px-2 py-0.5 rounded-full">
                 4
               </span>
+            </button>
+
+            {/* Tab 5: Pantone & Color Wheel */}
+            <button 
+              onClick={() => setActiveStudioTab("pantone")}
+              className="px-5 py-2.5 text-[#837376] hover:text-[#3A0E1E] hover:bg-[#FFF7F9] rounded-xl text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2 cursor-pointer"
+            >
+              <Palette className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Pantone & Color Wheel</span>
             </button>
           </div>
 

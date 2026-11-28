@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
@@ -30,6 +30,7 @@ import {
   Info
 } from "lucide-react";
 import confetti from "canvas-confetti";
+import { AddToBagButton } from "./AddToBagButton";
 import { useStudio } from "@/context/StudioContext";
 import { ListedProduct } from "@/types/studio";
 import {
@@ -48,8 +49,8 @@ import {
 } from "@/lib/uvibe-ai-engine";
 
 const asset = (path: string) => {
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  if (path.startsWith("data:") || path.startsWith("http://") || path.startsWith("https://")) return path;
+  const base = process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/AtlierFashion2" : "");
   return base ? `${base}${path}` : path;
 };
 
@@ -57,6 +58,13 @@ interface CustomerUvibeProps {
   onOpenBuyNow: (product: ListedProduct) => void;
   onOpenCustomRequest: (product?: ListedProduct, promptRef?: string) => void;
 }
+
+const EMPTY_MATCH: UvibeGarment = {
+  id: "", title: "No available match", badge: "No available match — try adjusting your requirements", tag: "", desc: "", price: 0,
+  image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='800'%3E%3Crect width='600' height='800' fill='%233B1218'/%3E%3C/svg%3E",
+  sizes: "", silhouette: "Not confirmed", silhouetteFamily: "tailored-menswear", fabrics: [], colors: [], crafts: [], designFeatures: [], era: "Not confirmed", gender: "unisex", occasions: [], matchScore: 0,
+  justification: { summary: "No available listing meets the search constraints. Try a different description, size or budget.", clothesRationale: "", colorRationale: "", designingRationale: "", fabricRationale: "", craftRationale: "", keyStrengths: [], divergences: [] }
+};
 
 const INSPIRATION_PROMPTS = [
   "Crimson silk velvet kalidar lehenga with antique gold zardozi and scalloped veil",
@@ -70,6 +78,7 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
   onOpenCustomRequest
 }) => {
   const {
+    listedProducts,
     uvibePrompt,
     setUvibePrompt,
     setSelectedProductId,
@@ -82,7 +91,11 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
 
   // Initial neural search ranking based on prompt or default haute search
   const initialPrompt = uvibePrompt || "Crimson silk velvet kalidar lehenga with antique gold bullion zardozi";
-  const initialRanking = rankGarmentsByQuery(initialPrompt);
+  const initialRanking = useMemo(() => {
+    const result = rankGarmentsByQuery(initialPrompt, {}, listedProducts);
+    return { ...result, topMatch: result.topMatch || EMPTY_MATCH };
+  }, [initialPrompt, listedProducts]);
+  const searchVersion = useRef(0);
 
   const [promptInput, setPromptInput] = useState(initialPrompt);
   const [topMatch, setTopMatch] = useState<UvibeGarment>(initialRanking.topMatch);
@@ -138,54 +151,28 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
     queryText: string,
     extraFilters?: { silhouette?: string; fabric?: string; era?: string }
   ) => {
-    setIsSynthesizing(true);
-    setSynthesisProgress(25);
+    searchVersion.current++;
+    setIsLensScanning(false);
     setUvibePrompt(queryText);
-
-    const timer1 = setTimeout(() => setSynthesisProgress(70), 200);
-    const timer2 = setTimeout(() => {
-      setSynthesisProgress(100);
-      setIsSynthesizing(false);
-
-      const ranking = rankGarmentsByQuery(queryText, extraFilters);
-
-      setTopMatch(ranking.topMatch);
-      setSuggestions(ranking.similarSuggestions);
-      setSemanticConfidence(ranking.overallConfidence);
-      setParsedState(ranking.parsedQuery);
-      setCanvasImage(ranking.topMatch.image);
-      setSelectedSilhouette(ranking.topMatch.silhouette);
-      if (ranking.topMatch.fabrics?.length > 0) {
-        setSelectedFabric(ranking.topMatch.fabrics[0]);
-      }
-      if (ranking.topMatch.crafts?.length > 0) {
-        setSelectedEmbellishment(ranking.topMatch.crafts[0]);
-      }
-      if (ranking.topMatch.era) {
-        setSelectedEra(ranking.topMatch.era);
-      }
-
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.5 },
-        colors: ["#C59347", "#44141C", "#FAF4ED"]
-      });
-
-      showToast(
-        `Neural Atelier Synthesis: Matched "${ranking.topMatch.badge}" with ${ranking.overallConfidence}% affinity.`
-      );
-    }, 450);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
+    const ranking = rankGarmentsByQuery(queryText, extraFilters, listedProducts);
+    const match = ranking.topMatch || EMPTY_MATCH;
+    setTopMatch(match);
+    setSuggestions(ranking.similarSuggestions);
+    setSemanticConfidence(ranking.overallConfidence);
+    setParsedState(ranking.parsedQuery);
+    setCanvasImage(match.image);
+    setSelectedSilhouette(match.silhouette);
+    setSelectedFabric(match.fabrics[0] || "Not confirmed");
+    setSelectedEmbellishment(match.crafts[0] || "Not confirmed");
+    setSelectedEra(match.era);
+    setSynthesisProgress(100);
+    setIsSynthesizing(false);
+    showToast(ranking.topMatch ? 'Found "' + match.title + '" — ' + ranking.overallConfidence + '% attribute match across ' + ranking.searchedCount + ' available listings.' : 'No available match. Try adjusting the description, budget or size.');
   };
 
   const handleSynthesize = (queryOverride?: string) => {
     const q = (typeof queryOverride === "string" ? queryOverride : promptInput).trim();
-    runSynthesis(q || "archival couture");
+    runSynthesis(q);
   };
 
   const handleLensSelect = (img: string, title: string, sil: string, fab: string) => {
@@ -197,37 +184,44 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
     setCanvasImage(img);
     setPromptInput(title);
 
-    setTimeout(() => {
-      setIsLensScanning(false);
-      runSynthesis(`${title} in ${sil} with ${fab}`, { silhouette: sil, fabric: fab });
-    }, 500);
+    setIsLensScanning(false);
+    runSynthesis(`${title} in ${sil} with ${fab}`, { silhouette: sil, fabric: fab });
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        setLensImage(result);
-        const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_.]+/g, " ");
-        setLensTitle(`Customer Reference: ${cleanName}`);
-        setIsLensScanning(true);
-        setCanvasImage(result);
-
-        setTimeout(() => {
-          setIsLensScanning(false);
-          const uploadQuery = `${cleanName} bespoke couture pattern with metallic accents`;
-          setPromptInput(uploadQuery);
-          runSynthesis(uploadQuery);
-        }, 600);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 4 * 1024 * 1024) {
+      showToast("Choose a JPEG, PNG or WebP image smaller than 4 MB."); return;
     }
+    const version = ++searchVersion.current;
+    setIsLensScanning(true);
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = reject; reader.readAsDataURL(file);
+      });
+      if (version !== searchVersion.current) return;
+      setLensImage(dataUrl); setLensTitle("Customer image reference");
+      const base = process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/AtlierFashion2" : "");
+      const endpoint = process.env.NEXT_PUBLIC_UVIBE_API_URL || base + "/api/uvibe";
+      const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode: "vision", image: dataUrl }), signal: AbortSignal.timeout(30000) });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || typeof result.description !== "string") throw new Error(result.error || "Image analysis is unavailable on this host. Describe the garment to search the catalog.");
+      if (version !== searchVersion.current) return;
+      setPromptInput(result.description); setLensTitle("Image attributes · visually inferred");
+      runSynthesis(result.description);
+      showToast("Image features are estimates. Fabric composition and physical fit cannot be verified from a photograph.");
+    } catch (error) {
+      if (version === searchVersion.current) {
+        setTopMatch(EMPTY_MATCH); setCanvasImage(EMPTY_MATCH.image); setSuggestions([]); setSemanticConfidence(0);
+        showToast(error instanceof Error ? error.message : "Image analysis failed. Please try another image.");
+      }
+    } finally { if (version === searchVersion.current) setIsLensScanning(false); }
   };
 
   const handleExportToCustom = (designTitle: string, itemRef?: UvibeGarment) => {
     const g = itemRef || topMatch;
+    if (!g.id) { showToast("Describe your requirements before requesting a commission."); return; }
     const details = `Bespoke Commission: ${designTitle || g.badge} • Silhouette: ${g.silhouette} • Fabric: ${g.fabrics?.join(", ")} • Craft: ${g.crafts?.join(", ")} • Era: ${g.era} • Price Ref: ₹${g.price.toLocaleString("en-IN")}. Customer Prompt: "${promptInput}".`;
     onOpenCustomRequest(undefined, details);
   };
@@ -282,7 +276,7 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#25090E]/85 border border-[#C59347]/40 rounded-[2px] mb-3">
               <Sparkles className="w-3.5 h-3.5 text-[#E2B43B] animate-pulse" />
               <span className="text-[9px] sm:text-[10px] tracking-[0.24em] uppercase font-sans font-semibold text-[#F7E7CE]">
-                MAISON PRIVÉE • UVIBE AI STUDIO • NEURAL HAUTE DISCOVERY
+                STYTELL • UVIBE AI STUDIO • NEURAL HAUTE DISCOVERY
               </span>
             </div>
 
@@ -635,7 +629,7 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                       </span>
                     </div>
                     <span className="font-mono text-[10.5px] font-bold text-[#FAF4ED] bg-[#3B1218] px-2 py-0.5 rounded-[2px] border border-[#C59347]/50 shadow-xs">
-                      {topMatch.matchScore || semanticConfidence}% Verified Match
+                      {topMatch.matchScore || semanticConfidence}% Attribute Match
                     </span>
                   </div>
 
@@ -644,40 +638,40 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                     <div>
                       <div className="flex justify-between text-[#D9BFA4]">
                         <span>Clothes Silhouette (30%)</span>
-                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.clothes ?? 98}%</span>
+                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.clothes ?? 0}%</span>
                       </div>
                       <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden mt-0.5">
-                        <div className="h-full bg-gradient-to-r from-[#D4AF37] to-[#F59E0B]" style={{ width: `${topMatch.scoreBreakdown?.clothes ?? 98}%` }} />
+                        <div className="h-full bg-gradient-to-r from-[#D4AF37] to-[#F59E0B]" style={{ width: `${topMatch.scoreBreakdown?.clothes ?? 0}%` }} />
                       </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between text-[#D9BFA4]">
                         <span>Color & Hue Harmony (30%)</span>
-                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.color ?? 97}%</span>
+                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.color ?? 0}%</span>
                       </div>
                       <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden mt-0.5">
-                        <div className="h-full bg-gradient-to-r from-[#38BDF8] to-[#60A5FA]" style={{ width: `${topMatch.scoreBreakdown?.color ?? 97}%` }} />
+                        <div className="h-full bg-gradient-to-r from-[#38BDF8] to-[#60A5FA]" style={{ width: `${topMatch.scoreBreakdown?.color ?? 0}%` }} />
                       </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between text-[#D9BFA4]">
                         <span>Designing & Structure (15%)</span>
-                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.designing ?? 95}%</span>
+                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.designing ?? 0}%</span>
                       </div>
                       <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden mt-0.5">
-                        <div className="h-full bg-gradient-to-r from-[#E2B43B] to-[#C59347]" style={{ width: `${topMatch.scoreBreakdown?.designing ?? 95}%` }} />
+                        <div className="h-full bg-gradient-to-r from-[#E2B43B] to-[#C59347]" style={{ width: `${topMatch.scoreBreakdown?.designing ?? 0}%` }} />
                       </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between text-[#D9BFA4]">
                         <span>Fabric Physics & Weave (15%)</span>
-                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.fabric ?? 96}%</span>
+                        <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.fabric ?? 0}%</span>
                       </div>
                       <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden mt-0.5">
-                        <div className="h-full bg-gradient-to-r from-[#C084FC] to-[#A855F7]" style={{ width: `${topMatch.scoreBreakdown?.fabric ?? 96}%` }} />
+                        <div className="h-full bg-gradient-to-r from-[#C084FC] to-[#A855F7]" style={{ width: `${topMatch.scoreBreakdown?.fabric ?? 0}%` }} />
                       </div>
                     </div>
                   </div>
@@ -686,10 +680,10 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                   <div className="text-[9px] font-sans">
                     <div className="flex justify-between text-[#D9BFA4]">
                       <span>Artisanal Embellishment & Craft (10%)</span>
-                      <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.craft ?? 94}%</span>
+                      <span className="font-mono font-bold text-white">{topMatch.scoreBreakdown?.craft ?? 0}%</span>
                     </div>
                     <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden mt-0.5">
-                      <div className="h-full bg-gradient-to-r from-[#34D399] to-[#10B981]" style={{ width: `${topMatch.scoreBreakdown?.craft ?? 94}%` }} />
+                      <div className="h-full bg-gradient-to-r from-[#34D399] to-[#10B981]" style={{ width: `${topMatch.scoreBreakdown?.craft ?? 0}%` }} />
                     </div>
                   </div>
 
@@ -997,28 +991,17 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
                       >
                         View Details
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          addToCart({
-                            id: item.linkedProductId || item.id,
-                            title: item.badge,
-                            price: item.price,
-                            image: item.image,
-                            size: "Bespoke",
-                            color: item.colors?.[0] || "Archival"
-                          });
-                          confetti({
-                            particleCount: 35,
-                            spread: 45,
-                            origin: { y: 0.7 }
-                          });
-                          showToast(`Added "${item.badge}" to your shopping bag.`);
+                      <AddToBagButton
+                        product={{
+                          id: item.linkedProductId || item.id,
+                          title: item.badge,
+                          price: item.price,
+                          image: item.image,
+                          size: "Bespoke",
+                          color: item.colors?.[0] || "Archival"
                         }}
-                        className="py-2 px-2.5 rounded-[2px] bg-[#44141C] hover:bg-[#5E1E28] text-[#FAF4ED] text-[10px] font-sans font-semibold tracking-wider uppercase transition-colors shadow-xs text-center cursor-pointer"
-                      >
-                        Add to Bag
-                      </button>
+                        variant="uvibe"
+                      />
                     </div>
 
                     <button

@@ -99,7 +99,7 @@ export const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({
                       className="text-base text-[#FAF4ED] font-normal"
                       style={{ fontFamily: "var(--font-cormorant), 'Playfair Display', serif" }}
                     >
-                      Atelier Maison Privée Cookie Sanctuary
+                      STYTELL Cookie Sanctuary
                     </h4>
                   </div>
                 </div>
