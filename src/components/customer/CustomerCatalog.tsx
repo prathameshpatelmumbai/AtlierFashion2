@@ -62,7 +62,8 @@ export const CustomerCatalog: React.FC<CustomerCatalogProps> = ({
     setCatalogLayout,
     setSelectedProductId,
     addToCart,
-    showToast
+    showToast,
+    customerSearchQuery
   } = useStudio();
 
   // Active filter state - completely deselected by default
@@ -384,6 +385,19 @@ function matchCategory(selectedCat: string, product: CatalogProduct): boolean {
         if (priceRange === "75k-100k" && (item.price < 75000 || item.price > 100000)) return false;
         if (priceRange === "above-100k" && item.price <= 100000) return false;
 
+        // Neural / text search filter if active
+        if (customerSearchQuery && customerSearchQuery.trim()) {
+          const q = customerSearchQuery.toLowerCase().trim();
+          const matches =
+            item.title.toLowerCase().includes(q) ||
+            item.designer.toLowerCase().includes(q) ||
+            item.fabric.toLowerCase().includes(q) ||
+            (item.category && item.category.toLowerCase().includes(q)) ||
+            (item.subcategory && item.subcategory.toLowerCase().includes(q)) ||
+            (item.tags && item.tags.some((t) => t.toLowerCase().includes(q)));
+          if (!matches) return false;
+        }
+
         return true;
       })
       .sort((a, b) => {
@@ -400,7 +414,8 @@ function matchCategory(selectedCat: string, product: CatalogProduct): boolean {
     selectedSizes,
     selectedDesigners,
     priceRange,
-    sortBy
+    sortBy,
+    customerSearchQuery
   ]);
 
   return (

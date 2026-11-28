@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition, useRef, useMemo } from "react";
+import React, { useState, useTransition, useRef, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
@@ -174,6 +174,17 @@ export const CustomerUvibe: React.FC<CustomerUvibeProps> = ({
     const q = (typeof queryOverride === "string" ? queryOverride : promptInput).trim();
     runSynthesis(q);
   };
+
+  // Sync state whenever uvibePrompt changes externally (e.g. from header text synthesis search)
+  const prevUvibePromptRef = useRef(uvibePrompt);
+  useEffect(() => {
+    if (uvibePrompt && uvibePrompt.trim() && uvibePrompt !== prevUvibePromptRef.current) {
+      prevUvibePromptRef.current = uvibePrompt;
+      setPromptInput(uvibePrompt);
+      setActiveTab("text");
+      runSynthesis(uvibePrompt);
+    }
+  }, [uvibePrompt]);
 
   const handleLensSelect = (img: string, title: string, sil: string, fab: string) => {
     setLensImage(img);
